@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.mattysleduc.portfolio.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.mattysleduc.portfolio.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/portfolio.iml" filepath="$PROJECT_DIR$/.idea/portfolio.iml" />
-      <module fileurl="file://$PROJECT_DIR$/backend/portfolio-backend/portfolio-backend.iml" filepath="$PROJECT_DIR$/backend/portfolio-backend/portfolio-backend.iml" />
     </modules>
   </component>
 </project>

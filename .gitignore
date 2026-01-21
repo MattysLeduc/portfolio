@@ -1,0 +1,35 @@
+# Docker & Environment
+.env
+docker-compose.override.yml
+postgres_data/
+backend_uploads/
+
+# Backend
+backend/portfolio-backend/.env
+backend/portfolio-backend/build/
+backend/portfolio-backend/.gradle/
+backend/portfolio-backend/uploads/
+backend/portfolio-backend/*.iml
+backend/portfolio-backend/.idea/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

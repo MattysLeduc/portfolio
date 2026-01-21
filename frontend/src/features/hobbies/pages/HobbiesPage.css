@@ -1,0 +1,38 @@
+.hobbies-page {
+  padding: 3rem 0;
+}
+
+.hobbies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.hobby-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.hobby-card:hover {
+  transform: translateY(-4px);
+}
+
+.hobby-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+}
+
+.hobby-card h3 {
+  margin: 1rem 0 0.5rem;
+}
+
+.hobby-card p {
+  color: #666;
+  margin: 0;
+}

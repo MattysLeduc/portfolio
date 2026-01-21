@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { LanguageProvider } from './context/LanguageContext';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+
+// Pages
+import { HomePage } from './features/home/pages/HomePage';
+import { SkillsPage } from './features/skills/pages/SkillsPage';
+import { ProjectsPage } from './features/projects/pages/ProjectsPage';
+import { ExperiencePage } from './features/experience/pages/ExperiencePage';
+import { EducationPage } from './features/education/pages/EducationPage';
+import { HobbiesPage } from './features/hobbies/pages/HobbiesPage';
+import { TestimonialsPage } from './features/testimonials/pages/TestimonialsPage';
+import { ContactPage } from './features/contact/pages/ContactPage';
+
+// Admin
+import { AdminLayout } from './features/admin/layouts/AdminLayout';
+import { AdminDashboardPage } from './features/admin/pages/AdminDashboardPage';
+import { AdminSkillsPage } from './features/admin/pages/AdminSkillsPage';
+
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <LanguageProvider>
+      <div className="app-shell">
+        <div className="app-aurora app-aurora-1" aria-hidden="true" />
+        <div className="app-aurora app-aurora-2" aria-hidden="true" />
+        <BrowserRouter>
+          <Header />
+          <main className="app-container">
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/skills" element={<SkillsPage />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/experience" element={<ExperiencePage />} />
+              <Route path="/education" element={<EducationPage />} />
+              <Route path="/hobbies" element={<HobbiesPage />} />
+              <Route path="/testimonials" element={<TestimonialsPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+
+              {/* Admin Routes */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminDashboardPage />} />
+                <Route path="skills" element={<AdminSkillsPage />} />
+              </Route>
+            </Routes>
+          </main>
+          <Footer />
+        </BrowserRouter>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </LanguageProvider>
+  );
 }
 
-export default App
+export default App;

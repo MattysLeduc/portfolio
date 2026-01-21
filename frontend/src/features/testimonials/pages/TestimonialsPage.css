@@ -1,0 +1,47 @@
+.testimonials-page {
+  padding: 3rem 0;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.testimonial-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.author-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+.rating {
+  margin-bottom: 1rem;
+}
+
+.content {
+  font-style: italic;
+  margin: 1rem 0;
+  color: #666;
+}
+
+.author {
+  font-weight: 500;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.title {
+  color: #999;
+  font-size: 0.9rem;
+  margin: 0;
+}
