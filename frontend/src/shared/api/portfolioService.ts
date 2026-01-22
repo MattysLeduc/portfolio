@@ -8,13 +8,13 @@ export const portfolioService = {
 
   getExperiences: async () => {
     const response = await apiClient.get('/public/experiences');
-    return response.data.data;
+    return response.data;
   },
 
   // Alias to keep backward compatibility with UI naming.
   getWorkExperiences: async () => {
     const response = await apiClient.get('/public/experiences');
-    return response.data.data;
+    return response.data;
   },
 
 

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { portfolioService } from '../shared/api/portfolioService';
+import type { Experience } from '../features/experience/models/Experience';
 
 const Experience = () => {
-  const [experiences, setExperiences] = useState<any[]>([]);
+  const [experiences, setExperiences] = useState<Experience[]>([]);
   const { language } = useLanguage();
 
   useEffect(() => {
@@ -32,13 +33,13 @@ const Experience = () => {
       <div className="timeline">
         {experiences.map((exp) => (
           <div key={exp.id} className="timeline-item">
-            <h3>{language === 'en' ? exp.positionEn : exp.positionFr}</h3>
-            <h4>{language === 'en' ? exp.companyEn : exp.companyFr}</h4>
+            <h3>{exp.title}</h3>
+            <h4>{exp.company}</h4>
             <p className="date">
               {formatDate(exp.startDate)} - {exp.endDate ? formatDate(exp.endDate) : 'Present'}
             </p>
             <p className="location">{exp.location}</p>
-            <p>{language === 'en' ? exp.descriptionEn : exp.descriptionFr}</p>
+            <p>{exp.description}</p>
           </div>
         ))}
       </div>

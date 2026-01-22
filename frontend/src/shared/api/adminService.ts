@@ -20,19 +20,19 @@ export const projectsAdminService = {
 
 export const workExperienceAdminService = {
   getAllExperiences: async () => {
-    const response = await apiClient.get('/admin/work-experiences');
-    return response.data.data;
+    const response = await apiClient.get('/admin/experiences');
+    return response.data;
   },
   createExperience: async (experience: any) => {
-    const response = await apiClient.post('/admin/work-experiences', experience);
-    return response.data.data;
+    const response = await apiClient.post('/admin/experiences', experience);
+    return response.data;
   },
-  updateExperience: async (id: number, experience: any) => {
-    const response = await apiClient.put(`/admin/work-experiences/${id}`, experience);
-    return response.data.data;
+  updateExperience: async (id: string, experience: any) => {
+    const response = await apiClient.put(`/admin/experiences/${id}`, experience);
+    return response.data;
   },
-  deleteExperience: async (id: number) => {
-    await apiClient.delete(`/admin/work-experiences/${id}`);
+  deleteExperience: async (id: string) => {
+    await apiClient.delete(`/admin/experiences/${id}`);
   },
 };
 
