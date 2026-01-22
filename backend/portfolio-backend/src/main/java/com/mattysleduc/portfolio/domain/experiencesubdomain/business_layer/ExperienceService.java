@@ -1,5 +1,6 @@
 package com.mattysleduc.portfolio.domain.experiencesubdomain.business_layer;
 
+import com.mattysleduc.portfolio.domain.experiencesubdomain.presentation_layer.ExperienceRequestModel;
 import com.mattysleduc.portfolio.domain.experiencesubdomain.presentation_layer.ExperienceResponseModel;
 
 import java.util.List;

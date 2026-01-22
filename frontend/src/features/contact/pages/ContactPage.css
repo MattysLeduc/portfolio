@@ -1,5 +1,11 @@
 .contact-page {
   padding: 3rem 0;
+  color: var(--text);
+}
+
+.contact-page h1,
+.contact-page h2 {
+  color: var(--accent-2);
 }
 
 .contact-grid {
@@ -10,35 +16,39 @@
 }
 
 .contact-info {
-  background: white;
+  background: var(--panel);
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+  color: var(--text);
 }
 
 .contact-info h2 {
   margin-top: 0;
-  color: #667eea;
+  color: var(--accent-2);
 }
 
 .contact-info p {
   margin: 1rem 0;
+  color: var(--text);
 }
 
 .contact-info a {
-  color: #667eea;
+  color: var(--accent-2);
   text-decoration: none;
 }
 
 .contact-info a:hover {
   text-decoration: underline;
+  color: var(--accent-3);
 }
 
 .contact-form-wrapper {
-  background: white;
+  background: var(--panel);
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+  color: var(--text);
 }
 
 .contact-form {

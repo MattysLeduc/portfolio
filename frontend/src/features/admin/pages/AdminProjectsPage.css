@@ -104,32 +104,30 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
-  color: var(--text);
 }
 
 .admin-table thead {
   background: rgba(65, 105, 225, 0.2);
+}
+
+.admin-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--accent-2);
   border-bottom: 2px solid var(--border);
 }
 
-.admin-table th,
 .admin-table td {
   padding: 1rem;
-  text-align: left;
   border-bottom: 1px solid var(--border);
   color: var(--text);
 }
 
-.admin-table th {
-  font-weight: 600;
-  color: var(--accent-2);
-}
-
 .admin-table tbody tr:hover {
-  background: rgba(65, 105, 225, 0.1);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.admin-table td {
-  color: var(--text);
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
 }
-

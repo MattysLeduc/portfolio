@@ -32,7 +32,7 @@ const Experience = () => {
       <h1>Work Experience</h1>
       <div className="timeline">
         {experiences.map((exp) => (
-          <div key={exp.id} className="timeline-item">
+          <div key={exp.experienceId} className="timeline-item">
             <h3>{exp.title}</h3>
             <h4>{exp.company}</h4>
             <p className="date">

@@ -26,13 +26,11 @@ export const SkillsList: React.FC = () => {
   return (
     <div className="skills-grid">
       {skills.map((skill) => (
-        <div key={skill.id} className="skill-card">
-          <h3>{skill.nameEn}</h3>
-          <p className="skill-category">{skill.category}</p>
+        <div key={skill.skillId} className="skill-card">
+          <h3>{skill.name}</h3>
           <div className="skill-proficiency">
-            <div className="proficiency-bar" style={{ width: `${skill.proficiencyLevel}%` }}></div>
           </div>
-          <span className="proficiency-text">{skill.proficiencyLevel}%</span>
+          <span className="proficiency-text">{skill.description}</span>
         </div>
       ))}
     </div>

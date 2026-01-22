@@ -4,6 +4,7 @@ import { sendContactMessage } from '../features/contact/api/sendContactMessage';
 import type { ContactInfoResponseModel } from '../features/contact/models/ContactInfoResponseModel';
 import type { ContactMessageRequestModel } from '../features/contact/models/ContactMessageRequestModel';
 import { useLanguage } from '../context/LanguageContext';
+import './Contact.css';
 
 const Contact = () => {
   const [contactInfo, setContactInfo] = useState<ContactInfoResponseModel | null>(null);

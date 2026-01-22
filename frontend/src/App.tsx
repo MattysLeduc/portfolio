@@ -17,6 +17,11 @@ import { ContactPage } from './features/contact/pages/ContactPage';
 import { AdminLayout } from './features/admin/layouts/AdminLayout';
 import { AdminDashboardPage } from './features/admin/pages/AdminDashboardPage';
 import { AdminSkillsPage } from './features/admin/pages/AdminSkillsPage';
+import { AdminProjectsPage } from './features/admin/pages/AdminProjectsPage';
+import { AdminExperiencePage } from './features/admin/pages/AdminExperiencePage';
+import { AdminEducationPage } from './features/admin/pages/AdminEducationPage';
+import { AdminHobbiesPage } from './features/admin/pages/AdminHobbiesPage';
+import { AdminTestimonialsPage } from './features/admin/pages/AdminTestimonialsPage';
 
 import './App.css';
 
@@ -44,6 +49,11 @@ function App() {
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboardPage />} />
                 <Route path="skills" element={<AdminSkillsPage />} />
+                <Route path="projects" element={<AdminProjectsPage />} />
+                <Route path="experiences" element={<AdminExperiencePage />} />
+                <Route path="education" element={<AdminEducationPage />} />
+                <Route path="hobbies" element={<AdminHobbiesPage />} />
+                <Route path="testimonials" element={<AdminTestimonialsPage />} />
               </Route>
             </Routes>
           </main>

@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
 import { getAllSkills } from '../features/skills/api/getAllSkills';
 import type { SkillResponseModel } from '../features/skills/models/SkillResponseModel';
-import { useLanguage } from '../context/LanguageContext';
 
 const Skills = () => {
   const [skills, setSkills] = useState<SkillResponseModel[]>([]);
-  const { language } = useLanguage();
 
   useEffect(() => {
     loadSkills();
@@ -25,16 +23,9 @@ const Skills = () => {
       <h1>Skills</h1>
       <div className="skills-grid">
         {skills.map((skill) => (
-          <div key={skill.id} className="skill-card">
-            <h3>{language === 'en' ? skill.nameEn : skill.nameFr}</h3>
-            <p className="skill-category">{skill.category}</p>
-            <div className="skill-progress">
-              <div
-                className="skill-progress-bar"
-                style={{ width: `${skill.proficiencyLevel}%` }}
-              />
-            </div>
-            <p>{language === 'en' ? skill.descriptionEn : skill.descriptionFr}</p>
+          <div key={skill.skillId} className="skill-card">
+            <h3>{skill.name}</h3>
+            <p className="skill-category">{skill.description}</p>
           </div>
         ))}
       </div>

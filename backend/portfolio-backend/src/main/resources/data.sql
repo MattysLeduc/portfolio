@@ -11,7 +11,7 @@ INSERT INTO skills (skill_id, name, description) VALUES
 
 -- Contact Info data
 INSERT INTO contact_info (email, phone, address, linkedin, github, website) VALUES
-('contact@mattysleduc.com', '+1 (555) 123-4567', 'Montreal, Quebec, Canada', 'https://linkedin.com/in/mattysleduc', 'https://github.com/mattysleduc', 'https://mattysleduc.com');
+('mattys.leduc@gmail.com', '+1 (514) 506-1001', 'Montreal, Quebec, Canada', 'https://linkedin.com/in/mattys-leduc-405435307', 'https://github.com/mattysleduc', 'https://mattysleduc.com');
 
 -- Projects data
 INSERT INTO projects (project_id, name_en, name_fr, description_en, description_fr, image_url, repo_url, demo_url, featured) VALUES
