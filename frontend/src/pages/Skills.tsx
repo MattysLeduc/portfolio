@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { publicAPI } from '../shared/api/api';
+import { getAllSkills } from '../features/skills/api/getAllSkills';
+import type { SkillResponseModel } from '../features/skills/models/SkillResponseModel';
 import { useLanguage } from '../context/LanguageContext';
 
 const Skills = () => {
-  const [skills, setSkills] = useState<any[]>([]);
+  const [skills, setSkills] = useState<SkillResponseModel[]>([]);
   const { language } = useLanguage();
 
   useEffect(() => {
@@ -12,8 +13,8 @@ const Skills = () => {
 
   const loadSkills = async () => {
     try {
-      const response = await publicAPI.getSkills();
-      setSkills(response.data.data);
+      const data = await getAllSkills();
+      setSkills(data);
     } catch (error) {
       console.error('Failed to load skills', error);
     }

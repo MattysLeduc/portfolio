@@ -5,6 +5,8 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/backend/portfolio-backend" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../../Gradle/gradle-7.6" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/backend/portfolio-backend" />

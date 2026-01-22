@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { portfolioService } from '../../../shared/api/portfolioService';
+import { getAllEducation } from '../api/getAllEducation';
+import type { EducationResponseModel } from '../models/EducationResponseModel';
 
 export const EducationList: React.FC = () => {
-  const [education, setEducation] = useState<any[]>([]);
+  const [education, setEducation] = useState<EducationResponseModel[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchEducation = async () => {
       try {
-        const data = await portfolioService.getEducation();
+        const data = await getAllEducation();
         setEducation(data);
       } catch (error) {
         console.error('Error fetching education:', error);
@@ -25,10 +26,10 @@ export const EducationList: React.FC = () => {
   return (
     <div className="education-list">
       {education.map((edu) => (
-        <div key={edu.id} className="education-card">
-          <h3>{edu.schoolEn}</h3>
-          <p className="degree">{edu.degreeEn} in {edu.fieldEn}</p>
-          <p className="date">{new Date(edu.graduationYear).getFullYear()}</p>
+        <div key={edu.educationId} className="education-card">
+          <h3>{edu.institutionEn}</h3>
+          <p className="degree">{edu.degreeEn}</p>
+          <p className="date">{edu.startDate} - {edu.endDate || 'Present'}</p>
           {edu.descriptionEn && <p className="description">{edu.descriptionEn}</p>}
         </div>
       ))}

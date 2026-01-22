@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react';
-import { skillsAdminService } from '../../../shared/api/adminService';
+import { getAllSkills } from '../../skills/api/getAllSkills';
+import { createSkill } from '../../skills/api/createSkill';
+import { deleteSkill } from '../../skills/api/deleteSkill';
+import type { SkillResponseModel } from '../../skills/models/SkillResponseModel';
+import type { SkillRequestModel } from '../../skills/models/SkillRequestModel';
 import './AdminSkillsPage.css';
 
 export const AdminSkillsPage: React.FC = () => {
-  const [skills, setSkills] = useState<any[]>([]);
+  const [skills, setSkills] = useState<SkillResponseModel[]>([]);
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({ name: '', category: '', proficiency: 50 });
+  const [formData, setFormData] = useState<SkillRequestModel>({
+    name: '',
+    description: '',
+  });
 
   useEffect(() => {
     fetchSkills();
@@ -13,7 +20,7 @@ export const AdminSkillsPage: React.FC = () => {
 
   const fetchSkills = async () => {
     try {
-      const data = await skillsAdminService.getAllSkills();
+      const data = await getAllSkills();
       setSkills(data);
     } catch (error) {
       console.error('Error fetching skills:', error);
@@ -23,8 +30,11 @@ export const AdminSkillsPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await skillsAdminService.createSkill(formData);
-      setFormData({ name: '', category: '', proficiency: 50 });
+      await createSkill(formData);
+      setFormData({
+        name: '',
+        description: '',
+      });
       setShowForm(false);
       fetchSkills();
     } catch (error) {
@@ -32,10 +42,10 @@ export const AdminSkillsPage: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (skillId: string) => {
     if (window.confirm('Are you sure?')) {
       try {
-        await skillsAdminService.deleteSkill(id);
+        await deleteSkill(skillId);
         fetchSkills();
       } catch (error) {
         console.error('Error deleting skill:', error);
@@ -59,18 +69,10 @@ export const AdminSkillsPage: React.FC = () => {
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
           />
-          <input
-            type="text"
-            placeholder="Category"
-            value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-          />
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={formData.proficiency}
-            onChange={(e) => setFormData({ ...formData, proficiency: parseInt(e.target.value) })}
+          <textarea
+            placeholder="Description"
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           />
           <button type="submit" className="btn-primary">Create</button>
         </form>
@@ -80,19 +82,17 @@ export const AdminSkillsPage: React.FC = () => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Category</th>
-            <th>Proficiency</th>
+            <th>Description</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {skills.map((skill) => (
             <tr key={skill.id}>
-              <td>{skill.name}</td>
-              <td>{skill.category}</td>
-              <td>{skill.proficiency}%</td>
+              <td>{skill.nameEn}</td>
+              <td>{skill.descriptionEn}</td>
               <td>
-                <button onClick={() => handleDelete(skill.id)} className="btn-danger">Delete</button>
+                <button onClick={() => handleDelete(String(skill.id))} className="btn-danger">Delete</button>
               </td>
             </tr>
           ))}

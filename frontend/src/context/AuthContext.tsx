@@ -3,7 +3,7 @@ import { authService } from '../shared/api/authService';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: any;
+  user: { username: string; roles?: Array<{ authority: string }> } | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 }
@@ -12,7 +12,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<{ username: string; roles?: Array<{ authority: string }> } | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -24,11 +24,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (username: string, password: string) => {
-    const { token, ...userData } = await authService.login(username, password);
+    const { token, username: returnedUsername, roles } = await authService.login(username, password);
+    const userData = { username: returnedUsername, roles };
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
     setIsAuthenticated(true);
-    setUser(userData as any);
+    setUser(userData);
   };
 
   const logout = () => {

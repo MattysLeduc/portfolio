@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { publicAPI } from '../shared/api/api';
+import { getAllProjects } from '../features/projects/api/getAllProjects';
+import type { ProjectResponseModel } from '../features/projects/models/ProjectResponseModel';
 import { useLanguage } from '../context/LanguageContext';
 
 const Projects = () => {
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<ProjectResponseModel[]>([]);
   const { language } = useLanguage();
 
   useEffect(() => {
@@ -12,8 +13,8 @@ const Projects = () => {
 
   const loadProjects = async () => {
     try {
-      const response = await publicAPI.getProjects();
-      setProjects(response.data.data);
+      const data = await getAllProjects();
+      setProjects(data);
     } catch (error) {
       console.error('Failed to load projects', error);
     }
@@ -24,27 +25,20 @@ const Projects = () => {
       <h1>Projects</h1>
       <div className="projects-grid">
         {projects.map((project) => (
-          <div key={project.id} className="project-card">
+          <div key={project.projectId} className="project-card">
             {project.imageUrl && (
-              <img src={project.imageUrl} alt={language === 'en' ? project.titleEn : project.titleFr} />
+              <img src={project.imageUrl} alt={language === 'en' ? project.nameEn : project.nameFr} />
             )}
-            <h3>{language === 'en' ? project.titleEn : project.titleFr}</h3>
+            <h3>{language === 'en' ? project.nameEn : project.nameFr}</h3>
             <p>{language === 'en' ? project.descriptionEn : project.descriptionFr}</p>
-            {project.technologies && (
-              <div className="technologies">
-                {project.technologies.split(',').map((tech: string, index: number) => (
-                  <span key={index} className="tech-tag">{tech.trim()}</span>
-                ))}
-              </div>
-            )}
             <div className="project-links">
-              {project.projectUrl && (
-                <a href={project.projectUrl} target="_blank" rel="noopener noreferrer">
+              {project.demoUrl && (
+                <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
                   View Project
                 </a>
               )}
-              {project.githubUrl && (
-                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+              {project.repoUrl && (
+                <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
                   GitHub
                 </a>
               )}

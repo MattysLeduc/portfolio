@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import apiClient from '../../../shared/api/axiosInstance';
+import { sendContactMessage } from '../api/sendContactMessage';
+import type { ContactMessageRequestModel } from '../models/ContactMessageRequestModel';
 
 export const ContactForm: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactMessageRequestModel>({
     name: '',
     email: '',
     subject: '',
@@ -20,7 +21,7 @@ export const ContactForm: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await apiClient.post('/public/contact/messages', formData);
+      await sendContactMessage(formData);
       setSuccess(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setSuccess(false), 3000);

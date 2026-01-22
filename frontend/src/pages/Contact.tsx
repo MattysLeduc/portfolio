@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
-import { publicAPI } from '../shared/api/api';
+import { getContactInfo } from '../features/contact/api/getContactInfo';
+import { sendContactMessage } from '../features/contact/api/sendContactMessage';
+import type { ContactInfoResponseModel } from '../features/contact/models/ContactInfoResponseModel';
+import type { ContactMessageRequestModel } from '../features/contact/models/ContactMessageRequestModel';
 import { useLanguage } from '../context/LanguageContext';
 
 const Contact = () => {
-  const [contactInfo, setContactInfo] = useState<any>(null);
-  const [formData, setFormData] = useState({
+  const [contactInfo, setContactInfo] = useState<ContactInfoResponseModel | null>(null);
+  const [formData, setFormData] = useState<ContactMessageRequestModel>({
     name: '',
     email: '',
     subject: '',
@@ -19,8 +22,8 @@ const Contact = () => {
 
   const loadContactInfo = async () => {
     try {
-      const response = await publicAPI.getContactInfo();
-      setContactInfo(response.data.data);
+      const data = await getContactInfo();
+      setContactInfo(data);
     } catch (error) {
       console.error('Failed to load contact info', error);
     }
@@ -29,7 +32,7 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await publicAPI.sendContactMessage(formData);
+      await sendContactMessage(formData);
       setSent(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setSent(false), 3000);
@@ -53,7 +56,7 @@ const Contact = () => {
               <div className="social-links">
                 {contactInfo.linkedin && <a href={contactInfo.linkedin}>LinkedIn</a>}
                 {contactInfo.github && <a href={contactInfo.github}>GitHub</a>}
-                {contactInfo.twitter && <a href={contactInfo.twitter}>Twitter</a>}
+                {contactInfo.website && <a href={contactInfo.website}>Website</a>}
               </div>
             </>
           )}

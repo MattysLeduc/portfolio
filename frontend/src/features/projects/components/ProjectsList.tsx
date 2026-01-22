@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { portfolioService } from '../../../shared/api/portfolioService';
+import { getAllProjects } from '../api/getAllProjects';
+import type { ProjectResponseModel } from '../models/ProjectResponseModel';
 
 export const ProjectsList: React.FC = () => {
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<ProjectResponseModel[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const data = await portfolioService.getProjects();
+        const data = await getAllProjects();
         setProjects(data);
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -25,18 +26,15 @@ export const ProjectsList: React.FC = () => {
   return (
     <div className="projects-grid">
       {projects.map((project) => (
-        <div key={project.id} className="project-card">
-          <img src={project.imageUrl} alt={project.title} className="project-image" />
-          <h3>{project.title}</h3>
-          <p>{project.description}</p>
-          <div className="project-tech">
-            {project.technologies?.split(',').map((tech: string) => (
-              <span key={tech} className="tech-tag">{tech.trim()}</span>
-            ))}
-          </div>
+        <div key={project.projectId} className="project-card">
+          {project.imageUrl && (
+            <img src={project.imageUrl} alt={project.nameEn} className="project-image" />
+          )}
+          <h3>{project.nameEn}</h3>
+          <p>{project.descriptionEn}</p>
           <div className="project-links">
-            {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">Live</a>}
-            {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">GitHub</a>}
+            {project.demoUrl && <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">Live</a>}
+            {project.repoUrl && <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">GitHub</a>}
           </div>
         </div>
       ))}

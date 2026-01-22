@@ -1,15 +1,16 @@
 import { ContactForm } from '../components/ContactForm';
 import { useEffect, useState } from 'react';
-import { portfolioService } from '../../../shared/api/portfolioService';
+import { getContactInfo } from '../api/getContactInfo';
+import type { ContactInfoResponseModel } from '../models/ContactInfoResponseModel';
 import './ContactPage.css';
 
 export const ContactPage: React.FC = () => {
-  const [contactInfo, setContactInfo] = useState<any>(null);
+  const [contactInfo, setContactInfo] = useState<ContactInfoResponseModel | null>(null);
 
   useEffect(() => {
     const fetchContactInfo = async () => {
       try {
-        const data = await portfolioService.getContactInfo();
+        const data = await getContactInfo();
         setContactInfo(data);
       } catch (error) {
         console.error('Error fetching contact info:', error);

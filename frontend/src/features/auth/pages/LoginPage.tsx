@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
-import { authService } from '../../../shared/api/authService';
 import './LoginPage.css';
 
 export const LoginPage: React.FC = () => {
@@ -18,8 +17,7 @@ export const LoginPage: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await authService.login(username, password);
-      login(response.token, response.username);
+      await login(username, password);
       navigate('/admin');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed. Please check your credentials.');

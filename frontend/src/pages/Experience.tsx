@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { publicAPI } from '../shared/api/api';
 import { useLanguage } from '../context/LanguageContext';
+import { portfolioService } from '../shared/api/portfolioService';
 
 const Experience = () => {
   const [experiences, setExperiences] = useState<any[]>([]);
@@ -12,8 +12,8 @@ const Experience = () => {
 
   const loadExperiences = async () => {
     try {
-      const response = await publicAPI.getWorkExperiences();
-      setExperiences(response.data.data);
+      const data = await portfolioService.getWorkExperiences();
+      setExperiences(data);
     } catch (error) {
       console.error('Failed to load experiences', error);
     }

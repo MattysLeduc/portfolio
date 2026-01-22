@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { portfolioService } from '../../../shared/api/portfolioService';
+import { getTestimonials } from '../api/getTestimonials';
+import type { TestimonialResponseModel } from '../models/TestimonialResponseModel';
 
 export const TestimonialsList: React.FC = () => {
-  const [testimonials, setTestimonials] = useState<any[]>([]);
+  const [testimonials, setTestimonials] = useState<TestimonialResponseModel[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const data = await portfolioService.getTestimonials();
+        const data = await getTestimonials();
         setTestimonials(data);
       } catch (error) {
         console.error('Error fetching testimonials:', error);
@@ -25,7 +26,7 @@ export const TestimonialsList: React.FC = () => {
   return (
     <div className="testimonials-grid">
       {testimonials.map((testimonial) => (
-        <div key={testimonial.id} className="testimonial-card">
+        <div key={testimonial.testimonialId} className="testimonial-card">
           {testimonial.authorImage && <img src={testimonial.authorImage} alt={testimonial.authorName} className="author-image" />}
           <div className="rating">{'⭐'.repeat(testimonial.rating)}</div>
           <p className="content">"{testimonial.content}"</p>

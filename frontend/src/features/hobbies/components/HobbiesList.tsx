@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { portfolioService } from '../../../shared/api/portfolioService';
+import { getAllHobbies } from '../api/getAllHobbies';
+import type { HobbyResponseModel } from '../models/HobbyResponseModel';
 
 export const HobbiesList: React.FC = () => {
-  const [hobbies, setHobbies] = useState<any[]>([]);
+  const [hobbies, setHobbies] = useState<HobbyResponseModel[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchHobbies = async () => {
       try {
-        const data = await portfolioService.getHobbies();
+        const data = await getAllHobbies();
         setHobbies(data);
       } catch (error) {
         console.error('Error fetching hobbies:', error);
@@ -25,10 +26,10 @@ export const HobbiesList: React.FC = () => {
   return (
     <div className="hobbies-grid">
       {hobbies.map((hobby) => (
-        <div key={hobby.id} className="hobby-card">
-          {hobby.iconUrl && <img src={hobby.iconUrl} alt={hobby.name} className="hobby-icon" />}
-          <h3>{hobby.name}</h3>
-          <p>{hobby.description}</p>
+        <div key={hobby.hobbyId} className="hobby-card">
+          {hobby.iconUrl && <img src={hobby.iconUrl} alt={hobby.nameEn} className="hobby-icon" />}
+          <h3>{hobby.nameEn}</h3>
+          <p>{hobby.descriptionEn}</p>
         </div>
       ))}
     </div>
