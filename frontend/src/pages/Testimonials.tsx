@@ -1,102 +1,136 @@
-import { useState, useEffect } from 'react';
-import { useLanguage } from '../context/LanguageContext';
-import { getTestimonials } from '../features/testimonials/api/getTestimonials';
-import { submitTestimonial } from '../features/testimonials/api/submitTestimonial';
-import type { TestimonialRequestModel } from '../features/testimonials/models/TestimonialRequestModel';
-import type { TestimonialResponseModel } from '../features/testimonials/models/TestimonialResponseModel';
+import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import Navigation from "@/components/portfolio/Navigation";
+import { Quote, Star } from "lucide-react";
+import { portfolioService } from "@/shared/api/portfolioService";
+
+interface Testimonial {
+  id?: number;
+  name: string;
+  role?: string;
+  position?: string;
+  company?: string;
+  content: string;
+  message?: string;
+  rating: number;
+}
 
 const Testimonials = () => {
-  const [testimonials, setTestimonials] = useState<TestimonialResponseModel[]>([]);
-  const [formData, setFormData] = useState<TestimonialRequestModel>({
-    authorName: '',
-    authorTitle: '',
-    content: '',
-    rating: 5,
-  });
-  const [submitted, setSubmitted] = useState(false);
-  const { t } = useLanguage();
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadTestimonials();
+    const fetchTestimonials = async () => {
+      try {
+        setLoading(true);
+        const data = await portfolioService.getTestimonials();
+        setTestimonials(data);
+      } catch (err) {
+        console.error('Failed to fetch testimonials:', err);
+        setError('Failed to load testimonials. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
   }, []);
 
-  const loadTestimonials = async () => {
-    try {
-      const data = await getTestimonials();
-      setTestimonials(data);
-    } catch (error) {
-      console.error('Failed to load testimonials', error);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await submitTestimonial(formData);
-      setSubmitted(true);
-      setFormData({ authorName: '', authorTitle: '', content: '', rating: 5 });
-      setTimeout(() => setSubmitted(false), 3000);
-    } catch (error) {
-      console.error('Failed to submit testimonial', error);
-    }
-  };
-
-  return (
-    <div className="testimonials-page">
-      <h1>{t('testimonials')}</h1>
-      
-      <div className="testimonials-grid">
-        {testimonials.map((testimonial) => (
-          <div key={testimonial.testimonialId} className="testimonial-card">
-            <p className="testimonial-message">"{testimonial.content}"</p>
-            <div className="testimonial-author">
-              <strong>{testimonial.authorName}</strong>
-              {testimonial.authorTitle && (
-                <p>{testimonial.authorTitle}</p>
-              )}
-              {testimonial.rating !== undefined && <p>Rating: {testimonial.rating}/5</p>}
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <main className="pt-32 pb-20 px-6">
+          <div className="max-w-6xl mx-auto text-center">
+            <div className="animate-pulse">
+              <div className="h-8 w-64 bg-primary/20 rounded mx-auto mb-4"></div>
+              <div className="h-4 w-96 bg-primary/10 rounded mx-auto"></div>
             </div>
           </div>
-        ))}
+        </main>
       </div>
+    );
+  }
 
-      <div className="testimonial-form">
-        <h2>Submit Your Testimonial</h2>
-        {submitted && <div className="success-message">Thank you! Your testimonial is pending review.</div>}
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder={t('name')}
-            value={formData.authorName}
-            onChange={(e) => setFormData({ ...formData, authorName: e.target.value })}
-            required
-          />
-          <input
-            type="text"
-            placeholder={t('position')}
-            value={formData.authorTitle}
-            onChange={(e) => setFormData({ ...formData, authorTitle: e.target.value })}
-          />
-          <textarea
-            placeholder={t('message')}
-            value={formData.content}
-            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-            required
-            rows={5}
-          />
-          <label className="rating-label">
-            Rating
-            <input
-              type="number"
-              min={1}
-              max={5}
-              value={formData.rating}
-              onChange={(e) => setFormData({ ...formData, rating: Number(e.target.value) })}
-            />
-          </label>
-          <button type="submit" className="btn-primary">{t('submit')}</button>
-        </form>
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <main className="pt-32 pb-20 px-6">
+          <div className="max-w-6xl mx-auto text-center">
+            <p className="text-red-500">{error}</p>
+          </div>
+        </main>
       </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      
+      <main className="pt-32 pb-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-16"
+          >
+            <span className="font-mono text-primary text-sm tracking-widest">WHAT OTHERS SAY</span>
+            <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
+              <span className="text-gradient neon-text">Testimonials</span>
+            </h1>
+            <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
+              Feedback from colleagues, clients, and collaborators
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {testimonials.map((testimonial, index) => {
+              const roleText = testimonial.role || (testimonial.position && testimonial.company ? `${testimonial.position} at ${testimonial.company}` : testimonial.position || '');
+              const content = testimonial.content || testimonial.message || '';
+              const rating = testimonial.rating || 5;
+              
+              return (
+                <motion.div
+                  key={testimonial.id || testimonial.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * index }}
+                  className="group glass p-6 rounded-sm hover:neon-border transition-all duration-300 flex flex-col"
+                >
+                  <Quote className="text-primary/30 mb-4" size={32} />
+                  
+                  <p className="text-muted-foreground text-sm leading-relaxed flex-1 mb-6">
+                    "{content}"
+                  </p>
+                  
+                  <div className="flex items-center gap-1 mb-4">
+                    {Array.from({ length: rating }).map((_, i) => (
+                      <Star key={i} className="text-primary fill-primary" size={14} />
+                    ))}
+                  </div>
+                  
+                  <div className="border-t border-primary/20 pt-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full border border-primary/50 flex items-center justify-center">
+                        <span className="font-display text-sm text-primary">
+                          {testimonial.name.split(" ").map((n) => n[0]).join("")}
+                        </span>
+                      </div>
+                      <div>
+                        <h4 className="font-mono text-sm font-bold">{testimonial.name}</h4>
+                        {roleText && <p className="font-mono text-xs text-muted-foreground">{roleText}</p>}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

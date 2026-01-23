@@ -21,5 +21,6 @@ public class Hobby {
     private String nameFr;
     private String descriptionEn;
     private String descriptionFr;
+    private String icon;
     private String iconUrl;
 }

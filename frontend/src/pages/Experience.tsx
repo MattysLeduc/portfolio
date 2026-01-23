@@ -1,48 +1,149 @@
-import { useState, useEffect } from 'react';
-import { useLanguage } from '../context/LanguageContext';
-import { portfolioService } from '../shared/api/portfolioService';
-import type { Experience } from '../features/experience/models/Experience';
+import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import Navigation from "@/components/portfolio/Navigation";
+import { Briefcase, Calendar } from "lucide-react";
+import { portfolioService } from "@/shared/api/portfolioService";
+
+interface Experience {
+  id?: number;
+  title: string;
+  company: string;
+  period?: string;
+  startDate?: string;
+  endDate?: string;
+  description: string;
+  achievements?: string[];
+  responsibilities?: string;
+}
 
 const Experience = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
-  const { language } = useLanguage();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    loadExperiences();
+    const fetchExperiences = async () => {
+      try {
+        setLoading(true);
+        const data = await portfolioService.getExperiences();
+        setExperiences(data);
+      } catch (err) {
+        console.error('Failed to fetch experiences:', err);
+        setError('Failed to load experiences. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExperiences();
   }, []);
 
-  const loadExperiences = async () => {
-    try {
-      const data = await portfolioService.getWorkExperiences();
-      setExperiences(data);
-    } catch (error) {
-      console.error('Failed to load experiences', error);
-    }
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <main className="pt-32 pb-20 px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="animate-pulse">
+              <div className="h-8 w-64 bg-primary/20 rounded mx-auto mb-4"></div>
+              <div className="h-4 w-96 bg-primary/10 rounded mx-auto"></div>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString(language === 'en' ? 'en-US' : 'fr-FR', {
-      year: 'numeric',
-      month: 'long',
-    });
-  };
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <main className="pt-32 pb-20 px-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="text-red-500">{error}</p>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
-    <div className="experience-page">
-      <h1>Work Experience</h1>
-      <div className="timeline">
-        {experiences.map((exp) => (
-          <div key={exp.experienceId} className="timeline-item">
-            <h3>{exp.title}</h3>
-            <h4>{exp.company}</h4>
-            <p className="date">
-              {formatDate(exp.startDate)} - {exp.endDate ? formatDate(exp.endDate) : 'Present'}
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      
+      <main className="pt-32 pb-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-16"
+          >
+            <span className="font-mono text-primary text-sm tracking-widest">MY JOURNEY</span>
+            <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
+              <span className="text-gradient neon-text">Work Experience</span>
+            </h1>
+            <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
+              My professional journey through the tech industry
             </p>
-            <p className="location">{exp.location}</p>
-            <p>{exp.description}</p>
+          </motion.div>
+
+          <div className="relative">
+            {/* Timeline line */}
+            <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-primary/50 to-transparent" />
+            
+            <div className="space-y-12">
+              {experiences.map((exp, index) => {
+                const period = exp.period || `${exp.startDate || ''} - ${exp.endDate || 'Present'}`.trim();
+                const achievementsList = exp.achievements || (exp.responsibilities ? exp.responsibilities.split('\n').filter(Boolean) : []);
+                
+                return (
+                  <motion.div
+                    key={exp.id || exp.company}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 * index }}
+                    className="relative pl-20"
+                  >
+                    {/* Timeline dot */}
+                    <div className="absolute left-6 top-0 w-5 h-5 rounded-full border-2 border-primary bg-background flex items-center justify-center">
+                      <div className="w-2 h-2 rounded-full bg-primary animate-glow-pulse" />
+                    </div>
+                    
+                    <div className="glass p-6 rounded-sm hover:neon-border transition-all duration-300">
+                      <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                        <div>
+                          <h3 className="font-display text-xl font-bold text-primary">{exp.title}</h3>
+                          <div className="flex items-center gap-2 mt-1 text-muted-foreground">
+                            <Briefcase size={14} />
+                            <span className="font-mono text-sm">{exp.company}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                          <Calendar size={14} />
+                          <span className="font-mono text-sm">{period}</span>
+                        </div>
+                      </div>
+                      
+                      <p className="text-muted-foreground mb-4">{exp.description}</p>
+                      
+                      {achievementsList.length > 0 && (
+                        <ul className="space-y-2">
+                          {achievementsList.map((achievement, i) => (
+                            <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                              <span className="text-primary mt-1">▹</span>
+                              <span>{achievement}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
-        ))}
-      </div>
+        </div>
+      </main>
     </div>
   );
 };

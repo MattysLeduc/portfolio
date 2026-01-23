@@ -21,6 +21,7 @@ public class Testimonial {
 
     private String authorName;
     private String authorTitle;
+    private String company;
     private String authorImage;
     @Column(length = 2000)
     private String content;

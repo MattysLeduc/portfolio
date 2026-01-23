@@ -84,7 +84,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/login").permitAll()
                     .requestMatchers("/api/public/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
-                    .requestMatchers("/api/admin/**").permitAll() // Temporary for testing; change to authenticated() in production
+                    .requestMatchers("/api/admin/**").authenticated() // Temporary for testing; change to authenticated() in production
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))

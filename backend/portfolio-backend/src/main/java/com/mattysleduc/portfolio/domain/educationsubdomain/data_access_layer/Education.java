@@ -30,4 +30,7 @@ public class Education {
 
     private LocalDate startDate;
     private LocalDate endDate;
+    
+    private String gpa;
+    private String type;
 }

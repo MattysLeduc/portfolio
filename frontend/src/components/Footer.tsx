@@ -1,17 +1,38 @@
-import './Footer.css';
-
 export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="footer">
-      <div className="container">
-        <div className="footer-content">
-          <p>&copy; {currentYear} My Portfolio. All rights reserved.</p>
-          <div className="social-links">
-            <a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="#" target="_blank" rel="noopener noreferrer">Twitter</a>
+    <footer className="w-full border-t border-cyan-500/20 bg-background/50 backdrop-blur supports-[backdrop-filter]:bg-background/40">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-cyan-300">
+            &copy; {currentYear} John Doe Portfolio. All rights reserved.
+          </p>
+          <div className="flex gap-6">
+            <a 
+              href="https://github.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-sm text-cyan-300 hover:text-cyan-400 transition-colors"
+            >
+              GitHub
+            </a>
+            <a 
+              href="https://linkedin.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-sm text-cyan-300 hover:text-cyan-400 transition-colors"
+            >
+              LinkedIn
+            </a>
+            <a 
+              href="https://twitter.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-sm text-cyan-300 hover:text-cyan-400 transition-colors"
+            >
+              Twitter
+            </a>
           </div>
         </div>
       </div>

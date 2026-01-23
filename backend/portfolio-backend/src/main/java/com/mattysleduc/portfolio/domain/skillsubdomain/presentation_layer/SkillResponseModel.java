@@ -13,4 +13,6 @@ public class SkillResponseModel {
     private String skillId;
     private String name;
     private String description;
+    private String category;
+    private Integer level;
 }

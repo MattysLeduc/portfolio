@@ -31,6 +31,9 @@ public class Experience {
 
     @Column(length = 2000)
     private String description;
+    
+    @Column(length = 3000)
+    private String responsibilities;
 
     @PrePersist
     public void ensureIdentifier() {

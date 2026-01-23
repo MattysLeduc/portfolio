@@ -5,12 +5,15 @@ import { deleteSkill } from '../../skills/api/deleteSkill';
 import { updateSkill } from '../../skills/api/updateSkill';
 import type { SkillResponseModel } from '../../skills/models/SkillResponseModel';
 import type { SkillRequestModel } from '../../skills/models/SkillRequestModel';
+import '../styles/admin-common.css';
 import './AdminSkillsPage.css';
 
 export const AdminSkillsPage: React.FC = () => {
   const [skills, setSkills] = useState<SkillResponseModel[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [formData, setFormData] = useState<SkillRequestModel>({
     name: '',
     description: '',
@@ -22,11 +25,20 @@ export const AdminSkillsPage: React.FC = () => {
 
   const fetchSkills = async () => {
     try {
+      setLoading(true);
       const data = await getAllSkills();
       setSkills(data);
     } catch (error) {
       console.error('Error fetching skills:', error);
+      showMessage('error', 'Failed to load skills');
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const showMessage = (type: 'success' | 'error', text: string) => {
+    setMessage({ type, text });
+    setTimeout(() => setMessage(null), 3000);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,13 +46,16 @@ export const AdminSkillsPage: React.FC = () => {
     try {
       if (editingId) {
         await updateSkill(editingId, formData);
+        showMessage('success', 'Skill updated successfully');
       } else {
         await createSkill(formData);
+        showMessage('success', 'Skill created successfully');
       }
       resetForm();
       fetchSkills();
     } catch (error) {
       console.error('Error saving skill:', error);
+      showMessage('error', 'Failed to save skill');
     }
   };
 
@@ -51,6 +66,7 @@ export const AdminSkillsPage: React.FC = () => {
       description: skill.description,
     });
     setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const resetForm = () => {
@@ -63,62 +79,109 @@ export const AdminSkillsPage: React.FC = () => {
   };
 
   const handleDelete = async (skillId: string) => {
-    if (window.confirm('Are you sure?')) {
+    if (window.confirm('Are you sure you want to delete this skill?')) {
       try {
         await deleteSkill(skillId);
+        showMessage('success', 'Skill deleted successfully');
         fetchSkills();
       } catch (error) {
         console.error('Error deleting skill:', error);
+        showMessage('error', 'Failed to delete skill');
       }
     }
   };
 
   return (
     <div className="admin-page">
-      <h1>Manage Skills</h1>
-      <button onClick={() => setShowForm(!showForm)} className="btn-primary">
-        {showForm ? 'Cancel' : 'Add Skill'}
-      </button>
+      <div className="admin-page-header">
+        <h1>Manage Skills</h1>
+        <button onClick={() => setShowForm(!showForm)} className="btn btn-primary">
+          {showForm ? '✕ Cancel' : '+ Add Skill'}
+        </button>
+      </div>
+
+      {message && (
+        <div className={`alert alert-${message.type}`}>
+          {message.type === 'success' ? '✓' : '✕'} {message.text}
+        </div>
+      )}
 
       {showForm && (
         <form onSubmit={handleSubmit} className="admin-form">
-          <input
-            type="text"
-            placeholder="Skill Name"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            required
-          />
-          <textarea
-            placeholder="Description"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          />
-          <button type="submit" className="btn-primary">{editingId ? 'Update' : 'Create'}</button>
+          <div className="form-group">
+            <label htmlFor="name">Skill Name *</label>
+            <input
+              id="name"
+              type="text"
+              placeholder="e.g., React, TypeScript, Node.js"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="description">Description *</label>
+            <textarea
+              id="description"
+              placeholder="Brief description of the skill and your proficiency level"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="form-actions">
+            <button type="submit" className="btn btn-primary">
+              {editingId ? 'Update Skill' : 'Create Skill'}
+            </button>
+            <button type="button" onClick={resetForm} className="btn btn-secondary">
+              Cancel
+            </button>
+          </div>
         </form>
       )}
 
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {skills.map((skill) => (
-            <tr key={skill.skillId}>
-              <td>{skill.name}</td>
-              <td>{skill.description}</td>
-              <td>
-                <button onClick={() => handleEdit(skill)} className="btn-secondary">Edit</button>
-                <button onClick={() => handleDelete(skill.skillId)} className="btn-danger">Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {loading ? (
+        <div className="loading-spinner">
+          <div className="spinner"></div>
+          <p>Loading skills...</p>
+        </div>
+      ) : skills.length === 0 ? (
+        <div className="empty-state">
+          <p>No skills found. Add your first skill to get started!</p>
+        </div>
+      ) : (
+        <div className="admin-table-container">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Skill Name</th>
+                <th>Description</th>
+                <th style={{ width: '180px' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {skills.map((skill) => (
+                <tr key={skill.skillId}>
+                  <td><strong>{skill.name}</strong></td>
+                  <td>{skill.description}</td>
+                  <td>
+                    <div className="actions">
+                      <button onClick={() => handleEdit(skill)} className="btn btn-secondary">
+                        Edit
+                      </button>
+                      <button onClick={() => handleDelete(skill.skillId)} className="btn btn-danger">
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

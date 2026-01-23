@@ -1,7 +1,15 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 import './AdminLayout.css';
 
 export const AdminLayout: React.FC = () => {
+  const navigate = useNavigate();
+  const { logout, user } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
   return (
     <div className="admin-layout">
       <aside className="admin-sidebar">
@@ -20,6 +28,17 @@ export const AdminLayout: React.FC = () => {
       </aside>
 
       <main className="admin-content">
+        <div className="admin-topbar">
+          <div className="topbar-left">
+            <span className="topbar-title">Admin</span>
+          </div>
+          <div className="topbar-right">
+            {user?.username && (
+              <span className="topbar-user">{user.username}</span>
+            )}
+            <button className="btn-secondary" onClick={handleLogout}>Logout</button>
+          </div>
+        </div>
         <Outlet />
       </main>
     </div>

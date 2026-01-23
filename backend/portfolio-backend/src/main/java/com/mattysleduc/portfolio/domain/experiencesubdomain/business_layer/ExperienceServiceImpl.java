@@ -65,6 +65,24 @@ public class ExperienceServiceImpl implements ExperienceService {
         if (entity.getExperienceIdentifier() == null) {
             entity.setExperienceIdentifier(ExperienceIdentifier.create());
         }
+        
+        // Format period
+        String period = "";
+        if (entity.getStartDate() != null) {
+            period = entity.getStartDate().getYear() + " - ";
+            if (entity.isCurrent()) {
+                period += "Present";
+            } else if (entity.getEndDate() != null) {
+                period += entity.getEndDate().getYear();
+            }
+        }
+        
+        // Parse achievements from responsibilities
+        java.util.List<String> achievements = null;
+        if (entity.getResponsibilities() != null && !entity.getResponsibilities().isEmpty()) {
+            achievements = java.util.Arrays.asList(entity.getResponsibilities().split("\\n"));
+        }
+        
         return ExperienceResponseModel.builder()
                 .experienceId(entity.getExperienceIdentifier().getExperienceId())
                 .title(entity.getTitle())
@@ -73,7 +91,10 @@ public class ExperienceServiceImpl implements ExperienceService {
                 .startDate(entity.getStartDate())
                 .endDate(entity.getEndDate())
                 .current(entity.isCurrent())
+                .period(period)
                 .description(entity.getDescription())
+                .achievements(achievements)
+                .responsibilities(entity.getResponsibilities())
                 .build();
     }
 

@@ -1,5 +1,5 @@
 # Build stage
-FROM gradle:8.5-jdk17 AS build
+FROM gradle:8.14-jdk17 AS build
 WORKDIR /app
 
 # Copy gradle files
@@ -26,9 +26,9 @@ COPY --from=build /app/build/libs/*.jar app.jar
 # Expose port
 EXPOSE 8080
 
-# Health check
+# Health check (use a public endpoint since Actuator isn't configured)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/api/public/experiences || exit 1
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

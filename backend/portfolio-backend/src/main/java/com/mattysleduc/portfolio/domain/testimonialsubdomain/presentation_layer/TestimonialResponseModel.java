@@ -13,10 +13,15 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 public class TestimonialResponseModel {
     private String testimonialId;
+    private String name;
     private String authorName;
+    private String role;
     private String authorTitle;
+    private String position;
+    private String company;
     private String authorImage;
     private String content;
+    private String message;
     private Integer rating;
     private OffsetDateTime createdAt;
     private String status;

@@ -11,8 +11,11 @@ public interface HobbyResponseMapper {
     @Mapping(source = "hobby.hobbyIdentifier.hobbyId", target = "hobbyId")
     @Mapping(source = "hobby.nameEn", target = "nameEn")
     @Mapping(source = "hobby.nameFr", target = "nameFr")
+    @Mapping(source = "hobby.nameEn", target = "name")
     @Mapping(source = "hobby.descriptionEn", target = "descriptionEn")
     @Mapping(source = "hobby.descriptionFr", target = "descriptionFr")
+    @Mapping(source = "hobby.descriptionEn", target = "description")
+    @Mapping(source = "hobby.icon", target = "icon")
     @Mapping(source = "hobby.iconUrl", target = "iconUrl")
     HobbyResponseModel toResponseModel(Hobby hobby);
 }

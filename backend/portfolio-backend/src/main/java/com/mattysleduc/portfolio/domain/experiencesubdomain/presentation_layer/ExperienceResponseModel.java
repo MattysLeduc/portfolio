@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Value
 @Builder
@@ -15,5 +16,8 @@ public class ExperienceResponseModel {
     LocalDate startDate;
     LocalDate endDate;
     boolean current;
+    String period;
     String description;
+    List<String> achievements;
+    String responsibilities;
 }

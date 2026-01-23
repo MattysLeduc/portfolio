@@ -11,9 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HobbyResponseModel {
     private String hobbyId;
+    private String name;
     private String nameEn;
     private String nameFr;
+    private String description;
     private String descriptionEn;
     private String descriptionFr;
+    private String icon;
     private String iconUrl;
 }
