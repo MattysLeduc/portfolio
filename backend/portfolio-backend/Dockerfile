@@ -21,7 +21,7 @@ RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 
 # Copy the built jar from build stage
-COPY --from=build /app/build/libs/*.jar app.jar
+COPY --from=build /app/build/libs/*-SNAPSHOT.jar /app/app.jar
 
 # Expose port
 EXPOSE 8080
