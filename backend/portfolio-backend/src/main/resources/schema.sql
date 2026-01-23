@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS contact_info (
 -- Create contact_messages table
 CREATE TABLE IF NOT EXISTS contact_messages (
     id SERIAL PRIMARY KEY,
-    contact_message_id VARCHAR(36) NOT NULL UNIQUE,
+    message_id VARCHAR(36) NOT NULL UNIQUE,
     name VARCHAR(200) NOT NULL,
     email VARCHAR(200) NOT NULL,
     subject VARCHAR(500) NOT NULL,

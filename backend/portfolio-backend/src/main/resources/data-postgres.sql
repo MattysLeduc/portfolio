@@ -44,10 +44,10 @@ INSERT INTO education (education_id, degree_en, degree_fr, institution_en, insti
 ON CONFLICT (education_id) DO NOTHING;
 
 -- Contact Messages data
-INSERT INTO contact_messages (contact_message_id, name, email, subject, message, read) VALUES
+INSERT INTO contact_messages (message_id, name, email, subject, message, read) VALUES
 ('c1111111-1111-1111-1111-111111111111', 'John Doe', 'john@example.com', 'Project Inquiry', 'I am interested in discussing potential collaboration opportunities.', FALSE),
 ('c2222222-2222-2222-2222-222222222222', 'Jane Smith', 'jane@example.com', 'Technical Question', 'Can you provide more details about your backend architecture?', FALSE)
-ON CONFLICT (contact_message_id) DO NOTHING;
+ON CONFLICT (message_id) DO NOTHING;
 
 -- Testimonials data
 INSERT INTO testimonials (testimonial_id, author_name, author_title, company, author_image, content, rating, status) VALUES
