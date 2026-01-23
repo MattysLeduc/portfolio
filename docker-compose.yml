@@ -1,28 +1,9 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  # PostgreSQL Database
-  postgres:
-    image: postgres:15-alpine
-    container_name: portfolio-postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: portfolio
-      POSTGRES_USER: portfolio_user
-      POSTGRES_PASSWORD: portfolio_password
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - portfolio-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U portfolio_user -d portfolio"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
+  # =========================
   # Backend (Spring Boot)
+  # =========================
   backend:
     build:
       context: ./backend/portfolio-backend
@@ -30,24 +11,27 @@ services:
     container_name: portfolio-backend
     restart: unless-stopped
     environment:
-      SPRING_PROFILES_ACTIVE: docker
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/portfolio
-      SPRING_DATASOURCE_USERNAME: portfolio_user
-      SPRING_DATASOURCE_PASSWORD: portfolio_password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_FLYWAY_ENABLED: false
-      SPRING_SQL_INIT_MODE: always
-      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-this-in-production-min-256-bits}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-docker}
+
+      # Database (DO or local)
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO:-validate}
+      SPRING_FLYWAY_ENABLED: ${SPRING_FLYWAY_ENABLED:-true}
+      SPRING_SQL_INIT_MODE: ${SPRING_SQL_INIT_MODE:-never}
+
+      JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+
       APP_RESUME_UPLOAD_DIR: /app/uploads/resumes
-      CORS_ALLOWED_ORIGINS: http://localhost:3000,http://localhost:80,http://frontend:80,http://frontend:3000
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+
     ports:
       - "8080:8080"
     volumes:
       - backend_uploads:/app/uploads
-    depends_on:
-      postgres:
-        condition: service_healthy
     networks:
       - portfolio-network
     healthcheck:
@@ -57,7 +41,9 @@ services:
       retries: 3
       start_period: 60s
 
+  # =========================
   # Frontend (React + Nginx)
+  # =========================
   frontend:
     build:
       context: ./frontend
@@ -65,7 +51,7 @@ services:
     container_name: portfolio-frontend
     restart: unless-stopped
     environment:
-      VITE_API_URL: /api
+      VITE_API_URL: ${VITE_API_URL:-/api}
     ports:
       - "3000:80"
     depends_on:
@@ -74,33 +60,14 @@ services:
     networks:
       - portfolio-network
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 10s
-
-  # pgAdmin for database management
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: portfolio-pgadmin
-    restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
-    ports:
-      - "5050:80"
-    depends_on:
-      - postgres
-    networks:
-      - portfolio-network
 
 networks:
   portfolio-network:
     driver: bridge
 
 volumes:
-  postgres_data:
-    driver: local
   backend_uploads:
-    driver: local
