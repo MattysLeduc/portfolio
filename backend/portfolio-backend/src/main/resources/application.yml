@@ -35,4 +35,37 @@ spring:
       platform: h2
       mode: always
       schema-locations: classpath:schema.sql
-      data-locations: classpath:data.sql
+      data-locations: classpath:data-h2.sql
+
+---
+## ===============================
+## POSTGRES PROFILE (deployment)
+## ===============================
+spring:
+  config:
+    activate:
+      on-profile: postgres
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    enabled: true
+
+  sql:
+    init:
+      platform: postgres
+      mode: always
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data-postgres.sql
+
