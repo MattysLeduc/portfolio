@@ -5,10 +5,10 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background grid pattern */}
       <div className="absolute inset-0 grid-pattern opacity-50" />
-      
+
       {/* Scanline overlay */}
       <div className="absolute inset-0 scanline pointer-events-none" />
-      
+
       {/* Animated circles */}
       <motion.div
         className="absolute w-[600px] h-[600px] rounded-full border border-primary/20"
@@ -28,7 +28,7 @@ const HeroSection = () => {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.9, ease: "easeOut", delay: 0.4 }}
       />
-      
+
       {/* Content */}
       <div className="relative z-10 text-center px-6">
         <motion.div
@@ -40,7 +40,7 @@ const HeroSection = () => {
             Welcome to my portfolio
           </span>
         </motion.div>
-        
+
         <motion.h1
           className="mt-6 text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight"
           initial={{ opacity: 0, y: 30 }}
@@ -49,16 +49,16 @@ const HeroSection = () => {
         >
           <span className="text-gradient neon-text">MATTYS LEDUC</span>
         </motion.h1>
-        
+
         <motion.p
           className="mt-6 text-xl md:text-2xl text-muted-foreground font-light max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
         >
-          Full-Stack Developer & Digital Architect
+          Student & Junior Full-Stack Developer
         </motion.p>
-        
+
         <motion.div
           className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
           initial={{ opacity: 0, y: 20 }}
@@ -66,7 +66,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 1.2 }}
         >
           <a
-            href="#projects"
+            href="/projects"
             className="group relative px-8 py-4 font-mono text-sm uppercase tracking-wider overflow-hidden"
           >
             <span className="absolute inset-0 border border-primary neon-border transition-all duration-300 group-hover:neon-border-strong" />
@@ -75,9 +75,9 @@ const HeroSection = () => {
             </span>
             <span className="absolute inset-0 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
           </a>
-          
+
           <a
-            href="#contact"
+            href="/contact"
             className="group relative px-8 py-4 font-mono text-sm uppercase tracking-wider"
           >
             <span className="absolute inset-0 glass rounded-sm border-primary/20" />

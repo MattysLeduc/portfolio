@@ -6,32 +6,24 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-cyan-300">
-            &copy; {currentYear} John Doe Portfolio. All rights reserved.
+            &copy; {currentYear} Mattys Leduc Portfolio. All rights reserved.
           </p>
           <div className="flex gap-6">
-            <a 
-              href="https://github.com" 
-              target="_blank" 
+            <a
+              href="https://github.com"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-cyan-300 hover:text-cyan-400 transition-colors"
             >
               GitHub
             </a>
-            <a 
-              href="https://linkedin.com" 
-              target="_blank" 
+            <a
+              href="https://linkedin.com"
+              target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-cyan-300 hover:text-cyan-400 transition-colors"
             >
               LinkedIn
-            </a>
-            <a 
-              href="https://twitter.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-sm text-cyan-300 hover:text-cyan-400 transition-colors"
-            >
-              Twitter
             </a>
           </div>
         </div>
