@@ -1,7 +1,17 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Navigation from "@/components/portfolio/Navigation";
-import { Camera, Mountain, Gamepad2, BookOpen, Music, Coffee, Heart, Code, Palette } from "lucide-react";
+import {
+  Camera,
+  Mountain,
+  Gamepad2,
+  BookOpen,
+  Music,
+  Coffee,
+  Heart,
+  Code,
+  Palette,
+} from "lucide-react";
 import { portfolioService } from "@/shared/api/portfolioService";
 
 interface Hobby {
@@ -12,7 +22,15 @@ interface Hobby {
 }
 
 const iconMap: Record<string, any> = {
-  Camera, Mountain, Gamepad2, BookOpen, Music, Coffee, Heart, Code, Palette
+  Camera,
+  Mountain,
+  Gamepad2,
+  BookOpen,
+  Music,
+  Coffee,
+  Heart,
+  Code,
+  Palette,
 };
 
 const colorGradients = [
@@ -39,8 +57,8 @@ const Hobbies = () => {
         const data = await portfolioService.getHobbies();
         setHobbies(data);
       } catch (err) {
-        console.error('Failed to fetch hobbies:', err);
-        setError('Failed to load hobbies. Please try again later.');
+        console.error("Failed to fetch hobbies:", err);
+        setError("Failed to load hobbies. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -81,7 +99,7 @@ const Hobbies = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <main className="pt-32 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -89,9 +107,13 @@ const Hobbies = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <span className="font-mono text-primary text-sm tracking-widest">BEYOND CODE</span>
+            <span className="font-mono text-primary text-sm tracking-widest">
+              BEYOND CODE
+            </span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
-              <span className="text-gradient neon-text">Hobbies & Interests</span>
+              <span className="text-gradient neon-text">
+                Hobbies & Interests
+              </span>
             </h1>
             <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
               What I do when I'm not behind a keyboard
@@ -100,9 +122,11 @@ const Hobbies = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {hobbies.map((hobby, index) => {
-              const IconComponent = hobby.icon && iconMap[hobby.icon] ? iconMap[hobby.icon] : Heart;
-              const colorGradient = colorGradients[index % colorGradients.length];
-              
+              const IconComponent =
+                hobby.icon && iconMap[hobby.icon] ? iconMap[hobby.icon] : Heart;
+              const colorGradient =
+                colorGradients[index % colorGradients.length];
+
               return (
                 <motion.div
                   key={hobby.id || hobby.name}
@@ -111,12 +135,14 @@ const Hobbies = () => {
                   transition={{ delay: 0.1 * index }}
                   className="group glass p-8 rounded-sm hover:neon-border transition-all duration-300"
                 >
-                  <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${colorGradient} p-0.5 mb-6 group-hover:animate-glow-pulse`}>
+                  <div
+                    className={`w-16 h-16 rounded-full bg-gradient-to-br ${colorGradient} p-0.5 mb-6 group-hover:animate-glow-pulse`}
+                  >
                     <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
                       <IconComponent className="text-primary" size={28} />
                     </div>
                   </div>
-                  
+
                   <h3 className="font-display text-xl font-bold mb-3 group-hover:text-primary transition-colors">
                     {hobby.name}
                   </h3>
@@ -140,16 +166,28 @@ const Hobbies = () => {
             </h3>
             <div className="grid md:grid-cols-3 gap-8 text-center">
               <div>
-                <div className="font-display text-4xl font-bold text-gradient neon-text mb-2">50+</div>
-                <p className="font-mono text-sm text-muted-foreground">Books read this year</p>
+                <div className="font-display text-4xl font-bold text-gradient neon-text mb-2">
+                  2000KM+
+                </div>
+                <p className="font-mono text-sm text-muted-foreground">
+                  Travel on Bike this year
+                </p>
               </div>
               <div>
-                <div className="font-display text-4xl font-bold text-gradient neon-text mb-2">V5</div>
-                <p className="font-mono text-sm text-muted-foreground">Highest boulder grade</p>
+                <div className="font-display text-4xl font-bold text-gradient neon-text mb-2">
+                  400m
+                </div>
+                <p className="font-mono text-sm text-muted-foreground">
+                  Favourite Swimming Distance
+                </p>
               </div>
               <div>
-                <div className="font-display text-4xl font-bold text-gradient neon-text mb-2">200+</div>
-                <p className="font-mono text-sm text-muted-foreground">Coffee shops visited</p>
+                <div className="font-display text-4xl font-bold text-gradient neon-text mb-2">
+                  Argentina
+                </div>
+                <p className="font-mono text-sm text-muted-foreground">
+                  Was my last trip
+                </p>
               </div>
             </div>
           </motion.div>
