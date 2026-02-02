@@ -25,6 +25,8 @@ import { AdminExperiencePage } from "@/features/admin/pages/AdminExperiencePage"
 import { AdminEducationPage } from "@/features/admin/pages/AdminEducationPage";
 import { AdminHobbiesPage } from "@/features/admin/pages/AdminHobbiesPage";
 import { AdminTestimonialsPage } from "@/features/admin/pages/AdminTestimonialsPage";
+import { AdminMessagesPage } from "@/features/admin/pages/AdminMessagesPage";
+import { AdminContactPage } from "@/features/admin/pages/AdminContactPage";
 
 const queryClient = new QueryClient();
 
@@ -61,11 +63,22 @@ const App = () => (
                     <Route index element={<AdminDashboardPage />} />
                     <Route path="skills" element={<AdminSkillsPage />} />
                     <Route path="projects" element={<AdminProjectsPage />} />
-                    <Route path="experience" element={<AdminExperiencePage />} />
-                    <Route path="experiences" element={<AdminExperiencePage />} />
+                    <Route
+                      path="experience"
+                      element={<AdminExperiencePage />}
+                    />
+                    <Route
+                      path="experiences"
+                      element={<AdminExperiencePage />}
+                    />
                     <Route path="education" element={<AdminEducationPage />} />
                     <Route path="hobbies" element={<AdminHobbiesPage />} />
-                    <Route path="testimonials" element={<AdminTestimonialsPage />} />
+                    <Route
+                      path="testimonials"
+                      element={<AdminTestimonialsPage />}
+                    />
+                    <Route path="messages" element={<AdminMessagesPage />} />
+                    <Route path="contact" element={<AdminContactPage />} />
                   </Route>
                   <Route path="*" element={<NotFound />} />
                 </Routes>

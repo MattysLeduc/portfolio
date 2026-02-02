@@ -8,6 +8,7 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    subject: "",
     message: "",
   });
   const [submitting, setSubmitting] = useState(false);
@@ -22,7 +23,7 @@ const Contact = () => {
       setError(null);
       await portfolioService.submitContact(formData);
       setSuccess(true);
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", subject: "", message: "" });
 
       // Reset success message after 5 seconds
       setTimeout(() => setSuccess(false), 5000);
@@ -112,6 +113,22 @@ const Contact = () => {
                     }
                     className="w-full bg-secondary/30 border border-primary/20 rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all"
                     placeholder="your@email.com"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="font-mono text-sm text-muted-foreground block mb-2">
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.subject}
+                    onChange={(e) =>
+                      setFormData({ ...formData, subject: e.target.value })
+                    }
+                    className="w-full bg-secondary/30 border border-primary/20 rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all"
+                    placeholder="What is this about?"
                     required
                   />
                 </div>

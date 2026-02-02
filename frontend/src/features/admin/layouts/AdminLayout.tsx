@@ -1,6 +1,6 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
-import './AdminLayout.css';
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import "./AdminLayout.css";
 
 export const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ export const AdminLayout: React.FC = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
   };
   return (
     <div className="admin-layout">
@@ -22,6 +22,7 @@ export const AdminLayout: React.FC = () => {
           <Link to="/admin/education">Education</Link>
           <Link to="/admin/hobbies">Hobbies</Link>
           <Link to="/admin/testimonials">Testimonials</Link>
+          <Link to="/admin/messages">Messages</Link>
           <Link to="/admin/contact">Contact</Link>
           <Link to="/admin/resume">Resume</Link>
         </nav>
@@ -36,7 +37,9 @@ export const AdminLayout: React.FC = () => {
             {user?.username && (
               <span className="topbar-user">{user.username}</span>
             )}
-            <button className="btn-secondary" onClick={handleLogout}>Logout</button>
+            <button className="btn-secondary" onClick={handleLogout}>
+              Logout
+            </button>
           </div>
         </div>
         <Outlet />

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Navigation from "@/components/portfolio/Navigation";
 import { Quote, Star } from "lucide-react";
+import { SubmitTestimonialForm } from "@/features/testimonials/components/SubmitTestimonialForm";
 import { portfolioService } from "@/shared/api/portfolioService";
 
 interface Testimonial {
@@ -27,8 +28,8 @@ const Testimonials = () => {
         const data = await portfolioService.getTestimonials();
         setTestimonials(data);
       } catch (err) {
-        console.error('Failed to fetch testimonials:', err);
-        setError('Failed to load testimonials. Please try again later.');
+        console.error("Failed to fetch testimonials:", err);
+        setError("Failed to load testimonials. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -69,7 +70,7 @@ const Testimonials = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <main className="pt-32 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -77,7 +78,9 @@ const Testimonials = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <span className="font-mono text-primary text-sm tracking-widest">WHAT OTHERS SAY</span>
+            <span className="font-mono text-primary text-sm tracking-widest">
+              WHAT OTHERS SAY
+            </span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
               <span className="text-gradient neon-text">Testimonials</span>
             </h1>
@@ -88,10 +91,14 @@ const Testimonials = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {testimonials.map((testimonial, index) => {
-              const roleText = testimonial.role || (testimonial.position && testimonial.company ? `${testimonial.position} at ${testimonial.company}` : testimonial.position || '');
-              const content = testimonial.content || testimonial.message || '';
+              const roleText =
+                testimonial.role ||
+                (testimonial.position && testimonial.company
+                  ? `${testimonial.position} at ${testimonial.company}`
+                  : testimonial.position || "");
+              const content = testimonial.content || testimonial.message || "";
               const rating = testimonial.rating || 5;
-              
+
               return (
                 <motion.div
                   key={testimonial.id || testimonial.name}
@@ -101,33 +108,71 @@ const Testimonials = () => {
                   className="group glass p-6 rounded-sm hover:neon-border transition-all duration-300 flex flex-col"
                 >
                   <Quote className="text-primary/30 mb-4" size={32} />
-                  
+
                   <p className="text-muted-foreground text-sm leading-relaxed flex-1 mb-6">
                     "{content}"
                   </p>
-                  
+
                   <div className="flex items-center gap-1 mb-4">
                     {Array.from({ length: rating }).map((_, i) => (
-                      <Star key={i} className="text-primary fill-primary" size={14} />
+                      <Star
+                        key={i}
+                        className="text-primary fill-primary"
+                        size={14}
+                      />
                     ))}
                   </div>
-                  
+
                   <div className="border-t border-primary/20 pt-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full border border-primary/50 flex items-center justify-center">
                         <span className="font-display text-sm text-primary">
-                          {testimonial.name.split(" ").map((n) => n[0]).join("")}
+                          {testimonial.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
                         </span>
                       </div>
                       <div>
-                        <h4 className="font-mono text-sm font-bold">{testimonial.name}</h4>
-                        {roleText && <p className="font-mono text-xs text-muted-foreground">{roleText}</p>}
+                        <h4 className="font-mono text-sm font-bold">
+                          {testimonial.name}
+                        </h4>
+                        {roleText && (
+                          <p className="font-mono text-xs text-muted-foreground">
+                            {roleText}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
                 </motion.div>
               );
             })}
+          </div>
+
+          <div className="mt-16 pt-16 border-t border-primary/20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-10"
+            >
+              <span className="font-mono text-primary text-sm tracking-widest">
+                SHARE YOUR EXPERIENCE
+              </span>
+              <h2 className="mt-4 font-display text-3xl md:text-4xl font-bold">
+                <span className="text-gradient neon-text">
+                  Leave a Testimonial
+                </span>
+              </h2>
+              <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+                Have worked with me? I’d love to hear about your experience!
+              </p>
+            </motion.div>
+            <SubmitTestimonialForm
+              onSuccess={() => {
+                /* optional refresh */
+              }}
+            />
           </div>
         </div>
       </main>

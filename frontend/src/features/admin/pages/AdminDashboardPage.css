@@ -11,7 +11,7 @@
 
 .dashboard-header h1 {
   font-size: 2.5rem;
-  background: linear-gradient(135deg, #5AB1FF 0%, #00D9FF 100%);
+  background: linear-gradient(135deg, #5ab1ff 0%, #00d9ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -19,7 +19,7 @@
 }
 
 .dashboard-header p {
-  color: #9AA4B2;
+  color: #9aa4b2;
   font-size: 1.1rem;
 }
 
@@ -36,13 +36,15 @@
   width: 40px;
   height: 40px;
   border: 4px solid rgba(90, 177, 255, 0.1);
-  border-top-color: #5AB1FF;
+  border-top-color: #5ab1ff;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .dashboard-grid {
@@ -53,7 +55,11 @@
 }
 
 .dashboard-card {
-  background: linear-gradient(145deg, rgba(30, 34, 48, 0.9), rgba(20, 24, 38, 0.95));
+  background: linear-gradient(
+    145deg,
+    rgba(30, 34, 48, 0.9),
+    rgba(20, 24, 38, 0.95)
+  );
   border: 1px solid rgba(90, 177, 255, 0.2);
   border-radius: 16px;
   padding: 2rem;
@@ -68,7 +74,7 @@
 }
 
 .dashboard-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -103,14 +109,23 @@
 .card-content h3 {
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
-  color: #E8ECEF;
+  color: #e8ecef;
 }
 
 .card-count {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #5AB1FF;
+  color: #5ab1ff;
   margin: 0;
+}
+
+.card-badge {
+  font-size: 0.8rem;
+  color: #ff9800;
+  margin: 0.5rem 0 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .card-arrow {
@@ -133,7 +148,7 @@
 .quick-actions h2 {
   font-size: 1.75rem;
   margin-bottom: 1.5rem;
-  color: #E8ECEF;
+  color: #e8ecef;
 }
 
 .action-buttons {
@@ -143,7 +158,7 @@
 }
 
 .action-btn {
-  background: linear-gradient(135deg, #5AB1FF 0%, #00D9FF 100%);
+  background: linear-gradient(135deg, #5ab1ff 0%, #00d9ff 100%);
   color: white;
   padding: 1rem 1.5rem;
   border-radius: 12px;

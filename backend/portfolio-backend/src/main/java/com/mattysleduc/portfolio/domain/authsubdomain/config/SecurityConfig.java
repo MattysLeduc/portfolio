@@ -82,9 +82,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/api/auth/login").permitAll()
-                    .requestMatchers("/api/public/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
-                    .requestMatchers("/api/admin/**").authenticated() // Temporary for testing; change to authenticated() in production
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/public/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
+                        .requestMatchers("/api/admin/**").authenticated() // Temporary for testing; change to authenticated() in production
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))

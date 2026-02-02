@@ -1,0 +1,27 @@
+.admin-page p {
+  color: #9aa4b2;
+}
+
+.admin-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-form .form-group label {
+  font-weight: 600;
+  color: #5ab1ff;
+}
+
+.admin-form .form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.admin-loading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 0;
+}
