@@ -72,9 +72,13 @@ const SkillsForm = () => {
     }
   };
 
-  const updateField = (id: string, field: keyof SkillResponseModel, value: any) => {
+  const updateField = (
+    id: string,
+    field: keyof SkillResponseModel,
+    value: any,
+  ) => {
     setSkills(
-      skills.map((s) => (s.skillId === id ? { ...s, [field]: value } : s))
+      skills.map((s) => (s.skillId === id ? { ...s, [field]: value } : s)),
     );
   };
 
@@ -127,7 +131,12 @@ const SkillsForm = () => {
         <h3 className="font-mono text-sm text-primary uppercase tracking-wider">
           Skills & Proficiency
         </h3>
-        <Button variant="outline" size="sm" onClick={addSkill} className="border-primary/50">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={addSkill}
+          className="border-primary/50"
+        >
           <Plus size={16} className="mr-2" />
           Add Skill
         </Button>
@@ -135,7 +144,10 @@ const SkillsForm = () => {
 
       <div className="space-y-4">
         {skills.map((skill) => (
-          <div key={skill.skillId} className="flex items-start gap-4 p-4 bg-background/30 rounded-sm border border-primary/20">
+          <div
+            key={skill.skillId}
+            className="flex items-start gap-4 p-4 bg-background/30 rounded-sm border border-primary/20"
+          >
             <div className="flex-1 space-y-4">
               {/* Skill Names */}
               <div className="grid md:grid-cols-2 gap-4">
@@ -143,7 +155,9 @@ const SkillsForm = () => {
                   <Label>Name (English)</Label>
                   <Input
                     value={skill.nameEn || ""}
-                    onChange={(e) => updateField(skill.skillId, "nameEn", e.target.value)}
+                    onChange={(e) =>
+                      updateField(skill.skillId, "nameEn", e.target.value)
+                    }
                     placeholder="React"
                     className="bg-background/50 border-primary/30"
                   />
@@ -152,7 +166,9 @@ const SkillsForm = () => {
                   <Label>Name (French)</Label>
                   <Input
                     value={skill.nameFr || ""}
-                    onChange={(e) => updateField(skill.skillId, "nameFr", e.target.value)}
+                    onChange={(e) =>
+                      updateField(skill.skillId, "nameFr", e.target.value)
+                    }
                     placeholder="React"
                     className="bg-background/50 border-primary/30"
                   />
@@ -165,7 +181,13 @@ const SkillsForm = () => {
                   <Label>Description (English)</Label>
                   <Textarea
                     value={skill.descriptionEn || ""}
-                    onChange={(e) => updateField(skill.skillId, "descriptionEn", e.target.value)}
+                    onChange={(e) =>
+                      updateField(
+                        skill.skillId,
+                        "descriptionEn",
+                        e.target.value,
+                      )
+                    }
                     className="bg-background/50 border-primary/30 min-h-[60px]"
                   />
                 </div>
@@ -173,7 +195,13 @@ const SkillsForm = () => {
                   <Label>Description (French)</Label>
                   <Textarea
                     value={skill.descriptionFr || ""}
-                    onChange={(e) => updateField(skill.skillId, "descriptionFr", e.target.value)}
+                    onChange={(e) =>
+                      updateField(
+                        skill.skillId,
+                        "descriptionFr",
+                        e.target.value,
+                      )
+                    }
                     className="bg-background/50 border-primary/30 min-h-[60px]"
                   />
                 </div>
@@ -185,7 +213,9 @@ const SkillsForm = () => {
                   <Label>Category</Label>
                   <Input
                     value={skill.category || ""}
-                    onChange={(e) => updateField(skill.skillId, "category", e.target.value)}
+                    onChange={(e) =>
+                      updateField(skill.skillId, "category", e.target.value)
+                    }
                     placeholder="Frontend, Backend, Database..."
                     className="bg-background/50 border-primary/30"
                   />
@@ -195,13 +225,17 @@ const SkillsForm = () => {
                   <div className="flex items-center gap-4">
                     <Slider
                       value={[skill.level || 50]}
-                      onValueChange={(v) => updateField(skill.skillId, "level", v[0])}
+                      onValueChange={(v) =>
+                        updateField(skill.skillId, "level", v[0])
+                      }
                       max={100}
                       min={0}
                       step={5}
                       className="flex-1"
                     />
-                    <span className="font-mono text-sm text-primary w-12 text-right">{skill.level || 50}%</span>
+                    <span className="font-mono text-sm text-primary w-12 text-right">
+                      {skill.level || 50}%
+                    </span>
                   </div>
                 </div>
               </div>
@@ -219,8 +253,16 @@ const SkillsForm = () => {
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button onClick={handleSave} disabled={saving} className="bg-primary hover:bg-primary/90">
-          {saving ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Save size={16} className="mr-2" />}
+        <Button
+          onClick={handleSave}
+          disabled={saving}
+          className="bg-primary hover:bg-primary/90"
+        >
+          {saving ? (
+            <Loader2 size={16} className="mr-2 animate-spin" />
+          ) : (
+            <Save size={16} className="mr-2" />
+          )}
           Save Changes
         </Button>
       </div>

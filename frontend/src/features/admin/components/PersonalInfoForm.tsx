@@ -37,7 +37,10 @@ const PersonalInfoForm = ({ data, onUpdate }: PersonalInfoFormProps) => {
 
   const handleSave = () => {
     onUpdate(formData);
-    toast({ title: "Personal info updated!", description: "Your changes have been saved." });
+    toast({
+      title: "Personal info updated!",
+      description: "Your changes have been saved.",
+    });
   };
 
   return (

@@ -3,9 +3,20 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Save, Plus, Trash2, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import {
+  Save,
+  Plus,
+  Trash2,
+  ChevronDown,
+  ChevronUp,
+  Loader2,
+} from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { getAllHobbies } from "@/features/hobbies/api/getAllHobbies";
 import { createHobby } from "@/features/hobbies/api/createHobby";
 import { updateHobby as updateHobbyApi } from "@/features/hobbies/api/updateHobby";
@@ -40,7 +51,7 @@ const HobbiesForm = () => {
 
   const toggleItem = (id: string) => {
     setOpenItems((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
   };
 
@@ -77,9 +88,13 @@ const HobbiesForm = () => {
     }
   };
 
-  const updateField = (id: string, field: keyof HobbyResponseModel, value: any) => {
+  const updateField = (
+    id: string,
+    field: keyof HobbyResponseModel,
+    value: any,
+  ) => {
     setHobbies(
-      hobbies.map((h) => (h.hobbyId === id ? { ...h, [field]: value } : h))
+      hobbies.map((h) => (h.hobbyId === id ? { ...h, [field]: value } : h)),
     );
   };
 
@@ -131,7 +146,12 @@ const HobbiesForm = () => {
         <h3 className="font-mono text-sm text-primary uppercase tracking-wider">
           Hobbies & Interests
         </h3>
-        <Button variant="outline" size="sm" onClick={addHobby} className="border-primary/50">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={addHobby}
+          className="border-primary/50"
+        >
           <Plus size={16} className="mr-2" />
           Add Hobby
         </Button>
@@ -181,7 +201,9 @@ const HobbiesForm = () => {
                       <Label>Name (English)</Label>
                       <Input
                         value={hobby.nameEn}
-                        onChange={(e) => updateField(hobby.hobbyId, "nameEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(hobby.hobbyId, "nameEn", e.target.value)
+                        }
                         className="bg-background/50 border-primary/30"
                         placeholder="Photography"
                       />
@@ -190,7 +212,9 @@ const HobbiesForm = () => {
                       <Label>Name (French)</Label>
                       <Input
                         value={hobby.nameFr}
-                        onChange={(e) => updateField(hobby.hobbyId, "nameFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(hobby.hobbyId, "nameFr", e.target.value)
+                        }
                         className="bg-background/50 border-primary/30"
                         placeholder="Photographie"
                       />
@@ -203,7 +227,13 @@ const HobbiesForm = () => {
                       <Label>Description (English)</Label>
                       <Textarea
                         value={hobby.descriptionEn}
-                        onChange={(e) => updateField(hobby.hobbyId, "descriptionEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            hobby.hobbyId,
+                            "descriptionEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30 min-h-[100px]"
                       />
                     </div>
@@ -211,7 +241,13 @@ const HobbiesForm = () => {
                       <Label>Description (French)</Label>
                       <Textarea
                         value={hobby.descriptionFr}
-                        onChange={(e) => updateField(hobby.hobbyId, "descriptionFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            hobby.hobbyId,
+                            "descriptionFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30 min-h-[100px]"
                       />
                     </div>
@@ -222,7 +258,9 @@ const HobbiesForm = () => {
                     <Label>Icon URL (optional)</Label>
                     <Input
                       value={hobby.iconUrl || ""}
-                      onChange={(e) => updateField(hobby.hobbyId, "iconUrl", e.target.value)}
+                      onChange={(e) =>
+                        updateField(hobby.hobbyId, "iconUrl", e.target.value)
+                      }
                       className="bg-background/50 border-primary/30"
                       placeholder="https://..."
                     />
@@ -235,8 +273,16 @@ const HobbiesForm = () => {
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button onClick={handleSave} disabled={saving} className="bg-primary hover:bg-primary/90">
-          {saving ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Save size={16} className="mr-2" />}
+        <Button
+          onClick={handleSave}
+          disabled={saving}
+          className="bg-primary hover:bg-primary/90"
+        >
+          {saving ? (
+            <Loader2 size={16} className="mr-2 animate-spin" />
+          ) : (
+            <Save size={16} className="mr-2" />
+          )}
           Save Changes
         </Button>
       </div>

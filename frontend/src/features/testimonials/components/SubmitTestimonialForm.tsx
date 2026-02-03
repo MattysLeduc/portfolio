@@ -83,16 +83,29 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
         </div>
 
         <div className="form-group">
-          <label htmlFor={language === "en" ? "authorTitleEn" : "authorTitleFr"}>
-            {language === "en" ? t("testimonialsTitleEn") : t("testimonialsTitleFr")} *
+          <label
+            htmlFor={language === "en" ? "authorTitleEn" : "authorTitleFr"}
+          >
+            {language === "en"
+              ? t("testimonialsTitleEn")
+              : t("testimonialsTitleFr")}{" "}
+            *
           </label>
           <input
             type="text"
             id={language === "en" ? "authorTitleEn" : "authorTitleFr"}
             name={language === "en" ? "authorTitleEn" : "authorTitleFr"}
-            value={language === "en" ? (formData.authorTitleEn || "") : (formData.authorTitleFr || "")}
+            value={
+              language === "en"
+                ? formData.authorTitleEn || ""
+                : formData.authorTitleFr || ""
+            }
             onChange={handleChange}
-            placeholder={language === "en" ? t("testimonialsTitlePlaceholder") : t("testimonialsTitlePlaceholderFr")}
+            placeholder={
+              language === "en"
+                ? t("testimonialsTitlePlaceholder")
+                : t("testimonialsTitlePlaceholderFr")
+            }
             className="form-input"
           />
         </div>
@@ -116,14 +129,21 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
 
         <div className="form-group">
           <label htmlFor={language === "en" ? "contentEn" : "contentFr"}>
-            {language === "en" ? t("testimonialsContentEn") : t("testimonialsContentFr")} *
+            {language === "en"
+              ? t("testimonialsContentEn")
+              : t("testimonialsContentFr")}{" "}
+            *
           </label>
           <textarea
             id={language === "en" ? "contentEn" : "contentFr"}
             name={language === "en" ? "contentEn" : "contentFr"}
             value={language === "en" ? formData.contentEn : formData.contentFr}
             onChange={handleChange}
-            placeholder={language === "en" ? t("testimonialsContentPlaceholder") : t("testimonialsContentPlaceholderFr")}
+            placeholder={
+              language === "en"
+                ? t("testimonialsContentPlaceholder")
+                : t("testimonialsContentPlaceholderFr")
+            }
             rows={6}
             required
             className="form-input textarea"

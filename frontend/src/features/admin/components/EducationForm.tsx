@@ -3,9 +3,20 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Save, Plus, Trash2, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import {
+  Save,
+  Plus,
+  Trash2,
+  ChevronDown,
+  ChevronUp,
+  Loader2,
+} from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { getAllEducation } from "@/features/education/api/getAllEducation";
 import { createEducation } from "@/features/education/api/createEducation";
 import { updateEducation } from "@/features/education/api/updateEducation";
@@ -40,7 +51,7 @@ const EducationForm = () => {
 
   const toggleItem = (id: string) => {
     setOpenItems((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
   };
 
@@ -82,9 +93,15 @@ const EducationForm = () => {
     }
   };
 
-  const updateField = (id: string, field: keyof EducationResponseModel, value: any) => {
+  const updateField = (
+    id: string,
+    field: keyof EducationResponseModel,
+    value: any,
+  ) => {
     setEducation(
-      education.map((e) => (e.educationId === id ? { ...e, [field]: value } : e))
+      education.map((e) =>
+        e.educationId === id ? { ...e, [field]: value } : e,
+      ),
     );
   };
 
@@ -115,7 +132,10 @@ const EducationForm = () => {
       }
 
       await fetchEducation();
-      toast({ title: "Success", description: "Education entries saved successfully" });
+      toast({
+        title: "Success",
+        description: "Education entries saved successfully",
+      });
     } catch {
       toast({
         title: "Error",
@@ -141,7 +161,12 @@ const EducationForm = () => {
         <h3 className="font-mono text-sm text-primary uppercase tracking-wider">
           Education Management
         </h3>
-        <Button variant="outline" size="sm" onClick={addEducation} className="border-primary/50">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={addEducation}
+          className="border-primary/50"
+        >
           <Plus size={16} className="mr-2" />
           Add Education
         </Button>
@@ -196,7 +221,13 @@ const EducationForm = () => {
                       <Label>Degree (English)</Label>
                       <Input
                         value={entry.degreeEn}
-                        onChange={(e) => updateField(entry.educationId, "degreeEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            entry.educationId,
+                            "degreeEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                         placeholder="Bachelor of Computer Science"
                       />
@@ -205,7 +236,13 @@ const EducationForm = () => {
                       <Label>Degree (French)</Label>
                       <Input
                         value={entry.degreeFr}
-                        onChange={(e) => updateField(entry.educationId, "degreeFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            entry.educationId,
+                            "degreeFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                         placeholder="Baccalauréat en informatique"
                       />
@@ -218,7 +255,13 @@ const EducationForm = () => {
                       <Label>Institution (English)</Label>
                       <Input
                         value={entry.institutionEn}
-                        onChange={(e) => updateField(entry.educationId, "institutionEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            entry.educationId,
+                            "institutionEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -226,7 +269,13 @@ const EducationForm = () => {
                       <Label>Institution (French)</Label>
                       <Input
                         value={entry.institutionFr}
-                        onChange={(e) => updateField(entry.educationId, "institutionFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            entry.educationId,
+                            "institutionFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -238,7 +287,13 @@ const EducationForm = () => {
                       <Label>Location (English)</Label>
                       <Input
                         value={entry.locationEn}
-                        onChange={(e) => updateField(entry.educationId, "locationEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            entry.educationId,
+                            "locationEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -246,7 +301,13 @@ const EducationForm = () => {
                       <Label>Location (French)</Label>
                       <Input
                         value={entry.locationFr}
-                        onChange={(e) => updateField(entry.educationId, "locationFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            entry.educationId,
+                            "locationFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -259,7 +320,13 @@ const EducationForm = () => {
                       <Input
                         type="date"
                         value={entry.startDate}
-                        onChange={(e) => updateField(entry.educationId, "startDate", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            entry.educationId,
+                            "startDate",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -268,7 +335,13 @@ const EducationForm = () => {
                       <Input
                         type="date"
                         value={entry.endDate || ""}
-                        onChange={(e) => updateField(entry.educationId, "endDate", e.target.value || null)}
+                        onChange={(e) =>
+                          updateField(
+                            entry.educationId,
+                            "endDate",
+                            e.target.value || null,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -280,7 +353,13 @@ const EducationForm = () => {
                       <Label>Description (English)</Label>
                       <Textarea
                         value={entry.descriptionEn}
-                        onChange={(e) => updateField(entry.educationId, "descriptionEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            entry.educationId,
+                            "descriptionEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30 min-h-[100px]"
                       />
                     </div>
@@ -288,7 +367,13 @@ const EducationForm = () => {
                       <Label>Description (French)</Label>
                       <Textarea
                         value={entry.descriptionFr}
-                        onChange={(e) => updateField(entry.educationId, "descriptionFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            entry.educationId,
+                            "descriptionFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30 min-h-[100px]"
                       />
                     </div>
@@ -301,8 +386,16 @@ const EducationForm = () => {
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button onClick={handleSave} disabled={saving} className="bg-primary hover:bg-primary/90">
-          {saving ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Save size={16} className="mr-2" />}
+        <Button
+          onClick={handleSave}
+          disabled={saving}
+          className="bg-primary hover:bg-primary/90"
+        >
+          {saving ? (
+            <Loader2 size={16} className="mr-2 animate-spin" />
+          ) : (
+            <Save size={16} className="mr-2" />
+          )}
           Save Changes
         </Button>
       </div>

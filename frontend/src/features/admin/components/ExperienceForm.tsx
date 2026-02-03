@@ -4,9 +4,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Save, Plus, Trash2, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import {
+  Save,
+  Plus,
+  Trash2,
+  ChevronDown,
+  ChevronUp,
+  Loader2,
+} from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { getAllExperiences } from "@/features/experience/api/getAllExperiences";
 import { createExperience } from "@/features/experience/api/createExperience";
 import { updateExperience } from "@/features/experience/api/updateExperience";
@@ -40,7 +51,7 @@ const ExperienceForm = () => {
 
   const toggleItem = (id: string) => {
     setOpenItems((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
   };
 
@@ -87,7 +98,9 @@ const ExperienceForm = () => {
 
   const updateField = (id: string, field: keyof Experience, value: any) => {
     setExperiences(
-      experiences.map((e) => (e.experienceId === id ? { ...e, [field]: value } : e))
+      experiences.map((e) =>
+        e.experienceId === id ? { ...e, [field]: value } : e,
+      ),
     );
   };
 
@@ -107,7 +120,10 @@ const ExperienceForm = () => {
       }
 
       await fetchExperiences();
-      toast({ title: "Success", description: "Experiences saved successfully" });
+      toast({
+        title: "Success",
+        description: "Experiences saved successfully",
+      });
     } catch {
       toast({
         title: "Error",
@@ -130,8 +146,15 @@ const ExperienceForm = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-mono text-sm text-primary uppercase tracking-wider">Work Experience</h3>
-        <Button variant="outline" size="sm" onClick={addExperience} className="border-primary/50">
+        <h3 className="font-mono text-sm text-primary uppercase tracking-wider">
+          Work Experience
+        </h3>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={addExperience}
+          className="border-primary/50"
+        >
           <Plus size={16} className="mr-2" />
           Add Experience
         </Button>
@@ -148,9 +171,13 @@ const ExperienceForm = () => {
               <CollapsibleTrigger asChild>
                 <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-primary/5">
                   <div>
-                    <span className="font-mono text-sm">{exp.titleEn || "Untitled Position"}</span>
+                    <span className="font-mono text-sm">
+                      {exp.titleEn || "Untitled Position"}
+                    </span>
                     {exp.companyEn && (
-                      <span className="text-muted-foreground text-sm ml-2">@ {exp.companyEn}</span>
+                      <span className="text-muted-foreground text-sm ml-2">
+                        @ {exp.companyEn}
+                      </span>
                     )}
                   </div>
                   <div className="flex items-center gap-2">
@@ -165,7 +192,11 @@ const ExperienceForm = () => {
                     >
                       <Trash2 size={14} />
                     </Button>
-                    {openItems.includes(exp.experienceId) ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                    {openItems.includes(exp.experienceId) ? (
+                      <ChevronUp size={16} />
+                    ) : (
+                      <ChevronDown size={16} />
+                    )}
                   </div>
                 </div>
               </CollapsibleTrigger>
@@ -178,7 +209,13 @@ const ExperienceForm = () => {
                       <Label>Job Title (English)</Label>
                       <Input
                         value={exp.titleEn || ""}
-                        onChange={(e) => updateField(exp.experienceId, "titleEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            exp.experienceId,
+                            "titleEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -186,7 +223,13 @@ const ExperienceForm = () => {
                       <Label>Job Title (French)</Label>
                       <Input
                         value={exp.titleFr || ""}
-                        onChange={(e) => updateField(exp.experienceId, "titleFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            exp.experienceId,
+                            "titleFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -198,7 +241,13 @@ const ExperienceForm = () => {
                       <Label>Company (English)</Label>
                       <Input
                         value={exp.companyEn || ""}
-                        onChange={(e) => updateField(exp.experienceId, "companyEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            exp.experienceId,
+                            "companyEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -206,7 +255,13 @@ const ExperienceForm = () => {
                       <Label>Company (French)</Label>
                       <Input
                         value={exp.companyFr || ""}
-                        onChange={(e) => updateField(exp.experienceId, "companyFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            exp.experienceId,
+                            "companyFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -218,7 +273,13 @@ const ExperienceForm = () => {
                       <Label>Location (English)</Label>
                       <Input
                         value={exp.locationEn || ""}
-                        onChange={(e) => updateField(exp.experienceId, "locationEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            exp.experienceId,
+                            "locationEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -226,7 +287,13 @@ const ExperienceForm = () => {
                       <Label>Location (French)</Label>
                       <Input
                         value={exp.locationFr || ""}
-                        onChange={(e) => updateField(exp.experienceId, "locationFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            exp.experienceId,
+                            "locationFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -239,7 +306,13 @@ const ExperienceForm = () => {
                       <Input
                         type="date"
                         value={exp.startDate}
-                        onChange={(e) => updateField(exp.experienceId, "startDate", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            exp.experienceId,
+                            "startDate",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -248,7 +321,13 @@ const ExperienceForm = () => {
                       <Input
                         type="date"
                         value={exp.endDate || ""}
-                        onChange={(e) => updateField(exp.experienceId, "endDate", e.target.value || null)}
+                        onChange={(e) =>
+                          updateField(
+                            exp.experienceId,
+                            "endDate",
+                            e.target.value || null,
+                          )
+                        }
                         disabled={exp.current}
                         className="bg-background/50 border-primary/30"
                       />
@@ -259,10 +338,14 @@ const ExperienceForm = () => {
                         checked={exp.current}
                         onCheckedChange={(checked) => {
                           updateField(exp.experienceId, "current", checked);
-                          if (checked) updateField(exp.experienceId, "endDate", null);
+                          if (checked)
+                            updateField(exp.experienceId, "endDate", null);
                         }}
                       />
-                      <Label htmlFor={`current-${exp.experienceId}`} className="cursor-pointer">
+                      <Label
+                        htmlFor={`current-${exp.experienceId}`}
+                        className="cursor-pointer"
+                      >
                         I currently work here
                       </Label>
                     </div>
@@ -274,7 +357,13 @@ const ExperienceForm = () => {
                       <Label>Description (English)</Label>
                       <Textarea
                         value={exp.descriptionEn || ""}
-                        onChange={(e) => updateField(exp.experienceId, "descriptionEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            exp.experienceId,
+                            "descriptionEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30 min-h-[100px]"
                       />
                     </div>
@@ -282,7 +371,13 @@ const ExperienceForm = () => {
                       <Label>Description (French)</Label>
                       <Textarea
                         value={exp.descriptionFr || ""}
-                        onChange={(e) => updateField(exp.experienceId, "descriptionFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            exp.experienceId,
+                            "descriptionFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30 min-h-[100px]"
                       />
                     </div>
@@ -294,7 +389,13 @@ const ExperienceForm = () => {
                       <Label>Responsibilities (English)</Label>
                       <Textarea
                         value={exp.responsibilitiesEn || ""}
-                        onChange={(e) => updateField(exp.experienceId, "responsibilitiesEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            exp.experienceId,
+                            "responsibilitiesEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30 min-h-[100px]"
                       />
                     </div>
@@ -302,7 +403,13 @@ const ExperienceForm = () => {
                       <Label>Responsibilities (French)</Label>
                       <Textarea
                         value={exp.responsibilitiesFr || ""}
-                        onChange={(e) => updateField(exp.experienceId, "responsibilitiesFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            exp.experienceId,
+                            "responsibilitiesFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30 min-h-[100px]"
                       />
                     </div>
@@ -315,8 +422,16 @@ const ExperienceForm = () => {
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button onClick={handleSave} disabled={saving} className="bg-primary hover:bg-primary/90">
-          {saving ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Save size={16} className="mr-2" />}
+        <Button
+          onClick={handleSave}
+          disabled={saving}
+          className="bg-primary hover:bg-primary/90"
+        >
+          {saving ? (
+            <Loader2 size={16} className="mr-2 animate-spin" />
+          ) : (
+            <Save size={16} className="mr-2" />
+          )}
           Save Changes
         </Button>
       </div>

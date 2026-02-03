@@ -5,9 +5,23 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
-import { Save, Plus, Trash2, ChevronDown, ChevronUp, Star, Loader2, CheckCircle, XCircle } from "lucide-react";
+import {
+  Save,
+  Plus,
+  Trash2,
+  ChevronDown,
+  ChevronUp,
+  Star,
+  Loader2,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { getAllTestimonials } from "@/features/testimonials/api/admin/getAllTestimonials";
 import { createTestimonial } from "@/features/testimonials/api/admin/createTestimonial";
 import { updateTestimonial as updateTestimonialApi } from "@/features/testimonials/api/admin/updateTestimonial";
@@ -18,7 +32,9 @@ import type { TestimonialResponseModel } from "@/features/testimonials/models/Te
 import type { TestimonialRequestModel } from "@/features/testimonials/models/TestimonialRequestModel";
 
 const TestimonialsForm = () => {
-  const [testimonials, setTestimonials] = useState<TestimonialResponseModel[]>([]);
+  const [testimonials, setTestimonials] = useState<TestimonialResponseModel[]>(
+    [],
+  );
   const [openItems, setOpenItems] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -44,7 +60,7 @@ const TestimonialsForm = () => {
 
   const toggleItem = (id: string) => {
     setOpenItems((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
   };
 
@@ -90,8 +106,8 @@ const TestimonialsForm = () => {
       await approveTestimonial(id);
       setTestimonials(
         testimonials.map((t) =>
-          t.testimonialId === id ? { ...t, status: "APPROVED" as const } : t
-        )
+          t.testimonialId === id ? { ...t, status: "APPROVED" as const } : t,
+        ),
       );
       toast({ title: "Success", description: "Testimonial approved" });
     } catch (error) {
@@ -108,8 +124,8 @@ const TestimonialsForm = () => {
       await declineTestimonial(id);
       setTestimonials(
         testimonials.map((t) =>
-          t.testimonialId === id ? { ...t, status: "REJECTED" as const } : t
-        )
+          t.testimonialId === id ? { ...t, status: "REJECTED" as const } : t,
+        ),
       );
       toast({ title: "Success", description: "Testimonial declined" });
     } catch (error) {
@@ -121,9 +137,15 @@ const TestimonialsForm = () => {
     }
   };
 
-  const updateField = (id: string, field: keyof TestimonialResponseModel, value: any) => {
+  const updateField = (
+    id: string,
+    field: keyof TestimonialResponseModel,
+    value: any,
+  ) => {
     setTestimonials(
-      testimonials.map((t) => (t.testimonialId === id ? { ...t, [field]: value } : t))
+      testimonials.map((t) =>
+        t.testimonialId === id ? { ...t, [field]: value } : t,
+      ),
     );
   };
 
@@ -131,7 +153,8 @@ const TestimonialsForm = () => {
     setSaving(true);
     try {
       for (const testimonial of testimonials) {
-        if (!testimonial.authorName.trim() || !testimonial.contentEn?.trim()) continue;
+        if (!testimonial.authorName.trim() || !testimonial.contentEn?.trim())
+          continue;
 
         const payload: TestimonialRequestModel = {
           authorName: testimonial.authorName,
@@ -152,7 +175,10 @@ const TestimonialsForm = () => {
       }
 
       await fetchTestimonials();
-      toast({ title: "Success", description: "Testimonials saved successfully" });
+      toast({
+        title: "Success",
+        description: "Testimonials saved successfully",
+      });
     } catch (error) {
       toast({
         title: "Error",
@@ -178,7 +204,12 @@ const TestimonialsForm = () => {
         <h3 className="font-mono text-sm text-primary uppercase tracking-wider">
           Testimonials Management
         </h3>
-        <Button variant="outline" size="sm" onClick={addTestimonial} className="border-primary/50">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={addTestimonial}
+          className="border-primary/50"
+        >
           <Plus size={16} className="mr-2" />
           Add Testimonial
         </Button>
@@ -199,9 +230,15 @@ const TestimonialsForm = () => {
                       {testimonial.authorName || "New Testimonial"}
                     </span>
                     <div className="flex">
-                      {Array.from({ length: testimonial.rating }).map((_, i) => (
-                        <Star key={i} className="text-primary fill-primary" size={12} />
-                      ))}
+                      {Array.from({ length: testimonial.rating }).map(
+                        (_, i) => (
+                          <Star
+                            key={i}
+                            className="text-primary fill-primary"
+                            size={12}
+                          />
+                        ),
+                      )}
                     </div>
                     {testimonial.status && (
                       <Badge
@@ -209,8 +246,8 @@ const TestimonialsForm = () => {
                           testimonial.status === "APPROVED"
                             ? "default"
                             : testimonial.status === "REJECTED"
-                            ? "destructive"
-                            : "secondary"
+                              ? "destructive"
+                              : "secondary"
                         }
                         className="text-xs"
                       >
@@ -247,7 +284,13 @@ const TestimonialsForm = () => {
                       <Label>Author Name</Label>
                       <Input
                         value={testimonial.authorName}
-                        onChange={(e) => updateField(testimonial.testimonialId, "authorName", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            testimonial.testimonialId,
+                            "authorName",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -255,7 +298,13 @@ const TestimonialsForm = () => {
                       <Label>Company</Label>
                       <Input
                         value={testimonial.company || ""}
-                        onChange={(e) => updateField(testimonial.testimonialId, "company", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            testimonial.testimonialId,
+                            "company",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -267,7 +316,13 @@ const TestimonialsForm = () => {
                       <Label>Author Title (English)</Label>
                       <Input
                         value={testimonial.authorTitleEn || ""}
-                        onChange={(e) => updateField(testimonial.testimonialId, "authorTitleEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            testimonial.testimonialId,
+                            "authorTitleEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                         placeholder="Senior Developer"
                       />
@@ -276,7 +331,13 @@ const TestimonialsForm = () => {
                       <Label>Author Title (French)</Label>
                       <Input
                         value={testimonial.authorTitleFr || ""}
-                        onChange={(e) => updateField(testimonial.testimonialId, "authorTitleFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            testimonial.testimonialId,
+                            "authorTitleFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                         placeholder="Développeur Senior"
                       />
@@ -288,7 +349,13 @@ const TestimonialsForm = () => {
                     <Label>Author Image URL</Label>
                     <Input
                       value={testimonial.authorImage || ""}
-                      onChange={(e) => updateField(testimonial.testimonialId, "authorImage", e.target.value)}
+                      onChange={(e) =>
+                        updateField(
+                          testimonial.testimonialId,
+                          "authorImage",
+                          e.target.value,
+                        )
+                      }
                       className="bg-background/50 border-primary/30"
                       placeholder="https://..."
                     />
@@ -300,7 +367,13 @@ const TestimonialsForm = () => {
                       <Label>Content (English)</Label>
                       <Textarea
                         value={testimonial.contentEn || ""}
-                        onChange={(e) => updateField(testimonial.testimonialId, "contentEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            testimonial.testimonialId,
+                            "contentEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30 min-h-[120px]"
                       />
                     </div>
@@ -308,7 +381,13 @@ const TestimonialsForm = () => {
                       <Label>Content (French)</Label>
                       <Textarea
                         value={testimonial.contentFr || ""}
-                        onChange={(e) => updateField(testimonial.testimonialId, "contentFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            testimonial.testimonialId,
+                            "contentFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30 min-h-[120px]"
                       />
                     </div>
@@ -320,16 +399,24 @@ const TestimonialsForm = () => {
                     <div className="flex items-center gap-4">
                       <Slider
                         value={[testimonial.rating]}
-                        onValueChange={(v) => updateField(testimonial.testimonialId, "rating", v[0])}
+                        onValueChange={(v) =>
+                          updateField(testimonial.testimonialId, "rating", v[0])
+                        }
                         max={5}
                         min={1}
                         step={1}
                         className="flex-1"
                       />
                       <div className="flex items-center gap-1">
-                        {Array.from({ length: testimonial.rating }).map((_, i) => (
-                          <Star key={i} className="text-primary fill-primary" size={16} />
-                        ))}
+                        {Array.from({ length: testimonial.rating }).map(
+                          (_, i) => (
+                            <Star
+                              key={i}
+                              className="text-primary fill-primary"
+                              size={16}
+                            />
+                          ),
+                        )}
                       </div>
                     </div>
                   </div>
@@ -358,10 +445,14 @@ const TestimonialsForm = () => {
                         Decline
                       </Button>
                       {testimonial.status === "APPROVED" && (
-                        <span className="text-xs text-green-600 ml-2">✓ Visible on website</span>
+                        <span className="text-xs text-green-600 ml-2">
+                          ✓ Visible on website
+                        </span>
                       )}
                       {testimonial.status === "REJECTED" && (
-                        <span className="text-xs text-red-600 ml-2">✗ Hidden from website</span>
+                        <span className="text-xs text-red-600 ml-2">
+                          ✗ Hidden from website
+                        </span>
                       )}
                     </div>
                   )}
@@ -373,8 +464,16 @@ const TestimonialsForm = () => {
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button onClick={handleSave} disabled={saving} className="bg-primary hover:bg-primary/90">
-          {saving ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Save size={16} className="mr-2" />}
+        <Button
+          onClick={handleSave}
+          disabled={saving}
+          className="bg-primary hover:bg-primary/90"
+        >
+          {saving ? (
+            <Loader2 size={16} className="mr-2 animate-spin" />
+          ) : (
+            <Save size={16} className="mr-2" />
+          )}
           Save Changes
         </Button>
       </div>

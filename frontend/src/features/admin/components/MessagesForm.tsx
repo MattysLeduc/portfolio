@@ -6,7 +6,11 @@ import { markMessageRead } from "@/features/contact/api/admin/markMessageRead";
 import { deleteMessage } from "@/features/contact/api/admin/deleteMessage";
 import type { ContactMessageResponseModel } from "@/features/contact/models/ContactMessageResponseModel";
 import { toast } from "@/hooks/use-toast";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 const MessagesForm = () => {
@@ -20,7 +24,11 @@ const MessagesForm = () => {
       const data = await getAllMessages();
       setMessages(data);
     } catch {
-      toast({ title: "Error", description: "Failed to load messages", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to load messages",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -32,7 +40,7 @@ const MessagesForm = () => {
 
   const toggleItem = (id: string) => {
     setOpenItems((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
@@ -41,12 +49,16 @@ const MessagesForm = () => {
       await markMessageRead(messageId);
       setMessages((prev) =>
         prev.map((msg) =>
-          msg.messageId === messageId ? { ...msg, read: true } : msg
-        )
+          msg.messageId === messageId ? { ...msg, read: true } : msg,
+        ),
       );
       toast({ title: "Success", description: "Message marked as read" });
     } catch {
-      toast({ title: "Error", description: "Failed to mark message as read", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to mark message as read",
+        variant: "destructive",
+      });
     }
   };
 
@@ -56,7 +68,11 @@ const MessagesForm = () => {
       setMessages((prev) => prev.filter((msg) => msg.messageId !== messageId));
       toast({ title: "Success", description: "Message deleted" });
     } catch {
-      toast({ title: "Error", description: "Failed to delete message", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to delete message",
+        variant: "destructive",
+      });
     }
   };
 
@@ -71,8 +87,15 @@ const MessagesForm = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-mono text-sm text-primary uppercase tracking-wider">Contact Messages</h3>
-        <Button variant="outline" size="sm" onClick={fetchMessages} className="border-primary/50">
+        <h3 className="font-mono text-sm text-primary uppercase tracking-wider">
+          Contact Messages
+        </h3>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={fetchMessages}
+          className="border-primary/50"
+        >
           <RefreshCw size={16} className="mr-2" />
           Refresh
         </Button>
@@ -102,7 +125,8 @@ const MessagesForm = () => {
                       )}
                       <div>
                         <span className="font-mono text-sm font-semibold">
-                          {msg.name} {!msg.read && <span className="text-primary">•</span>}
+                          {msg.name}{" "}
+                          {!msg.read && <span className="text-primary">•</span>}
                         </span>
                         <span className="text-muted-foreground text-sm ml-2">
                           {msg.email}
@@ -130,7 +154,9 @@ const MessagesForm = () => {
                 <CollapsibleContent>
                   <div className="p-4 pt-0 space-y-4 border-t border-primary/10">
                     <div className="bg-background/50 p-4 rounded border border-primary/10">
-                      <p className="text-sm whitespace-pre-wrap">{msg.message}</p>
+                      <p className="text-sm whitespace-pre-wrap">
+                        {msg.message}
+                      </p>
                     </div>
 
                     <div className="flex justify-end gap-2">

@@ -41,15 +41,15 @@ const App = () => (
                   <Route path="/testimonials" element={<Testimonials />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/login" element={<Login />} />
-                  
+
                   {/* Admin Panel */}
-                  <Route 
-                    path="/admin" 
+                  <Route
+                    path="/admin"
                     element={
                       <ProtectedRoute>
                         <Admin />
                       </ProtectedRoute>
-                    } 
+                    }
                   />
 
                   <Route path="*" element={<NotFound />} />

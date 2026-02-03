@@ -4,9 +4,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Save, Plus, Trash2, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import {
+  Save,
+  Plus,
+  Trash2,
+  ChevronDown,
+  ChevronUp,
+  Loader2,
+} from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { getAllProjects } from "@/features/projects/api/getAllProjects";
 import { createProject } from "@/features/projects/api/createProject";
 import { updateProject } from "@/features/projects/api/updateProject";
@@ -41,7 +52,7 @@ const ProjectsForm = () => {
 
   const toggleItem = (id: string) => {
     setOpenItems((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
   };
 
@@ -81,9 +92,13 @@ const ProjectsForm = () => {
     }
   };
 
-  const updateField = (id: string, field: keyof ProjectResponseModel, value: any) => {
+  const updateField = (
+    id: string,
+    field: keyof ProjectResponseModel,
+    value: any,
+  ) => {
     setProjects(
-      projects.map((p) => (p.projectId === id ? { ...p, [field]: value } : p))
+      projects.map((p) => (p.projectId === id ? { ...p, [field]: value } : p)),
     );
   };
 
@@ -135,8 +150,15 @@ const ProjectsForm = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-mono text-sm text-primary uppercase tracking-wider">Projects</h3>
-        <Button variant="outline" size="sm" onClick={addProject} className="border-primary/50">
+        <h3 className="font-mono text-sm text-primary uppercase tracking-wider">
+          Projects
+        </h3>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={addProject}
+          className="border-primary/50"
+        >
           <Plus size={16} className="mr-2" />
           Add Project
         </Button>
@@ -152,7 +174,9 @@ const ProjectsForm = () => {
             <div className="bg-background/30 rounded-sm border border-primary/20 overflow-hidden">
               <CollapsibleTrigger asChild>
                 <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-primary/5">
-                  <span className="font-mono text-sm">{project.nameEn || "Untitled Project"}</span>
+                  <span className="font-mono text-sm">
+                    {project.nameEn || "Untitled Project"}
+                  </span>
                   <div className="flex items-center gap-2">
                     <Button
                       variant="ghost"
@@ -165,7 +189,11 @@ const ProjectsForm = () => {
                     >
                       <Trash2 size={14} />
                     </Button>
-                    {openItems.includes(project.projectId) ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                    {openItems.includes(project.projectId) ? (
+                      <ChevronUp size={16} />
+                    ) : (
+                      <ChevronDown size={16} />
+                    )}
                   </div>
                 </div>
               </CollapsibleTrigger>
@@ -178,7 +206,13 @@ const ProjectsForm = () => {
                       <Label>Name (English)</Label>
                       <Input
                         value={project.nameEn}
-                        onChange={(e) => updateField(project.projectId, "nameEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            project.projectId,
+                            "nameEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -186,7 +220,13 @@ const ProjectsForm = () => {
                       <Label>Name (French)</Label>
                       <Input
                         value={project.nameFr}
-                        onChange={(e) => updateField(project.projectId, "nameFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            project.projectId,
+                            "nameFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
@@ -198,7 +238,13 @@ const ProjectsForm = () => {
                       <Label>Description (English)</Label>
                       <Textarea
                         value={project.descriptionEn}
-                        onChange={(e) => updateField(project.projectId, "descriptionEn", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            project.projectId,
+                            "descriptionEn",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30 min-h-[100px]"
                       />
                     </div>
@@ -206,7 +252,13 @@ const ProjectsForm = () => {
                       <Label>Description (French)</Label>
                       <Textarea
                         value={project.descriptionFr}
-                        onChange={(e) => updateField(project.projectId, "descriptionFr", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            project.projectId,
+                            "descriptionFr",
+                            e.target.value,
+                          )
+                        }
                         className="bg-background/50 border-primary/30 min-h-[100px]"
                       />
                     </div>
@@ -218,7 +270,13 @@ const ProjectsForm = () => {
                       <Label>Image URL</Label>
                       <Input
                         value={project.imageUrl || ""}
-                        onChange={(e) => updateField(project.projectId, "imageUrl", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            project.projectId,
+                            "imageUrl",
+                            e.target.value,
+                          )
+                        }
                         placeholder="https://..."
                         className="bg-background/50 border-primary/30"
                       />
@@ -227,7 +285,13 @@ const ProjectsForm = () => {
                       <Label>Repository URL</Label>
                       <Input
                         value={project.repoUrl || ""}
-                        onChange={(e) => updateField(project.projectId, "repoUrl", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            project.projectId,
+                            "repoUrl",
+                            e.target.value,
+                          )
+                        }
                         placeholder="https://github.com/..."
                         className="bg-background/50 border-primary/30"
                       />
@@ -236,7 +300,13 @@ const ProjectsForm = () => {
                       <Label>Demo URL</Label>
                       <Input
                         value={project.demoUrl || ""}
-                        onChange={(e) => updateField(project.projectId, "demoUrl", e.target.value)}
+                        onChange={(e) =>
+                          updateField(
+                            project.projectId,
+                            "demoUrl",
+                            e.target.value,
+                          )
+                        }
                         placeholder="https://..."
                         className="bg-background/50 border-primary/30"
                       />
@@ -248,9 +318,14 @@ const ProjectsForm = () => {
                     <Checkbox
                       id={`featured-${project.projectId}`}
                       checked={project.featured}
-                      onCheckedChange={(checked) => updateField(project.projectId, "featured", checked)}
+                      onCheckedChange={(checked) =>
+                        updateField(project.projectId, "featured", checked)
+                      }
                     />
-                    <Label htmlFor={`featured-${project.projectId}`} className="cursor-pointer">
+                    <Label
+                      htmlFor={`featured-${project.projectId}`}
+                      className="cursor-pointer"
+                    >
                       Featured Project
                     </Label>
                   </div>
@@ -262,8 +337,16 @@ const ProjectsForm = () => {
       </div>
 
       <div className="flex justify-end pt-4">
-        <Button onClick={handleSave} disabled={saving} className="bg-primary hover:bg-primary/90">
-          {saving ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Save size={16} className="mr-2" />}
+        <Button
+          onClick={handleSave}
+          disabled={saving}
+          className="bg-primary hover:bg-primary/90"
+        >
+          {saving ? (
+            <Loader2 size={16} className="mr-2 animate-spin" />
+          ) : (
+            <Save size={16} className="mr-2" />
+          )}
           Save Changes
         </Button>
       </div>

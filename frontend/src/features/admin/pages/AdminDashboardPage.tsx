@@ -135,16 +135,16 @@ export const AdminDashboardPage: React.FC = () => {
           <h1>Admin Dashboard</h1>
           <p>Manage your portfolio content</p>
         </div>
-        <Link 
-          to="/admin/panel" 
+        <Link
+          to="/admin/panel"
           className="btn-primary"
-          style={{ 
-            padding: '8px 16px',
-            borderRadius: '4px',
-            background: 'var(--primary)',
-            color: 'white',
-            textDecoration: 'none',
-            fontSize: '14px'
+          style={{
+            padding: "8px 16px",
+            borderRadius: "4px",
+            background: "var(--primary)",
+            color: "white",
+            textDecoration: "none",
+            fontSize: "14px",
           }}
         >
           📝 Unified Editor
