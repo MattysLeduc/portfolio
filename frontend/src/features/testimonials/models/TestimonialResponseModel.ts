@@ -16,6 +16,6 @@ export interface TestimonialResponseModel {
   message?: string;
   rating: number;
   createdAt?: string;
-  status?: 'PENDING' | 'APPROVED' | 'REJECTED';
+  status?: "PENDING" | "APPROVED" | "REJECTED";
   rejectionReason?: string | null;
 }

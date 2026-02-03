@@ -134,9 +134,11 @@ const Hobbies = () => {
                 hobby.icon && iconMap[hobby.icon] ? iconMap[hobby.icon] : Heart;
               const colorGradient =
                 colorGradients[index % colorGradients.length];
-              const hobbyName = getLocalizedField(hobby, "name", language) || hobby.name;
+              const hobbyName =
+                getLocalizedField(hobby, "name", language) || hobby.name;
               const hobbyDescription =
-                getLocalizedField(hobby, "description", language) || hobby.description;
+                getLocalizedField(hobby, "description", language) ||
+                hobby.description;
 
               return (
                 <motion.div

@@ -6,7 +6,9 @@
 
 .dashboard-header {
   margin-bottom: 3rem;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .dashboard-header h1 {

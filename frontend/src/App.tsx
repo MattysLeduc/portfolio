@@ -17,16 +17,7 @@ import Contact from "@/pages/Contact";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { AdminLayout } from "@/features/admin/layouts/AdminLayout";
-import { AdminDashboardPage } from "@/features/admin/pages/AdminDashboardPage";
-import { AdminSkillsPage } from "@/features/admin/pages/AdminSkillsPage";
-import { AdminProjectsPage } from "@/features/admin/pages/AdminProjectsPage";
-import { AdminExperiencePage } from "@/features/admin/pages/AdminExperiencePage";
-import { AdminEducationPage } from "@/features/admin/pages/AdminEducationPage";
-import { AdminHobbiesPage } from "@/features/admin/pages/AdminHobbiesPage";
-import { AdminTestimonialsPage } from "@/features/admin/pages/AdminTestimonialsPage";
-import { AdminMessagesPage } from "@/features/admin/pages/AdminMessagesPage";
-import { AdminContactPage } from "@/features/admin/pages/AdminContactPage";
+import Admin from "@/pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -50,36 +41,17 @@ const App = () => (
                   <Route path="/testimonials" element={<Testimonials />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/login" element={<Login />} />
-
-                  {/* Admin routes */}
-                  <Route
-                    path="/admin"
+                  
+                  {/* Admin Panel */}
+                  <Route 
+                    path="/admin" 
                     element={
                       <ProtectedRoute>
-                        <AdminLayout />
+                        <Admin />
                       </ProtectedRoute>
-                    }
-                  >
-                    <Route index element={<AdminDashboardPage />} />
-                    <Route path="skills" element={<AdminSkillsPage />} />
-                    <Route path="projects" element={<AdminProjectsPage />} />
-                    <Route
-                      path="experience"
-                      element={<AdminExperiencePage />}
-                    />
-                    <Route
-                      path="experiences"
-                      element={<AdminExperiencePage />}
-                    />
-                    <Route path="education" element={<AdminEducationPage />} />
-                    <Route path="hobbies" element={<AdminHobbiesPage />} />
-                    <Route
-                      path="testimonials"
-                      element={<AdminTestimonialsPage />}
-                    />
-                    <Route path="messages" element={<AdminMessagesPage />} />
-                    <Route path="contact" element={<AdminContactPage />} />
-                  </Route>
+                    } 
+                  />
+
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>

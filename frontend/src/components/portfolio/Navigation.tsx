@@ -61,7 +61,9 @@ const Navigation = () => {
                 {t(item.key)}
                 <span
                   className={`absolute -bottom-1 left-0 h-px bg-primary transition-all ${
-                    location.pathname === item.href ? "w-full" : "w-0 group-hover:w-full"
+                    location.pathname === item.href
+                      ? "w-full"
+                      : "w-0 group-hover:w-full"
                   }`}
                 />
               </Link>
@@ -76,7 +78,7 @@ const Navigation = () => {
           >
             {language.toUpperCase()}
           </button>
-          
+
           {/* Sign In Button */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -109,16 +111,15 @@ const Navigation = () => {
         initial={{ opacity: 0, height: 0 }}
         animate={{ opacity: isOpen ? 1 : 0, height: isOpen ? "auto" : 0 }}
       >
-          
-          {/* Sign In Button - Mobile */}
-          <Link
-            to="/login"
-            className="flex items-center justify-center gap-2 px-4 py-3 mt-4 border border-primary/50 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
-            onClick={() => setIsOpen(false)}
-          >
-            <LogIn size={16} />
-            <span>{t("signIn")}</span>
-          </Link>
+        {/* Sign In Button - Mobile */}
+        <Link
+          to="/login"
+          className="flex items-center justify-center gap-2 px-4 py-3 mt-4 border border-primary/50 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
+          onClick={() => setIsOpen(false)}
+        >
+          <LogIn size={16} />
+          <span>{t("signIn")}</span>
+        </Link>
         <div className="px-6 py-8 flex flex-col gap-4">
           {navItems.map((item) => (
             <Link

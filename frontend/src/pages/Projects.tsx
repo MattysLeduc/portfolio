@@ -36,8 +36,8 @@ const Projects = () => {
         const data = await portfolioService.getProjects();
         setProjects(data);
       } catch (err) {
-        console.error('Failed to fetch projects:', err);
-        setError(t('loadError'));
+        console.error("Failed to fetch projects:", err);
+        setError(t("loadError"));
       } finally {
         setLoading(false);
       }
@@ -78,7 +78,7 @@ const Projects = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <main className="pt-32 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -86,9 +86,13 @@ const Projects = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <span className="font-mono text-primary text-sm tracking-widest">{t("projectsTag")}</span>
+            <span className="font-mono text-primary text-sm tracking-widest">
+              {t("projectsTag")}
+            </span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
-              <span className="text-gradient neon-text">{t("projectsTitle")}</span>
+              <span className="text-gradient neon-text">
+                {t("projectsTitle")}
+              </span>
             </h1>
             <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
               {t("projectsSubtitle")}
@@ -97,12 +101,19 @@ const Projects = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => {
-              const techArray = project.tech || (project.technologies ? project.technologies.split(',').map(t => t.trim()) : []);
-              const githubUrl = project.github || project.githubUrl || '#';
-              const liveUrl = project.live || project.liveUrl || '#';
-              const localizedTitle = getLocalizedField(project, 'name', language) || project.title;
-              const localizedDescription = getLocalizedField(project, 'description', language) || project.description;
-              
+              const techArray =
+                project.tech ||
+                (project.technologies
+                  ? project.technologies.split(",").map((t) => t.trim())
+                  : []);
+              const githubUrl = project.github || project.githubUrl || "#";
+              const liveUrl = project.live || project.liveUrl || "#";
+              const localizedTitle =
+                getLocalizedField(project, "name", language) || project.title;
+              const localizedDescription =
+                getLocalizedField(project, "description", language) ||
+                project.description;
+
               return (
                 <motion.div
                   key={project.id || localizedTitle}
@@ -119,7 +130,7 @@ const Projects = () => {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="p-6 space-y-4">
                     <h3 className="font-display text-xl font-bold group-hover:text-primary transition-colors">
                       {localizedTitle}
@@ -127,7 +138,7 @@ const Projects = () => {
                     <p className="text-muted-foreground text-sm line-clamp-3">
                       {localizedDescription}
                     </p>
-                    
+
                     {techArray.length > 0 && (
                       <div className="flex flex-wrap gap-2">
                         {techArray.map((tech) => (
@@ -140,15 +151,25 @@ const Projects = () => {
                         ))}
                       </div>
                     )}
-                    
+
                     <div className="flex gap-4 pt-2">
-                      {githubUrl && githubUrl !== '#' && (
-                        <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                      {githubUrl && githubUrl !== "#" && (
+                        <a
+                          href={githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-primary transition-colors"
+                        >
                           <Github size={18} />
                         </a>
                       )}
-                      {liveUrl && liveUrl !== '#' && (
-                        <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                      {liveUrl && liveUrl !== "#" && (
+                        <a
+                          href={liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-primary transition-colors"
+                        >
                           <ExternalLink size={18} />
                         </a>
                       )}

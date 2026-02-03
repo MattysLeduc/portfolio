@@ -8,18 +8,49 @@ interface AuthContextType {
   logout: () => void;
 }
 
+const TOKEN_EXPIRY_MS = 2 * 60 * 60 * 1000;
+const TOKEN_EXPIRES_AT_KEY = 'token_expires_at';
+
+const getStoredAuth = () => {
+  try {
+    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
+    const expiresAt = localStorage.getItem(TOKEN_EXPIRES_AT_KEY);
+    const isExpired = !expiresAt || Date.now() >= Number(expiresAt);
+
+    if (!token || !userData || isExpired) {
+      return { isAuthenticated: false, user: null };
+    }
+
+    return { isAuthenticated: true, user: JSON.parse(userData) };
+  } catch {
+    return { isAuthenticated: false, user: null };
+  }
+};
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<{ username: string; roles?: Array<{ authority: string }> } | null>(null);
+  const initialAuth = getStoredAuth();
+  const [isAuthenticated, setIsAuthenticated] = useState(initialAuth.isAuthenticated);
+  const [user, setUser] = useState<{ username: string; roles?: Array<{ authority: string }> } | null>(initialAuth.user);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
+    const expiresAt = localStorage.getItem(TOKEN_EXPIRES_AT_KEY);
+    const isExpired = !expiresAt || Date.now() >= Number(expiresAt);
     if (token && userData) {
-      setIsAuthenticated(true);
-      setUser(JSON.parse(userData));
+      if (isExpired) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem(TOKEN_EXPIRES_AT_KEY);
+        setIsAuthenticated(false);
+        setUser(null);
+      } else {
+        setIsAuthenticated(true);
+        setUser(JSON.parse(userData));
+      }
     }
   }, []);
 
@@ -28,6 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const userData = { username: returnedUsername, roles };
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem(TOKEN_EXPIRES_AT_KEY, String(Date.now() + TOKEN_EXPIRY_MS));
     setIsAuthenticated(true);
     setUser(userData);
   };
@@ -35,6 +67,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem(TOKEN_EXPIRES_AT_KEY);
     setIsAuthenticated(false);
     setUser(null);
   };

@@ -23,9 +23,7 @@ const Home = () => {
             <h1 className="text-5xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 drop-shadow-lg">
               MATTYS LEDUC
             </h1>
-            <p className="text-xl text-cyan-300 mb-8">
-              {t("heroSubtitle")}
-            </p>
+            <p className="text-xl text-cyan-300 mb-8">{t("heroSubtitle")}</p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -49,13 +47,13 @@ const Home = () => {
       <section className="py-20 px-4 md:px-8 lg:px-16 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-cyan-400 text-sm font-mono mb-2">{t("projectsTag")}</p>
+            <p className="text-cyan-400 text-sm font-mono mb-2">
+              {t("projectsTag")}
+            </p>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
               {t("projectsTitle")}
             </h2>
-            <p className="text-cyan-300">
-              {t("projectsSubtitle")}
-            </p>
+            <p className="text-cyan-300">{t("projectsSubtitle")}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -85,7 +83,9 @@ const Home = () => {
       <section className="py-20 px-4 md:px-8 lg:px-16">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-cyan-400 text-sm font-mono mb-2">{t("skillsTag")}</p>
+            <p className="text-cyan-400 text-sm font-mono mb-2">
+              {t("skillsTag")}
+            </p>
             <h2 className="text-4xl md:text-5xl font-bold text-white">
               {t("skillsTitle")}
             </h2>

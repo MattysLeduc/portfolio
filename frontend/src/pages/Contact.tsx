@@ -68,7 +68,9 @@ const Contact = () => {
               {t("contactTag")}
             </span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
-              <span className="text-gradient neon-text">{t("contactTitle")}</span>
+              <span className="text-gradient neon-text">
+                {t("contactTitle")}
+              </span>
             </h1>
             <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
               {t("contactSubtitle")}

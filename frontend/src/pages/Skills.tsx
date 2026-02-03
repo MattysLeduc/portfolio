@@ -31,8 +31,8 @@ const Skills = () => {
         const data = await portfolioService.getSkills();
         setSkills(data);
       } catch (err) {
-        console.error('Failed to fetch skills:', err);
-        setError(t('loadError'));
+        console.error("Failed to fetch skills:", err);
+        setError(t("loadError"));
       } finally {
         setLoading(false);
       }
@@ -42,9 +42,9 @@ const Skills = () => {
   }, []);
 
   const categories = [
-    { key: 'categoryFrontend', value: 'Frontend' },
-    { key: 'categoryBackend', value: 'Backend' },
-    { key: 'categoryDevops', value: 'DevOps' },
+    { key: "categoryFrontend", value: "Frontend" },
+    { key: "categoryBackend", value: "Backend" },
+    { key: "categoryDevops", value: "DevOps" },
   ];
 
   if (loading) {
@@ -79,7 +79,7 @@ const Skills = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <main className="pt-32 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -87,9 +87,13 @@ const Skills = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <span className="font-mono text-primary text-sm tracking-widest">{t("skillsTag")}</span>
+            <span className="font-mono text-primary text-sm tracking-widest">
+              {t("skillsTag")}
+            </span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
-              <span className="text-gradient neon-text">{t("skillsTitle")}</span>
+              <span className="text-gradient neon-text">
+                {t("skillsTitle")}
+              </span>
             </h1>
             <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
               {t("skillsSubtitle")}
@@ -108,7 +112,7 @@ const Skills = () => {
                   <span className="text-primary">{t(category.key)}</span>
                   <div className="flex-1 h-px bg-gradient-to-r from-primary/50 to-transparent" />
                 </h2>
-                
+
                 <div className="grid md:grid-cols-2 gap-6">
                   {skills
                     .filter((skill) => skill.category === category.value)
@@ -122,17 +126,25 @@ const Skills = () => {
                       >
                         <div className="flex justify-between items-center mb-3">
                           <span className="font-mono text-lg">
-                            {getLocalizedField(skill, 'name', language) || skill.name}
+                            {getLocalizedField(skill, "name", language) ||
+                              skill.name}
                           </span>
-                          <span className="font-mono text-sm text-primary">{skill.level}%</span>
+                          <span className="font-mono text-sm text-primary">
+                            {skill.level}%
+                          </span>
                         </div>
                         <div className="h-2 bg-secondary/50 rounded-full overflow-hidden">
                           <motion.div
                             className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
                             initial={{ width: 0 }}
                             animate={{ width: `${skill.level}%` }}
-                            transition={{ duration: 1, delay: 0.5 + 0.1 * index }}
-                            style={{ boxShadow: "0 0 20px hsl(190 100% 50% / 0.5)" }}
+                            transition={{
+                              duration: 1,
+                              delay: 0.5 + 0.1 * index,
+                            }}
+                            style={{
+                              boxShadow: "0 0 20px hsl(190 100% 50% / 0.5)",
+                            }}
                           />
                         </div>
                       </motion.div>

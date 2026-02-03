@@ -131,8 +131,24 @@ export const AdminDashboardPage: React.FC = () => {
   return (
     <div className="admin-dashboard">
       <div className="dashboard-header">
-        <h1>Admin Dashboard</h1>
-        <p>Manage your portfolio content</p>
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p>Manage your portfolio content</p>
+        </div>
+        <Link 
+          to="/admin/panel" 
+          className="btn-primary"
+          style={{ 
+            padding: '8px 16px',
+            borderRadius: '4px',
+            background: 'var(--primary)',
+            color: 'white',
+            textDecoration: 'none',
+            fontSize: '14px'
+          }}
+        >
+          📝 Unified Editor
+        </Link>
       </div>
 
       {stats.loading ? (

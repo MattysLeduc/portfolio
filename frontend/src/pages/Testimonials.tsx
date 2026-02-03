@@ -90,7 +90,9 @@ const Testimonials = () => {
               {t("testimonialsTag")}
             </span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
-              <span className="text-gradient neon-text">{t("testimonialsTitle")}</span>
+              <span className="text-gradient neon-text">
+                {t("testimonialsTitle")}
+              </span>
             </h1>
             <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
               {t("testimonialsSubtitle")}
@@ -99,11 +101,19 @@ const Testimonials = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {testimonials.map((testimonial, index) => {
-              const localizedTitle = getLocalizedField(testimonial, "authorTitle", language) || testimonial.role || testimonial.position || "";
+              const localizedTitle =
+                getLocalizedField(testimonial, "authorTitle", language) ||
+                testimonial.role ||
+                testimonial.position ||
+                "";
               const roleText = testimonial.company
                 ? `${localizedTitle} ${t("at")} ${testimonial.company}`
                 : localizedTitle;
-              const content = getLocalizedField(testimonial, "content", language) || testimonial.content || testimonial.message || "";
+              const content =
+                getLocalizedField(testimonial, "content", language) ||
+                testimonial.content ||
+                testimonial.message ||
+                "";
               const rating = testimonial.rating || 5;
 
               return (
