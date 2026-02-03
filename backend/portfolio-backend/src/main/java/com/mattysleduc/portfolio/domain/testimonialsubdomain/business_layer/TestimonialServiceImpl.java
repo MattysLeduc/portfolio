@@ -46,6 +46,7 @@ public class TestimonialServiceImpl implements TestimonialService {
     @Override
     public TestimonialResponseModel submitTestimonial(TestimonialRequestModel model) {
         Testimonial entity = requestMapper.toEntity(model);
+        applyBilingualFallbacks(model, entity);
         return responseMapper.toResponseModel(repository.save(entity));
     }
 
@@ -69,5 +70,28 @@ public class TestimonialServiceImpl implements TestimonialService {
     public void deleteTestimonial(String testimonialId) {
         Testimonial entity = repository.findByTestimonialIdentifier_TestimonialId(testimonialId);
         repository.delete(entity);
+    }
+
+    private void applyBilingualFallbacks(TestimonialRequestModel model, Testimonial entity) {
+        String contentEn = model.getContentEn() != null ? model.getContentEn() : model.getContent();
+        String contentFr = model.getContentFr() != null ? model.getContentFr() : model.getContent();
+        String titleEn = model.getAuthorTitleEn() != null ? model.getAuthorTitleEn() : model.getAuthorTitle();
+        String titleFr = model.getAuthorTitleFr() != null ? model.getAuthorTitleFr() : model.getAuthorTitle();
+
+        if (contentEn != null) {
+            entity.setContentEn(contentEn);
+        }
+        if (contentFr != null) {
+            entity.setContentFr(contentFr);
+        }
+        if (titleEn != null) {
+            entity.setAuthorTitleEn(titleEn);
+        }
+        if (titleFr != null) {
+            entity.setAuthorTitleFr(titleFr);
+        }
+        if (model.getCompany() != null) {
+            entity.setCompany(model.getCompany());
+        }
     }
 }

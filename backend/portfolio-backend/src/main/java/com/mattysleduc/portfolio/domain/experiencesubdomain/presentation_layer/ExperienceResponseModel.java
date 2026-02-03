@@ -11,13 +11,23 @@ import java.util.List;
 public class ExperienceResponseModel {
     String experienceId;
     String title;
+    String titleEn;
+    String titleFr;
     String company;
+    String companyEn;
+    String companyFr;
     String location;
+    String locationEn;
+    String locationFr;
     LocalDate startDate;
     LocalDate endDate;
     boolean current;
     String period;
     String description;
+    String descriptionEn;
+    String descriptionFr;
     List<String> achievements;
     String responsibilities;
+    String responsibilitiesEn;
+    String responsibilitiesFr;
 }

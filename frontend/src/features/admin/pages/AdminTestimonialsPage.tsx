@@ -4,12 +4,15 @@ import { approveTestimonial } from '../../testimonials/api/admin/approveTestimon
 import { rejectTestimonial } from '../../testimonials/api/admin/rejectTestimonial';
 import { deleteTestimonial } from '../../testimonials/api/admin/deleteTestimonial';
 import type { TestimonialResponseModel } from '../../testimonials/models/TestimonialResponseModel';
+import { useLanguage } from '@/context/LanguageContext';
+import { getLocalizedField } from '@/utils/localization';
 import './AdminTestimonialsPage.css';
 
 export const AdminTestimonialsPage: React.FC = () => {
   const [testimonials, setTestimonials] = useState<TestimonialResponseModel[]>([]);
   const [rejectingId, setRejectingId] = useState<string | null>(null);
   const [rejectReason, setRejectReason] = useState('');
+  const { t, language } = useLanguage();
 
   useEffect(() => {
     fetchTestimonials();
@@ -66,23 +69,23 @@ export const AdminTestimonialsPage: React.FC = () => {
 
   return (
     <div className="admin-page">
-      <h1>Manage Testimonials</h1>
+      <h1>{t('testimonialsTitle')}</h1>
 
       <table className="admin-table">
         <thead>
           <tr>
-            <th>Author</th>
-            <th>Content</th>
-            <th>Rating</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>{t('name')}</th>
+            <th>{t('description')}</th>
+            <th>{t('testimonialsRating')}</th>
+            <th>{t('status')}</th>
+            <th>{t('actions')}</th>
           </tr>
         </thead>
         <tbody>
           {testimonials.map((testimonial) => (
             <tr key={testimonial.testimonialId}>
               <td>{testimonial.authorName}</td>
-              <td>{testimonial.content?.substring(0, 50)}...</td>
+              <td>{(getLocalizedField(testimonial, 'content', language) || testimonial.content)?.substring(0, 50)}...</td>
               <td>{'⭐'.repeat(testimonial.rating)}</td>
               <td>
                 <span
@@ -102,29 +105,29 @@ export const AdminTestimonialsPage: React.FC = () => {
                 {testimonial.status === 'PENDING' && (
                   <>
                     <button onClick={() => handleApprove(testimonial.testimonialId)} className="btn-secondary">
-                      Approve
+                      {t('approve')}
                     </button>
                     {rejectingId === testimonial.testimonialId ? (
                       <div className="reject-form">
                         <input
                           type="text"
-                          placeholder="Rejection reason"
+                          placeholder={t('rejectionReason')}
                           value={rejectReason}
                           onChange={(e) => setRejectReason(e.target.value)}
                         />
                         <button onClick={() => handleReject(testimonial.testimonialId)} className="btn-danger">
-                          Confirm Reject
+                          {t('confirmReject')}
                         </button>
                       </div>
                     ) : (
                       <button onClick={() => handleReject(testimonial.testimonialId)} className="btn-danger">
-                        Reject
+                        {t('reject')}
                       </button>
                     )}
                   </>
                 )}
                 <button onClick={() => handleDelete(testimonial.testimonialId)} className="btn-danger">
-                  Delete
+                  {t('delete')}
                 </button>
               </td>
             </tr>

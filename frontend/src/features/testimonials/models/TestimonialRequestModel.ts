@@ -1,7 +1,12 @@
 export interface TestimonialRequestModel {
   authorName: string;
   authorTitle?: string;
+  authorTitleEn?: string;
+  authorTitleFr?: string;
   authorImage?: string;
-  content: string;
+  content?: string;
+  contentEn: string;
+  contentFr: string;
   rating: number;
+  company?: string;
 }

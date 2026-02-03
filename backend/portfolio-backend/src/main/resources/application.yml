@@ -64,8 +64,5 @@ spring:
 
   sql:
     init:
-      platform: postgres
-      mode: always
-      schema-locations: classpath:schema.sql
-      data-locations: classpath:data-postgres.sql
+      mode: never
 

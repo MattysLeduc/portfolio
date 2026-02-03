@@ -1,4 +1,5 @@
 export interface EducationResponseModel {
+  [key: string]: any;
   educationId: string;
   degree?: string;
   degreeEn: string;

@@ -2,20 +2,26 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Menu, X, LogIn } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useLanguage } from "@/context/LanguageContext";
 
 const navItems = [
-  { label: "Skills", href: "/skills" },
-  { label: "Projects", href: "/projects" },
-  { label: "Experience", href: "/experience" },
-  { label: "Education", href: "/education" },
-  { label: "Hobbies", href: "/hobbies" },
-  { label: "Testimonials", href: "/testimonials" },
-  { label: "Contact", href: "/contact" },
+  { key: "skills", href: "/skills" },
+  { key: "projects", href: "/projects" },
+  { key: "experience", href: "/experience" },
+  { key: "education", href: "/education" },
+  { key: "hobbies", href: "/hobbies" },
+  { key: "testimonials", href: "/testimonials" },
+  { key: "contact", href: "/contact" },
 ];
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { language, setLanguage, t } = useLanguage();
+
+  const toggleLanguage = () => {
+    setLanguage(language === "en" ? "fr" : "en");
+  };
 
   return (
     <motion.header
@@ -39,7 +45,7 @@ const Navigation = () => {
         <div className="hidden lg:flex items-center gap-6">
           {navItems.map((item, index) => (
             <motion.div
-              key={item.label}
+              key={item.key}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.6 + 0.05 * index }}
@@ -52,7 +58,7 @@ const Navigation = () => {
                     : "text-muted-foreground hover:text-primary"
                 }`}
               >
-                {item.label}
+                {t(item.key)}
                 <span
                   className={`absolute -bottom-1 left-0 h-px bg-primary transition-all ${
                     location.pathname === item.href ? "w-full" : "w-0 group-hover:w-full"
@@ -61,6 +67,15 @@ const Navigation = () => {
               </Link>
             </motion.div>
           ))}
+
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            className="px-3 py-2 border border-primary/40 text-primary hover:bg-primary hover:text-background transition-all font-mono text-xs rounded-md"
+            aria-label={t("language")}
+          >
+            {language.toUpperCase()}
+          </button>
           
           {/* Sign In Button */}
           <motion.div
@@ -73,7 +88,7 @@ const Navigation = () => {
               className="flex items-center gap-2 px-4 py-2 border border-primary/50 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
             >
               <LogIn size={16} />
-              <span>SIGN IN</span>
+              <span>{t("signIn")}</span>
             </Link>
           </motion.div>
         </div>
@@ -102,12 +117,12 @@ const Navigation = () => {
             onClick={() => setIsOpen(false)}
           >
             <LogIn size={16} />
-            <span>SIGN IN</span>
+            <span>{t("signIn")}</span>
           </Link>
         <div className="px-6 py-8 flex flex-col gap-4">
           {navItems.map((item) => (
             <Link
-              key={item.label}
+              key={item.key}
               to={item.href}
               className={`font-mono text-lg transition-colors ${
                 location.pathname === item.href
@@ -116,9 +131,19 @@ const Navigation = () => {
               }`}
               onClick={() => setIsOpen(false)}
             >
-              {item.label}
+              {t(item.key)}
             </Link>
           ))}
+          <button
+            type="button"
+            onClick={() => {
+              toggleLanguage();
+              setIsOpen(false);
+            }}
+            className="px-3 py-2 border border-primary/40 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
+          >
+            {t("language")}: {language.toUpperCase()}
+          </button>
         </div>
       </motion.div>
     </motion.header>

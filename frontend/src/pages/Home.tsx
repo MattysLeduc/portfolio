@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const Home = () => {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-background overflow-hidden">
       {/* Hero Section */}
@@ -15,13 +18,13 @@ const Home = () => {
 
           <div className="mb-8">
             <p className="text-cyan-400 text-sm font-mono mb-4">
-              WELCOME TO MY PORTFOLIO
+              {t("heroWelcome")}
             </p>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 drop-shadow-lg">
               MATTYS LEDUC
             </h1>
             <p className="text-xl text-cyan-300 mb-8">
-              Student & Junior Full-Stack Developer
+              {t("heroSubtitle")}
             </p>
           </div>
 
@@ -30,13 +33,13 @@ const Home = () => {
               to="/projects"
               className="px-8 py-3 border border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all font-mono text-sm font-semibold"
             >
-              VIEW PROJECTS
+              {t("viewProjects")}
             </Link>
             <Link
               to="/contact"
               className="px-8 py-3 bg-cyan-600 text-black hover:bg-cyan-400 transition-all font-mono text-sm font-semibold flex items-center justify-center gap-2"
             >
-              CONTACT ME <ArrowRight size={18} />
+              {t("contactMe")} <ArrowRight size={18} />
             </Link>
           </div>
         </div>
@@ -46,12 +49,12 @@ const Home = () => {
       <section className="py-20 px-4 md:px-8 lg:px-16 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-cyan-400 text-sm font-mono mb-2">MY WORK</p>
+            <p className="text-cyan-400 text-sm font-mono mb-2">{t("projectsTag")}</p>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Featured Projects
+              {t("projectsTitle")}
             </h2>
             <p className="text-cyan-300">
-              A selection of projects I've worked on, from web apps to AI tools
+              {t("projectsSubtitle")}
             </p>
           </div>
 
@@ -72,7 +75,7 @@ const Home = () => {
               to="/projects"
               className="inline-block px-6 py-2 border border-cyan-500 text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all font-mono text-sm"
             >
-              View All Projects
+              {t("viewAllProjects")}
             </Link>
           </div>
         </div>
@@ -82,16 +85,16 @@ const Home = () => {
       <section className="py-20 px-4 md:px-8 lg:px-16">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-cyan-400 text-sm font-mono mb-2">WHAT I DO</p>
+            <p className="text-cyan-400 text-sm font-mono mb-2">{t("skillsTag")}</p>
             <h2 className="text-4xl md:text-5xl font-bold text-white">
-              Skills & Expertise
+              {t("skillsTitle")}
             </h2>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <h3 className="text-cyan-400 font-mono text-sm font-bold mb-4">
-                Frontend
+                {t("categoryFrontend")}
               </h3>
               {["React", "TypeScript", "Tailwind CSS", "Next.js"].map(
                 (skill) => (
@@ -110,7 +113,7 @@ const Home = () => {
 
             <div className="space-y-4">
               <h3 className="text-cyan-400 font-mono text-sm font-bold mb-4">
-                Backend
+                {t("categoryBackend")}
               </h3>
               {["Java", "Spring Boot", "PostgreSQL", "REST APIs"].map(
                 (skill) => (
@@ -134,14 +137,14 @@ const Home = () => {
       <section className="py-20 px-4 md:px-8 lg:px-16 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Ready to work together?
+            {t("ctaTitle")}
           </h2>
-          <p className="text-cyan-300 mb-8">Let's create something amazing</p>
+          <p className="text-cyan-300 mb-8">{t("ctaSubtitle")}</p>
           <Link
             to="/contact"
             className="inline-block px-8 py-3 bg-cyan-600 text-black hover:bg-cyan-400 transition-all font-mono text-sm font-semibold"
           >
-            Get In Touch
+            {t("getInTouch")}
           </Link>
         </div>
       </section>

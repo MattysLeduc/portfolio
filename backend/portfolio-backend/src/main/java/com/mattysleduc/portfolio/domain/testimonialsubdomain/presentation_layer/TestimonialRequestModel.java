@@ -12,7 +12,12 @@ import lombok.NoArgsConstructor;
 public class TestimonialRequestModel {
     private String authorName;
     private String authorTitle;
+    private String authorTitleEn;
+    private String authorTitleFr;
     private String authorImage;
     private String content;
+    private String contentEn;
+    private String contentFr;
     private Integer rating;
+    private String company;
 }

@@ -2,10 +2,18 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Navigation from "@/components/portfolio/Navigation";
 import { portfolioService } from "@/shared/api/portfolioService";
+import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedField } from "@/utils/localization";
 
 interface Skill {
+  [key: string]: any;
   id?: number;
   name: string;
+  nameEn?: string;
+  nameFr?: string;
+  description?: string;
+  descriptionEn?: string;
+  descriptionFr?: string;
   level: number;
   category: string;
 }
@@ -14,6 +22,7 @@ const Skills = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language, t } = useLanguage();
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -23,7 +32,7 @@ const Skills = () => {
         setSkills(data);
       } catch (err) {
         console.error('Failed to fetch skills:', err);
-        setError('Failed to load skills. Please try again later.');
+        setError(t('loadError'));
       } finally {
         setLoading(false);
       }
@@ -32,7 +41,11 @@ const Skills = () => {
     fetchSkills();
   }, []);
 
-  const categories = ["Frontend", "Backend", "DevOps"];
+  const categories = [
+    { key: 'categoryFrontend', value: 'Frontend' },
+    { key: 'categoryBackend', value: 'Backend' },
+    { key: 'categoryDevops', value: 'DevOps' },
+  ];
 
   if (loading) {
     return (
@@ -74,31 +87,31 @@ const Skills = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <span className="font-mono text-primary text-sm tracking-widest">WHAT I DO</span>
+            <span className="font-mono text-primary text-sm tracking-widest">{t("skillsTag")}</span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
-              <span className="text-gradient neon-text">Skills & Expertise</span>
+              <span className="text-gradient neon-text">{t("skillsTitle")}</span>
             </h1>
             <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-              Technologies and tools I've mastered throughout my career
+              {t("skillsSubtitle")}
             </p>
           </motion.div>
 
           <div className="grid gap-16">
             {categories.map((category, catIndex) => (
               <motion.div
-                key={category}
+                key={category.value}
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 * catIndex }}
               >
                 <h2 className="font-display text-2xl font-bold mb-8 flex items-center gap-4">
-                  <span className="text-primary">{category}</span>
+                  <span className="text-primary">{t(category.key)}</span>
                   <div className="flex-1 h-px bg-gradient-to-r from-primary/50 to-transparent" />
                 </h2>
                 
                 <div className="grid md:grid-cols-2 gap-6">
                   {skills
-                    .filter((skill) => skill.category === category)
+                    .filter((skill) => skill.category === category.value)
                     .map((skill, index) => (
                       <motion.div
                         key={skill.id || skill.name}
@@ -108,7 +121,9 @@ const Skills = () => {
                         className="glass p-6 rounded-sm group hover:neon-border transition-all duration-300"
                       >
                         <div className="flex justify-between items-center mb-3">
-                          <span className="font-mono text-lg">{skill.name}</span>
+                          <span className="font-mono text-lg">
+                            {getLocalizedField(skill, 'name', language) || skill.name}
+                          </span>
                           <span className="font-mono text-sm text-primary">{skill.level}%</span>
                         </div>
                         <div className="h-2 bg-secondary/50 rounded-full overflow-hidden">

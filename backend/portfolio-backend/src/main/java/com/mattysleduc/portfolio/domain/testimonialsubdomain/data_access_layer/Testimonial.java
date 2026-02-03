@@ -20,11 +20,14 @@ public class Testimonial {
     private TestimonialIdentifier testimonialIdentifier;
 
     private String authorName;
-    private String authorTitle;
+    private String authorTitleEn;
+    private String authorTitleFr;
     private String company;
     private String authorImage;
     @Column(length = 2000)
-    private String content;
+    private String contentEn;
+    @Column(length = 2000)
+    private String contentFr;
     private Integer rating;
 
     private OffsetDateTime createdAt;

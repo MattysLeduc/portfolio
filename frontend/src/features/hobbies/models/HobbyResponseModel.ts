@@ -1,4 +1,5 @@
 export interface HobbyResponseModel {
+  [key: string]: any;
   hobbyId: string;
   name?: string;
   nameEn: string;

@@ -13,11 +13,18 @@ import {
   Palette,
 } from "lucide-react";
 import { portfolioService } from "@/shared/api/portfolioService";
+import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedField } from "@/utils/localization";
 
 interface Hobby {
+  [key: string]: any;
   id?: number;
   name: string;
+  nameEn?: string;
+  nameFr?: string;
   description: string;
+  descriptionEn?: string;
+  descriptionFr?: string;
   icon?: string;
 }
 
@@ -49,6 +56,7 @@ const Hobbies = () => {
   const [hobbies, setHobbies] = useState<Hobby[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language, t } = useLanguage();
 
   useEffect(() => {
     const fetchHobbies = async () => {
@@ -58,7 +66,7 @@ const Hobbies = () => {
         setHobbies(data);
       } catch (err) {
         console.error("Failed to fetch hobbies:", err);
-        setError("Failed to load hobbies. Please try again later.");
+        setError(t("loadError"));
       } finally {
         setLoading(false);
       }
@@ -108,15 +116,15 @@ const Hobbies = () => {
             className="text-center mb-16"
           >
             <span className="font-mono text-primary text-sm tracking-widest">
-              BEYOND CODE
+              {t("hobbiesTag")}
             </span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
               <span className="text-gradient neon-text">
-                Hobbies & Interests
+                {t("hobbiesTitle")}
               </span>
             </h1>
             <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-              What I do when I'm not behind a keyboard
+              {t("hobbiesSubtitle")}
             </p>
           </motion.div>
 
@@ -126,10 +134,13 @@ const Hobbies = () => {
                 hobby.icon && iconMap[hobby.icon] ? iconMap[hobby.icon] : Heart;
               const colorGradient =
                 colorGradients[index % colorGradients.length];
+              const hobbyName = getLocalizedField(hobby, "name", language) || hobby.name;
+              const hobbyDescription =
+                getLocalizedField(hobby, "description", language) || hobby.description;
 
               return (
                 <motion.div
-                  key={hobby.id || hobby.name}
+                  key={hobby.id || hobbyName}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index }}
@@ -144,10 +155,10 @@ const Hobbies = () => {
                   </div>
 
                   <h3 className="font-display text-xl font-bold mb-3 group-hover:text-primary transition-colors">
-                    {hobby.name}
+                    {hobbyName}
                   </h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">
-                    {hobby.description}
+                    {hobbyDescription}
                   </p>
                 </motion.div>
               );
@@ -162,7 +173,7 @@ const Hobbies = () => {
             className="mt-16 glass p-8 rounded-sm"
           >
             <h3 className="font-display text-xl font-bold mb-6 text-center">
-              <span className="text-primary">Fun Facts</span>
+              <span className="text-primary">{t("hobbiesFunFacts")}</span>
             </h3>
             <div className="grid md:grid-cols-3 gap-8 text-center">
               <div>
@@ -170,7 +181,7 @@ const Hobbies = () => {
                   2000KM+
                 </div>
                 <p className="font-mono text-sm text-muted-foreground">
-                  Travel on Bike this year
+                  {t("hobbiesFactTravel")}
                 </p>
               </div>
               <div>
@@ -178,7 +189,7 @@ const Hobbies = () => {
                   400m
                 </div>
                 <p className="font-mono text-sm text-muted-foreground">
-                  Favourite Swimming Distance
+                  {t("hobbiesFactSwim")}
                 </p>
               </div>
               <div>
@@ -186,7 +197,7 @@ const Hobbies = () => {
                   Argentina
                 </div>
                 <p className="font-mono text-sm text-muted-foreground">
-                  Was my last trip
+                  {t("hobbiesFactTrip")}
                 </p>
               </div>
             </div>

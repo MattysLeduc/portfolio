@@ -5,20 +5,28 @@ import { updateExperience } from '../../experience/api/updateExperience';
 import type { Experience } from '../../experience/models/Experience';
 import './AdminExperiencePage.css';
 import axiosInstance from '../../../shared/api/apiClient';
+import { useLanguage } from '@/context/LanguageContext';
 
 export const AdminExperiencePage: React.FC = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    title: '',
-    company: '',
-    location: '',
+    titleEn: '',
+    titleFr: '',
+    companyEn: '',
+    companyFr: '',
+    locationEn: '',
+    locationFr: '',
     startDate: '',
     endDate: '',
     current: false,
-    description: '',
+    descriptionEn: '',
+    descriptionFr: '',
+    responsibilitiesEn: '',
+    responsibilitiesFr: '',
   });
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetchExperiences();
@@ -51,13 +59,19 @@ export const AdminExperiencePage: React.FC = () => {
   const handleEdit = (exp: Experience) => {
     setEditingId(exp.experienceId);
     setFormData({
-      title: exp.title,
-      company: exp.company,
-      location: exp.location || '',
+      titleEn: exp.titleEn || exp.title || '',
+      titleFr: exp.titleFr || exp.title || '',
+      companyEn: exp.companyEn || exp.company || '',
+      companyFr: exp.companyFr || exp.company || '',
+      locationEn: exp.locationEn || exp.location || '',
+      locationFr: exp.locationFr || exp.location || '',
       startDate: exp.startDate,
       endDate: exp.endDate || '',
       current: exp.current,
-      description: exp.description || '',
+      descriptionEn: exp.descriptionEn || exp.description || '',
+      descriptionFr: exp.descriptionFr || exp.description || '',
+      responsibilitiesEn: exp.responsibilitiesEn || exp.responsibilities || '',
+      responsibilitiesFr: exp.responsibilitiesFr || exp.responsibilities || '',
     });
     setShowForm(true);
   };
@@ -77,44 +91,70 @@ export const AdminExperiencePage: React.FC = () => {
     setEditingId(null);
     setShowForm(false);
     setFormData({
-      title: '',
-      company: '',
-      location: '',
+      titleEn: '',
+      titleFr: '',
+      companyEn: '',
+      companyFr: '',
+      locationEn: '',
+      locationFr: '',
       startDate: '',
       endDate: '',
       current: false,
-      description: '',
+      descriptionEn: '',
+      descriptionFr: '',
+      responsibilitiesEn: '',
+      responsibilitiesFr: '',
     });
   };
 
   return (
     <div className="admin-page">
-      <h1>Manage Experience</h1>
+      <h1>{t('manageExperience')}</h1>
       <button onClick={() => setShowForm(!showForm)} className="btn-primary">
-        {showForm ? 'Cancel' : 'Add Experience'}
+        {showForm ? t('cancel') : t('addExperience')}
       </button>
 
       {showForm && (
         <form onSubmit={handleSubmit} className="admin-form">
           <input
             type="text"
-            placeholder="Title"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            placeholder={t('titleEn')}
+            value={formData.titleEn}
+            onChange={(e) => setFormData({ ...formData, titleEn: e.target.value })}
             required
           />
           <input
             type="text"
-            placeholder="Company"
-            value={formData.company}
-            onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+            placeholder={t('titleFr')}
+            value={formData.titleFr}
+            onChange={(e) => setFormData({ ...formData, titleFr: e.target.value })}
             required
           />
           <input
             type="text"
-            placeholder="Location"
-            value={formData.location}
-            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            placeholder={t('companyEn')}
+            value={formData.companyEn}
+            onChange={(e) => setFormData({ ...formData, companyEn: e.target.value })}
+            required
+          />
+          <input
+            type="text"
+            placeholder={t('companyFr')}
+            value={formData.companyFr}
+            onChange={(e) => setFormData({ ...formData, companyFr: e.target.value })}
+            required
+          />
+          <input
+            type="text"
+            placeholder={t('locationEn')}
+            value={formData.locationEn}
+            onChange={(e) => setFormData({ ...formData, locationEn: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder={t('locationFr')}
+            value={formData.locationFr}
+            onChange={(e) => setFormData({ ...formData, locationFr: e.target.value })}
           />
           <input
             type="date"
@@ -133,15 +173,30 @@ export const AdminExperiencePage: React.FC = () => {
               checked={formData.current}
               onChange={(e) => setFormData({ ...formData, current: e.target.checked })}
             />
-            Currently working here
+            {t('currentlyWorking')}
           </label>
           <textarea
-            placeholder="Description"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            placeholder={t('descriptionEn')}
+            value={formData.descriptionEn}
+            onChange={(e) => setFormData({ ...formData, descriptionEn: e.target.value })}
+          />
+          <textarea
+            placeholder={t('descriptionFr')}
+            value={formData.descriptionFr}
+            onChange={(e) => setFormData({ ...formData, descriptionFr: e.target.value })}
+          />
+          <textarea
+            placeholder={t('responsibilitiesEn')}
+            value={formData.responsibilitiesEn}
+            onChange={(e) => setFormData({ ...formData, responsibilitiesEn: e.target.value })}
+          />
+          <textarea
+            placeholder={t('responsibilitiesFr')}
+            value={formData.responsibilitiesFr}
+            onChange={(e) => setFormData({ ...formData, responsibilitiesFr: e.target.value })}
           />
           <button type="submit" className="btn-primary">
-            {editingId ? 'Update' : 'Create'}
+            {editingId ? t('update') : t('create')}
           </button>
         </form>
       )}
@@ -149,23 +204,23 @@ export const AdminExperiencePage: React.FC = () => {
       <table className="admin-table">
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Company</th>
-            <th>Location</th>
-            <th>Start Date</th>
-            <th>Actions</th>
+            <th>{t('titleEn')}</th>
+            <th>{t('companyEn')}</th>
+            <th>{t('locationEn')}</th>
+            <th>{t('startDate')}</th>
+            <th>{t('actions')}</th>
           </tr>
         </thead>
         <tbody>
           {experiences.map((exp) => (
             <tr key={exp.experienceId}>
-              <td>{exp.title}</td>
-              <td>{exp.company}</td>
-              <td>{exp.location}</td>
+              <td>{exp.titleEn || exp.title}</td>
+              <td>{exp.companyEn || exp.company}</td>
+              <td>{exp.locationEn || exp.location}</td>
               <td>{new Date(exp.startDate).toLocaleDateString()}</td>
               <td>
-                <button onClick={() => handleEdit(exp)} className="btn-secondary">Edit</button>
-                <button onClick={() => handleDelete(exp.experienceId)} className="btn-danger">Delete</button>
+                <button onClick={() => handleEdit(exp)} className="btn-secondary">{t('edit')}</button>
+                <button onClick={() => handleDelete(exp.experienceId)} className="btn-danger">{t('delete')}</button>
               </td>
             </tr>
           ))}

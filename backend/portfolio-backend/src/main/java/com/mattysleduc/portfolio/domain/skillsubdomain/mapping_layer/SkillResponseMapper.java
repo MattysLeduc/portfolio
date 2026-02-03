@@ -9,8 +9,12 @@ import org.mapstruct.Mapping;
 public interface SkillResponseMapper {
 
     @Mapping(source = "skill.skillIdentifier.skillId", target = "skillId")
-    @Mapping(source = "skill.name", target = "name")
-    @Mapping(source = "skill.description", target = "description")
+    @Mapping(source = "skill.nameEn", target = "name")
+    @Mapping(source = "skill.descriptionEn", target = "description")
+    @Mapping(source = "skill.nameEn", target = "nameEn")
+    @Mapping(source = "skill.nameFr", target = "nameFr")
+    @Mapping(source = "skill.descriptionEn", target = "descriptionEn")
+    @Mapping(source = "skill.descriptionFr", target = "descriptionFr")
     @Mapping(source = "skill.category", target = "category")
     @Mapping(source = "skill.level", target = "level")
     SkillResponseModel toResponseModel(Skill skill);

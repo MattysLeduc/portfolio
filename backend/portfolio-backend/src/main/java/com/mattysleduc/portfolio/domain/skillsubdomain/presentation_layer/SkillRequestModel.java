@@ -12,4 +12,10 @@ import lombok.NoArgsConstructor;
 public class SkillRequestModel {
     private String name;
     private String description;
+    private String nameEn;
+    private String nameFr;
+    private String descriptionEn;
+    private String descriptionFr;
+    private String category;
+    private Integer level;
 }

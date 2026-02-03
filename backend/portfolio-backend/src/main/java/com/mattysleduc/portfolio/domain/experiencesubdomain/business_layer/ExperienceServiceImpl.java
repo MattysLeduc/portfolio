@@ -77,34 +77,63 @@ public class ExperienceServiceImpl implements ExperienceService {
             }
         }
         
-        // Parse achievements from responsibilities
+        // Parse achievements from responsibilities (English by default)
         java.util.List<String> achievements = null;
-        if (entity.getResponsibilities() != null && !entity.getResponsibilities().isEmpty()) {
-            achievements = java.util.Arrays.asList(entity.getResponsibilities().split("\\n"));
+        if (entity.getResponsibilitiesEn() != null && !entity.getResponsibilitiesEn().isEmpty()) {
+            achievements = java.util.Arrays.asList(entity.getResponsibilitiesEn().split("\\n"));
         }
         
         return ExperienceResponseModel.builder()
                 .experienceId(entity.getExperienceIdentifier().getExperienceId())
-                .title(entity.getTitle())
-                .company(entity.getCompany())
-                .location(entity.getLocation())
+            .title(entity.getTitleEn())
+            .titleEn(entity.getTitleEn())
+            .titleFr(entity.getTitleFr())
+            .company(entity.getCompanyEn())
+            .companyEn(entity.getCompanyEn())
+            .companyFr(entity.getCompanyFr())
+            .location(entity.getLocationEn())
+            .locationEn(entity.getLocationEn())
+            .locationFr(entity.getLocationFr())
                 .startDate(entity.getStartDate())
                 .endDate(entity.getEndDate())
                 .current(entity.isCurrent())
                 .period(period)
-                .description(entity.getDescription())
+            .description(entity.getDescriptionEn())
+            .descriptionEn(entity.getDescriptionEn())
+            .descriptionFr(entity.getDescriptionFr())
                 .achievements(achievements)
-                .responsibilities(entity.getResponsibilities())
+            .responsibilities(entity.getResponsibilitiesEn())
+            .responsibilitiesEn(entity.getResponsibilitiesEn())
+            .responsibilitiesFr(entity.getResponsibilitiesFr())
                 .build();
     }
 
     private void apply(ExperienceRequestModel model, Experience entity) {
-        entity.setTitle(model.getTitle());
-        entity.setCompany(model.getCompany());
-        entity.setLocation(model.getLocation());
+        String titleEn = model.getTitleEn() != null ? model.getTitleEn() : model.getTitle();
+        String titleFr = model.getTitleFr() != null ? model.getTitleFr() : model.getTitle();
+        String companyEn = model.getCompanyEn() != null ? model.getCompanyEn() : model.getCompany();
+        String companyFr = model.getCompanyFr() != null ? model.getCompanyFr() : model.getCompany();
+        String locationEn = model.getLocationEn() != null ? model.getLocationEn() : model.getLocation();
+        String locationFr = model.getLocationFr() != null ? model.getLocationFr() : model.getLocation();
+        String descriptionEn = model.getDescriptionEn() != null ? model.getDescriptionEn() : model.getDescription();
+        String descriptionFr = model.getDescriptionFr() != null ? model.getDescriptionFr() : model.getDescription();
+
+        entity.setTitleEn(titleEn);
+        entity.setTitleFr(titleFr);
+        entity.setCompanyEn(companyEn);
+        entity.setCompanyFr(companyFr);
+        entity.setLocationEn(locationEn);
+        entity.setLocationFr(locationFr);
         entity.setStartDate(model.getStartDate());
         entity.setEndDate(model.getEndDate());
         entity.setCurrent(model.isCurrent());
-        entity.setDescription(model.getDescription());
+        entity.setDescriptionEn(descriptionEn);
+        entity.setDescriptionFr(descriptionFr);
+        if (model.getResponsibilitiesEn() != null) {
+            entity.setResponsibilitiesEn(model.getResponsibilitiesEn());
+        }
+        if (model.getResponsibilitiesFr() != null) {
+            entity.setResponsibilitiesFr(model.getResponsibilitiesFr());
+        }
     }
 }

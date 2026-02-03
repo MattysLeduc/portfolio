@@ -17,10 +17,14 @@ public class TestimonialResponseModel {
     private String authorName;
     private String role;
     private String authorTitle;
+    private String authorTitleEn;
+    private String authorTitleFr;
     private String position;
     private String company;
     private String authorImage;
     private String content;
+    private String contentEn;
+    private String contentFr;
     private String message;
     private Integer rating;
     private OffsetDateTime createdAt;

@@ -3,6 +3,7 @@ import { useState } from "react";
 import Navigation from "@/components/portfolio/Navigation";
 import { Mail, Github, Linkedin, MapPin, Phone, Send } from "lucide-react";
 import { portfolioService } from "@/shared/api/portfolioService";
+import { useLanguage } from "@/context/LanguageContext";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ const Contact = () => {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +31,7 @@ const Contact = () => {
       setTimeout(() => setSuccess(false), 5000);
     } catch (err) {
       console.error("Failed to submit contact form:", err);
-      setError("Failed to send message. Please try again later.");
+      setError(t("contactSendError"));
     } finally {
       setSubmitting(false);
     }
@@ -46,9 +48,9 @@ const Contact = () => {
   ];
 
   const contactInfo = [
-    { icon: Mail, label: "Email", value: "mattys.leduc@gmail.com" },
-    { icon: Phone, label: "Phone", value: "+1 (514) 506-1001" },
-    { icon: MapPin, label: "Location", value: "Montreal, QC" },
+    { icon: Mail, label: t("email"), value: "mattys.leduc@gmail.com" },
+    { icon: Phone, label: t("phone"), value: "+1 (514) 506-1001" },
+    { icon: MapPin, label: t("location"), value: "Montreal, QC" },
   ];
 
   return (
@@ -63,14 +65,13 @@ const Contact = () => {
             className="text-center mb-16"
           >
             <span className="font-mono text-primary text-sm tracking-widest">
-              GET IN TOUCH
+              {t("contactTag")}
             </span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
-              <span className="text-gradient neon-text">Contact Me</span>
+              <span className="text-gradient neon-text">{t("contactTitle")}</span>
             </h1>
             <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-              Have a project in mind or just want to chat? I'd love to hear from
-              you!
+              {t("contactSubtitle")}
             </p>
           </motion.div>
 
@@ -87,7 +88,7 @@ const Contact = () => {
               >
                 <div>
                   <label className="font-mono text-sm text-muted-foreground block mb-2">
-                    Name
+                    {t("name")}
                   </label>
                   <input
                     type="text"
@@ -96,14 +97,14 @@ const Contact = () => {
                       setFormData({ ...formData, name: e.target.value })
                     }
                     className="w-full bg-secondary/30 border border-primary/20 rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all"
-                    placeholder="Your name"
+                    placeholder={t("contactNamePlaceholder")}
                     required
                   />
                 </div>
 
                 <div>
                   <label className="font-mono text-sm text-muted-foreground block mb-2">
-                    Email
+                    {t("email")}
                   </label>
                   <input
                     type="email"
@@ -112,14 +113,14 @@ const Contact = () => {
                       setFormData({ ...formData, email: e.target.value })
                     }
                     className="w-full bg-secondary/30 border border-primary/20 rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all"
-                    placeholder="your@email.com"
+                    placeholder={t("contactEmailPlaceholder")}
                     required
                   />
                 </div>
 
                 <div>
                   <label className="font-mono text-sm text-muted-foreground block mb-2">
-                    Subject
+                    {t("subject")}
                   </label>
                   <input
                     type="text"
@@ -128,14 +129,14 @@ const Contact = () => {
                       setFormData({ ...formData, subject: e.target.value })
                     }
                     className="w-full bg-secondary/30 border border-primary/20 rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all"
-                    placeholder="What is this about?"
+                    placeholder={t("contactSubjectPlaceholder")}
                     required
                   />
                 </div>
 
                 <div>
                   <label className="font-mono text-sm text-muted-foreground block mb-2">
-                    Message
+                    {t("message")}
                   </label>
                   <textarea
                     value={formData.message}
@@ -144,7 +145,7 @@ const Contact = () => {
                     }
                     rows={5}
                     className="w-full bg-secondary/30 border border-primary/20 rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all resize-none"
-                    placeholder="Tell me about your project..."
+                    placeholder={t("contactMessagePlaceholder")}
                     required
                   />
                 </div>
@@ -152,7 +153,7 @@ const Contact = () => {
                 {success && (
                   <div className="p-4 bg-primary/10 border border-primary rounded-sm">
                     <p className="text-primary text-sm font-mono text-center">
-                      Message sent successfully!
+                      {t("contactSuccess")}
                     </p>
                   </div>
                 )}
@@ -173,7 +174,7 @@ const Contact = () => {
                   <span className="absolute inset-0 border border-primary neon-border transition-all duration-300 group-hover:neon-border-strong" />
                   <span className="relative z-10 text-primary group-hover:text-background transition-colors flex items-center justify-center gap-2">
                     <Send size={16} />
-                    {submitting ? "Sending..." : "Send Message"}
+                    {submitting ? t("contactSending") : t("contactSend")}
                   </span>
                   <span className="absolute inset-0 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
                 </button>
@@ -218,7 +219,7 @@ const Contact = () => {
                 className="glass p-6 rounded-sm"
               >
                 <h3 className="font-display text-lg font-bold mb-4">
-                  Connect With Me
+                  {t("contactConnect")}
                 </h3>
                 <div className="space-y-3">
                   {socialLinks.map((social) => (
@@ -254,11 +255,11 @@ const Contact = () => {
                 <div className="inline-flex items-center gap-2 mb-2">
                   <div className="w-3 h-3 rounded-full bg-accent animate-pulse" />
                   <span className="font-mono text-sm text-accent">
-                    Available for work
+                    {t("contactAvailable")}
                   </span>
                 </div>
                 <p className="text-muted-foreground text-sm">
-                  Currently accepting new projects and collaborations
+                  {t("contactAvailability")}
                 </p>
               </motion.div>
             </motion.div>

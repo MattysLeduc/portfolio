@@ -1,13 +1,24 @@
 export type Experience = {
   experienceId: string;
-  title: string;
-  company: string;
+  title?: string;
+  titleEn?: string;
+  titleFr?: string;
+  company?: string;
+  companyEn?: string;
+  companyFr?: string;
+  [key: string]: any;
   location?: string;
+  locationEn?: string;
+  locationFr?: string;
   startDate: string;
   endDate?: string | null;
   current: boolean;
   period?: string;
   description?: string;
+  descriptionEn?: string;
+  descriptionFr?: string;
   achievements?: string[];
   responsibilities?: string;
+  responsibilitiesEn?: string;
+  responsibilitiesFr?: string;
 };

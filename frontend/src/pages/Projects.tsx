@@ -3,10 +3,17 @@ import { useState, useEffect } from "react";
 import Navigation from "@/components/portfolio/Navigation";
 import { ExternalLink, Github } from "lucide-react";
 import { portfolioService } from "@/shared/api/portfolioService";
+import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedField } from "@/utils/localization";
 
 interface Project {
+  [key: string]: any;
   id?: number;
+  nameEn?: string;
+  nameFr?: string;
   title: string;
+  descriptionEn?: string;
+  descriptionFr?: string;
   description: string;
   tech?: string[];
   technologies?: string;
@@ -20,6 +27,7 @@ const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language, t } = useLanguage();
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -29,7 +37,7 @@ const Projects = () => {
         setProjects(data);
       } catch (err) {
         console.error('Failed to fetch projects:', err);
-        setError('Failed to load projects. Please try again later.');
+        setError(t('loadError'));
       } finally {
         setLoading(false);
       }
@@ -78,12 +86,12 @@ const Projects = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <span className="font-mono text-primary text-sm tracking-widest">MY WORK</span>
+            <span className="font-mono text-primary text-sm tracking-widest">{t("projectsTag")}</span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
-              <span className="text-gradient neon-text">Featured Projects</span>
+              <span className="text-gradient neon-text">{t("projectsTitle")}</span>
             </h1>
             <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-              A selection of projects I've worked on, from web apps to AI tools
+              {t("projectsSubtitle")}
             </p>
           </motion.div>
 
@@ -92,10 +100,12 @@ const Projects = () => {
               const techArray = project.tech || (project.technologies ? project.technologies.split(',').map(t => t.trim()) : []);
               const githubUrl = project.github || project.githubUrl || '#';
               const liveUrl = project.live || project.liveUrl || '#';
+              const localizedTitle = getLocalizedField(project, 'name', language) || project.title;
+              const localizedDescription = getLocalizedField(project, 'description', language) || project.description;
               
               return (
                 <motion.div
-                  key={project.id || project.title}
+                  key={project.id || localizedTitle}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * index }}
@@ -112,10 +122,10 @@ const Projects = () => {
                   
                   <div className="p-6 space-y-4">
                     <h3 className="font-display text-xl font-bold group-hover:text-primary transition-colors">
-                      {project.title}
+                      {localizedTitle}
                     </h3>
                     <p className="text-muted-foreground text-sm line-clamp-3">
-                      {project.description}
+                      {localizedDescription}
                     </p>
                     
                     {techArray.length > 0 && (

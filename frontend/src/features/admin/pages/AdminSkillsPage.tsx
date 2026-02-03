@@ -5,6 +5,7 @@ import { deleteSkill } from '../../skills/api/deleteSkill';
 import { updateSkill } from '../../skills/api/updateSkill';
 import type { SkillResponseModel } from '../../skills/models/SkillResponseModel';
 import type { SkillRequestModel } from '../../skills/models/SkillRequestModel';
+import { useLanguage } from '@/context/LanguageContext';
 import '../styles/admin-common.css';
 import './AdminSkillsPage.css';
 
@@ -15,9 +16,14 @@ export const AdminSkillsPage: React.FC = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [formData, setFormData] = useState<SkillRequestModel>({
-    name: '',
-    description: '',
+    nameEn: '',
+    nameFr: '',
+    descriptionEn: '',
+    descriptionFr: '',
+    category: '',
+    level: 0,
   });
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetchSkills();
@@ -62,8 +68,12 @@ export const AdminSkillsPage: React.FC = () => {
   const handleEdit = (skill: SkillResponseModel) => {
     setEditingId(skill.skillId);
     setFormData({
-      name: skill.name,
-      description: skill.description,
+      nameEn: skill.nameEn || skill.name,
+      nameFr: skill.nameFr || skill.name,
+      descriptionEn: skill.descriptionEn || skill.description,
+      descriptionFr: skill.descriptionFr || skill.description,
+      category: skill.category || '',
+      level: skill.level || 0,
     });
     setShowForm(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -73,8 +83,12 @@ export const AdminSkillsPage: React.FC = () => {
     setEditingId(null);
     setShowForm(false);
     setFormData({
-      name: '',
-      description: '',
+      nameEn: '',
+      nameFr: '',
+      descriptionEn: '',
+      descriptionFr: '',
+      category: '',
+      level: 0,
     });
   };
 
@@ -94,9 +108,9 @@ export const AdminSkillsPage: React.FC = () => {
   return (
     <div className="admin-page">
       <div className="admin-page-header">
-        <h1>Manage Skills</h1>
+        <h1>{t('manageSkills')}</h1>
         <button onClick={() => setShowForm(!showForm)} className="btn btn-primary">
-          {showForm ? '✕ Cancel' : '+ Add Skill'}
+          {showForm ? `✕ ${t('cancel')}` : `+ ${t('addSkill')}`}
         </button>
       </div>
 
@@ -109,34 +123,80 @@ export const AdminSkillsPage: React.FC = () => {
       {showForm && (
         <form onSubmit={handleSubmit} className="admin-form">
           <div className="form-group">
-            <label htmlFor="name">Skill Name *</label>
+            <label htmlFor="nameEn">{t('nameEn')} *</label>
             <input
-              id="name"
+              id="nameEn"
               type="text"
-              placeholder="e.g., React, TypeScript, Node.js"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="React, TypeScript, Node.js"
+              value={formData.nameEn}
+              onChange={(e) => setFormData({ ...formData, nameEn: e.target.value })}
               required
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="description">Description *</label>
-            <textarea
-              id="description"
-              placeholder="Brief description of the skill and your proficiency level"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            <label htmlFor="nameFr">{t('nameFr')} *</label>
+            <input
+              id="nameFr"
+              type="text"
+              placeholder="React, TypeScript, Node.js"
+              value={formData.nameFr}
+              onChange={(e) => setFormData({ ...formData, nameFr: e.target.value })}
               required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="descriptionEn">{t('descriptionEn')} *</label>
+            <textarea
+              id="descriptionEn"
+              placeholder="Brief description of the skill"
+              value={formData.descriptionEn}
+              onChange={(e) => setFormData({ ...formData, descriptionEn: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="descriptionFr">{t('descriptionFr')} *</label>
+            <textarea
+              id="descriptionFr"
+              placeholder="Brève description de la compétence"
+              value={formData.descriptionFr}
+              onChange={(e) => setFormData({ ...formData, descriptionFr: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="category">{t('category')}</label>
+            <input
+              id="category"
+              type="text"
+              placeholder="Frontend, Backend, DevOps"
+              value={formData.category || ''}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="level">{t('level')}</label>
+            <input
+              id="level"
+              type="number"
+              min={0}
+              max={100}
+              value={formData.level || 0}
+              onChange={(e) => setFormData({ ...formData, level: Number(e.target.value) })}
             />
           </div>
 
           <div className="form-actions">
             <button type="submit" className="btn btn-primary">
-              {editingId ? 'Update Skill' : 'Create Skill'}
+              {editingId ? t('updateSkill') : t('createSkill')}
             </button>
             <button type="button" onClick={resetForm} className="btn btn-secondary">
-              Cancel
+              {t('cancel')}
             </button>
           </div>
         </form>
@@ -145,34 +205,34 @@ export const AdminSkillsPage: React.FC = () => {
       {loading ? (
         <div className="loading-spinner">
           <div className="spinner"></div>
-          <p>Loading skills...</p>
+          <p>{t('loadingSkills')}</p>
         </div>
       ) : skills.length === 0 ? (
         <div className="empty-state">
-          <p>No skills found. Add your first skill to get started!</p>
+          <p>{t('noSkills')}</p>
         </div>
       ) : (
         <div className="admin-table-container">
           <table className="admin-table">
             <thead>
               <tr>
-                <th>Skill Name</th>
-                <th>Description</th>
-                <th style={{ width: '180px' }}>Actions</th>
+                <th>{t('name')}</th>
+                <th>{t('description')}</th>
+                <th style={{ width: '180px' }}>{t('actions')}</th>
               </tr>
             </thead>
             <tbody>
               {skills.map((skill) => (
                 <tr key={skill.skillId}>
-                  <td><strong>{skill.name}</strong></td>
-                  <td>{skill.description}</td>
+                  <td><strong>{skill.nameEn || skill.name}</strong></td>
+                  <td>{skill.descriptionEn || skill.description}</td>
                   <td>
                     <div className="actions">
                       <button onClick={() => handleEdit(skill)} className="btn btn-secondary">
-                        Edit
+                        {t('edit')}
                       </button>
                       <button onClick={() => handleDelete(skill.skillId)} className="btn btn-danger">
-                        Delete
+                        {t('delete')}
                       </button>
                     </div>
                   </td>

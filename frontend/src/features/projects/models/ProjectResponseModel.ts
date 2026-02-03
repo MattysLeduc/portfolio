@@ -1,4 +1,5 @@
 export interface ProjectResponseModel {
+  [key: string]: any;
   projectId: string;
   title?: string;
   nameEn: string;

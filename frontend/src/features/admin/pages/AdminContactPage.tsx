@@ -23,7 +23,7 @@ export const AdminContactPage: React.FC = () => {
 
   useEffect(() => {
     fetchContactInfo();
-  }, []);
+  });
 
   const fetchContactInfo = async () => {
     try {

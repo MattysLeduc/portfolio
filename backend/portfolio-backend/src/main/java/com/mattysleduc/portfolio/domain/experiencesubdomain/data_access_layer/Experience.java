@@ -22,18 +22,25 @@ public class Experience {
     @AttributeOverride(name = "experienceId", column = @Column(name = "experience_id"))
     private ExperienceIdentifier experienceIdentifier;
 
-    private String title;
-    private String company;
-    private String location;
+    private String titleEn;
+    private String titleFr;
+    private String companyEn;
+    private String companyFr;
+    private String locationEn;
+    private String locationFr;
     private LocalDate startDate;
     private LocalDate endDate;
     private boolean current;
 
     @Column(length = 2000)
-    private String description;
-    
+    private String descriptionEn;
+    private String descriptionFr;
+
     @Column(length = 3000)
-    private String responsibilities;
+    private String responsibilitiesEn;
+
+    @Column(length = 3000)
+    private String responsibilitiesFr;
 
     @PrePersist
     public void ensureIdentifier() {

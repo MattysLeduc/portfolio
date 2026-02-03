@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageContext";
 
 const HeroSection = () => {
+  const { t } = useLanguage();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background grid pattern */}
@@ -37,7 +40,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
         >
           <span className="font-mono text-primary/80 text-sm tracking-[0.3em] uppercase">
-            Welcome to my portfolio
+            {t("heroWelcome")}
           </span>
         </motion.div>
 
@@ -56,7 +59,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
         >
-          Student & Junior Full-Stack Developer
+          {t("heroSubtitle")}
         </motion.p>
 
         <motion.div
@@ -71,7 +74,7 @@ const HeroSection = () => {
           >
             <span className="absolute inset-0 border border-primary neon-border transition-all duration-300 group-hover:neon-border-strong" />
             <span className="relative z-10 text-primary group-hover:text-foreground transition-colors">
-              View Projects
+              {t("viewProjects")}
             </span>
             <span className="absolute inset-0 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
           </a>
@@ -82,7 +85,7 @@ const HeroSection = () => {
           >
             <span className="absolute inset-0 glass rounded-sm border-primary/20" />
             <span className="relative z-10 text-foreground/80 group-hover:text-primary transition-colors">
-              Contact Me
+              {t("contactMe")}
             </span>
           </a>
         </motion.div>

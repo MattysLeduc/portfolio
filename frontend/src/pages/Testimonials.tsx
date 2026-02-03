@@ -4,14 +4,21 @@ import Navigation from "@/components/portfolio/Navigation";
 import { Quote, Star } from "lucide-react";
 import { SubmitTestimonialForm } from "@/features/testimonials/components/SubmitTestimonialForm";
 import { portfolioService } from "@/shared/api/portfolioService";
+import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedField } from "@/utils/localization";
 
 interface Testimonial {
+  [key: string]: any;
   id?: number;
   name: string;
+  authorTitleEn?: string;
+  authorTitleFr?: string;
   role?: string;
   position?: string;
   company?: string;
   content: string;
+  contentEn?: string;
+  contentFr?: string;
   message?: string;
   rating: number;
 }
@@ -20,6 +27,7 @@ const Testimonials = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language, t } = useLanguage();
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -29,7 +37,7 @@ const Testimonials = () => {
         setTestimonials(data);
       } catch (err) {
         console.error("Failed to fetch testimonials:", err);
-        setError("Failed to load testimonials. Please try again later.");
+        setError(t("loadError"));
       } finally {
         setLoading(false);
       }
@@ -79,24 +87,23 @@ const Testimonials = () => {
             className="text-center mb-16"
           >
             <span className="font-mono text-primary text-sm tracking-widest">
-              WHAT OTHERS SAY
+              {t("testimonialsTag")}
             </span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
-              <span className="text-gradient neon-text">Testimonials</span>
+              <span className="text-gradient neon-text">{t("testimonialsTitle")}</span>
             </h1>
             <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-              Feedback from colleagues, clients, and collaborators
+              {t("testimonialsSubtitle")}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {testimonials.map((testimonial, index) => {
-              const roleText =
-                testimonial.role ||
-                (testimonial.position && testimonial.company
-                  ? `${testimonial.position} at ${testimonial.company}`
-                  : testimonial.position || "");
-              const content = testimonial.content || testimonial.message || "";
+              const localizedTitle = getLocalizedField(testimonial, "authorTitle", language) || testimonial.role || testimonial.position || "";
+              const roleText = testimonial.company
+                ? `${localizedTitle} ${t("at")} ${testimonial.company}`
+                : localizedTitle;
+              const content = getLocalizedField(testimonial, "content", language) || testimonial.content || testimonial.message || "";
               const rating = testimonial.rating || 5;
 
               return (
@@ -157,15 +164,15 @@ const Testimonials = () => {
               className="text-center mb-10"
             >
               <span className="font-mono text-primary text-sm tracking-widest">
-                SHARE YOUR EXPERIENCE
+                {t("testimonialsShareTag")}
               </span>
               <h2 className="mt-4 font-display text-3xl md:text-4xl font-bold">
                 <span className="text-gradient neon-text">
-                  Leave a Testimonial
+                  {t("testimonialsLeaveTitle")}
                 </span>
               </h2>
               <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-                Have worked with me? I’d love to hear about your experience!
+                {t("testimonialsLeaveSubtitle")}
               </p>
             </motion.div>
             <SubmitTestimonialForm

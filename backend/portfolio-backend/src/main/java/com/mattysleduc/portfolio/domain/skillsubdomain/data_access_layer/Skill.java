@@ -17,8 +17,10 @@ public class Skill {
     @Embedded
     private SkillIdentifier skillIdentifier;
 
-    private String name;
-    private String description;
+    private String nameEn;
+    private String nameFr;
+    private String descriptionEn;
+    private String descriptionFr;
     private String category;
     private Integer level;
 }

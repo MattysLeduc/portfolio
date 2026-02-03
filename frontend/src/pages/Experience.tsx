@@ -3,23 +3,38 @@ import { useState, useEffect } from "react";
 import Navigation from "@/components/portfolio/Navigation";
 import { Briefcase, Calendar } from "lucide-react";
 import { portfolioService } from "@/shared/api/portfolioService";
+import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedField } from "@/utils/localization";
 
 interface Experience {
+  [key: string]: any;
   id?: number;
   title: string;
+  titleEn?: string;
+  titleFr?: string;
   company: string;
+  companyEn?: string;
+  companyFr?: string;
   period?: string;
   startDate?: string;
   endDate?: string;
   description: string;
+  descriptionEn?: string;
+  descriptionFr?: string;
   achievements?: string[];
   responsibilities?: string;
+  responsibilitiesEn?: string;
+  responsibilitiesFr?: string;
+  location?: string;
+  locationEn?: string;
+  locationFr?: string;
 }
 
 const Experience = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language, t } = useLanguage();
 
   useEffect(() => {
     const fetchExperiences = async () => {
@@ -29,7 +44,7 @@ const Experience = () => {
         setExperiences(data);
       } catch (err) {
         console.error('Failed to fetch experiences:', err);
-        setError('Failed to load experiences. Please try again later.');
+        setError(t('loadError'));
       } finally {
         setLoading(false);
       }
@@ -78,12 +93,12 @@ const Experience = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <span className="font-mono text-primary text-sm tracking-widest">MY JOURNEY</span>
+            <span className="font-mono text-primary text-sm tracking-widest">{t("experienceTag")}</span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
-              <span className="text-gradient neon-text">Work Experience</span>
+              <span className="text-gradient neon-text">{t("experienceTitle")}</span>
             </h1>
             <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-              My professional journey through the tech industry
+              {t("experienceSubtitle")}
             </p>
           </motion.div>
 
@@ -93,12 +108,16 @@ const Experience = () => {
             
             <div className="space-y-12">
               {experiences.map((exp, index) => {
-                const period = exp.period || `${exp.startDate || ''} - ${exp.endDate || 'Present'}`.trim();
-                const achievementsList = exp.achievements || (exp.responsibilities ? exp.responsibilities.split('\n').filter(Boolean) : []);
+                const localizedTitle = getLocalizedField(exp, 'title', language) || exp.title;
+                const localizedCompany = getLocalizedField(exp, 'company', language) || exp.company;
+                const localizedDescription = getLocalizedField(exp, 'description', language) || exp.description;
+                const localizedResponsibilities = getLocalizedField(exp, 'responsibilities', language) || exp.responsibilities || '';
+                const period = exp.period || `${exp.startDate || ''} - ${exp.endDate || t('currentRole')}`.trim();
+                const achievementsList = exp.achievements || (localizedResponsibilities ? localizedResponsibilities.split('\n').filter(Boolean) : []);
                 
                 return (
                   <motion.div
-                    key={exp.id || exp.company}
+                    key={exp.id || localizedCompany}
                     initial={{ opacity: 0, x: -30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 * index }}
@@ -112,10 +131,10 @@ const Experience = () => {
                     <div className="glass p-6 rounded-sm hover:neon-border transition-all duration-300">
                       <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                         <div>
-                          <h3 className="font-display text-xl font-bold text-primary">{exp.title}</h3>
+                          <h3 className="font-display text-xl font-bold text-primary">{localizedTitle}</h3>
                           <div className="flex items-center gap-2 mt-1 text-muted-foreground">
                             <Briefcase size={14} />
-                            <span className="font-mono text-sm">{exp.company}</span>
+                            <span className="font-mono text-sm">{localizedCompany}</span>
                           </div>
                         </div>
                         <div className="flex items-center gap-2 text-muted-foreground">
@@ -124,7 +143,7 @@ const Experience = () => {
                         </div>
                       </div>
                       
-                      <p className="text-muted-foreground mb-4">{exp.description}</p>
+                      <p className="text-muted-foreground mb-4">{localizedDescription}</p>
                       
                       {achievementsList.length > 0 && (
                         <ul className="space-y-2">

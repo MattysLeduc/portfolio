@@ -2,19 +2,23 @@ import { useState } from "react";
 import { submitTestimonial } from "../api/submitTestimonial";
 import type { TestimonialRequestModel } from "../models/TestimonialRequestModel";
 import "../styles/SubmitTestimonialForm.css";
+import { useLanguage } from "@/context/LanguageContext";
 
 export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
   onSuccess,
 }) => {
   const [formData, setFormData] = useState<TestimonialRequestModel>({
     authorName: "",
-    authorTitle: "",
-    content: "",
+    authorTitleEn: "",
+    authorTitleFr: "",
+    contentEn: "",
+    contentFr: "",
     rating: 5,
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const { t } = useLanguage();
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -38,8 +42,10 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
       setSuccess(true);
       setFormData({
         authorName: "",
-        authorTitle: "",
-        content: "",
+        authorTitleEn: "",
+        authorTitleFr: "",
+        contentEn: "",
+        contentFr: "",
         rating: 5,
       });
       setTimeout(() => {
@@ -48,7 +54,7 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
       }, 3000);
     } catch (err) {
       console.error("Error submitting testimonial:", err);
-      setError("Failed to submit testimonial. Please try again.");
+      setError(t("testimonialsSubmitError"));
     } finally {
       setLoading(false);
     }
@@ -57,42 +63,55 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
   return (
     <div className="submit-testimonial-form-container">
       <div className="form-header">
-        <h2 className="form-title">Share Your Testimonial</h2>
+        <h2 className="form-title">{t("testimonialsShareTitle")}</h2>
         <p className="form-subtitle">
-          Help others learn from your experience working with me
+          {t("testimonialsShareSubtitle")}
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="submit-testimonial-form">
         <div className="form-group">
-          <label htmlFor="authorName">Your Name *</label>
+          <label htmlFor="authorName">{t("testimonialsYourName")} *</label>
           <input
             type="text"
             id="authorName"
             name="authorName"
             value={formData.authorName}
             onChange={handleChange}
-            placeholder="Enter your name"
+            placeholder={t("testimonialsNamePlaceholder")}
             required
             className="form-input"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="authorTitle">Title/Position *</label>
+          <label htmlFor="authorTitleEn">{t("testimonialsTitleEn")} *</label>
           <input
             type="text"
-            id="authorTitle"
-            name="authorTitle"
-            value={formData.authorTitle || ""}
+            id="authorTitleEn"
+            name="authorTitleEn"
+            value={formData.authorTitleEn || ""}
             onChange={handleChange}
-            placeholder="e.g., Product Manager, Team Lead"
+            placeholder={t("testimonialsTitlePlaceholder")}
             className="form-input"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="rating">Rating *</label>
+          <label htmlFor="authorTitleFr">{t("testimonialsTitleFr")} *</label>
+          <input
+            type="text"
+            id="authorTitleFr"
+            name="authorTitleFr"
+            value={formData.authorTitleFr || ""}
+            onChange={handleChange}
+            placeholder={t("testimonialsTitlePlaceholderFr")}
+            className="form-input"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="rating">{t("testimonialsRating")} *</label>
           <select
             id="rating"
             name="rating"
@@ -100,22 +119,36 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
             onChange={handleChange}
             className="form-input"
           >
-            <option value={1}>⭐ 1 - Poor</option>
-            <option value={2}>⭐⭐ 2 - Fair</option>
-            <option value={3}>⭐⭐⭐ 3 - Good</option>
-            <option value={4}>⭐⭐⭐⭐ 4 - Great</option>
-            <option value={5}>⭐⭐⭐⭐⭐ 5 - Excellent</option>
+            <option value={1}>⭐ 1 - {t("ratingPoor")}</option>
+            <option value={2}>⭐⭐ 2 - {t("ratingFair")}</option>
+            <option value={3}>⭐⭐⭐ 3 - {t("ratingGood")}</option>
+            <option value={4}>⭐⭐⭐⭐ 4 - {t("ratingGreat")}</option>
+            <option value={5}>⭐⭐⭐⭐⭐ 5 - {t("ratingExcellent")}</option>
           </select>
         </div>
 
         <div className="form-group">
-          <label htmlFor="content">Testimonial *</label>
+          <label htmlFor="contentEn">{t("testimonialsContentEn")} *</label>
           <textarea
-            id="content"
-            name="content"
-            value={formData.content}
+            id="contentEn"
+            name="contentEn"
+            value={formData.contentEn}
             onChange={handleChange}
-            placeholder="Share your experience and thoughts..."
+            placeholder={t("testimonialsContentPlaceholder")}
+            rows={6}
+            required
+            className="form-input textarea"
+          ></textarea>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="contentFr">{t("testimonialsContentFr")} *</label>
+          <textarea
+            id="contentFr"
+            name="contentFr"
+            value={formData.contentFr}
+            onChange={handleChange}
+            placeholder={t("testimonialsContentPlaceholderFr")}
             rows={6}
             required
             className="form-input textarea"
@@ -125,13 +158,12 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
         {error && <div className="error-message">{error}</div>}
         {success && (
           <div className="success-message">
-            ✓ Testimonial submitted successfully! It will be reviewed and
-            published shortly.
+            ✓ {t("testimonialsSubmitSuccess")}
           </div>
         )}
 
         <button type="submit" disabled={loading} className="submit-button">
-          {loading ? "Submitting..." : "Submit Testimonial"}
+          {loading ? t("testimonialsSubmitting") : t("testimonialsSubmit")}
         </button>
       </form>
     </div>
