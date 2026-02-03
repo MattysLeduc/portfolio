@@ -13,7 +13,10 @@ const ResumeForm = () => {
   const [frFile, setFrFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState<"en" | "fr" | null>(null);
-  const [resumeInfo, setResumeInfo] = useState<{ en: ResumeInfoResponseModel | null; fr: ResumeInfoResponseModel | null }>({
+  const [resumeInfo, setResumeInfo] = useState<{
+    en: ResumeInfoResponseModel | null;
+    fr: ResumeInfoResponseModel | null;
+  }>({
     en: null,
     fr: null,
   });
@@ -27,7 +30,11 @@ const ResumeForm = () => {
       ]);
       setResumeInfo({ en: enInfo, fr: frInfo });
     } catch {
-      toast({ title: "Error", description: "Failed to load resume info", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to load resume info",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -40,7 +47,11 @@ const ResumeForm = () => {
   const handleUpload = async (language: "en" | "fr") => {
     const file = language === "en" ? enFile : frFile;
     if (!file) {
-      toast({ title: "Missing file", description: "Please select a PDF file", variant: "destructive" });
+      toast({
+        title: "Missing file",
+        description: "Please select a PDF file",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -48,9 +59,16 @@ const ResumeForm = () => {
       setUploading(language);
       const info = await uploadResume(language, file);
       setResumeInfo((prev) => ({ ...prev, [language]: info }));
-      toast({ title: "Success", description: `Resume (${language.toUpperCase()}) uploaded` });
+      toast({
+        title: "Success",
+        description: `Resume (${language.toUpperCase()}) uploaded`,
+      });
     } catch {
-      toast({ title: "Error", description: "Failed to upload resume", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Failed to upload resume",
+        variant: "destructive",
+      });
     } finally {
       setUploading(null);
     }
@@ -65,7 +83,10 @@ const ResumeForm = () => {
   }
 
   const renderInfo = (info: ResumeInfoResponseModel | null) => {
-    if (!info) return <span className="text-xs text-muted-foreground">No file uploaded</span>;
+    if (!info)
+      return (
+        <span className="text-xs text-muted-foreground">No file uploaded</span>
+      );
     return (
       <div className="text-xs text-muted-foreground space-y-1">
         <div>File: {info.fileName}</div>
@@ -78,8 +99,15 @@ const ResumeForm = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-mono text-sm text-primary uppercase tracking-wider">Resume / CV</h3>
-        <Button variant="outline" size="sm" onClick={fetchInfo} className="border-primary/50">
+        <h3 className="font-mono text-sm text-primary uppercase tracking-wider">
+          Resume / CV
+        </h3>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={fetchInfo}
+          className="border-primary/50"
+        >
           <RefreshCw size={16} className="mr-2" />
           Refresh
         </Button>

@@ -115,9 +115,7 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
         </div>
 
         <div className="form-group">
-          <label
-            htmlFor={language === "en" ? "companyEn" : "companyFr"}
-          >
+          <label htmlFor={language === "en" ? "companyEn" : "companyFr"}>
             {language === "en"
               ? t("testimonialsCompanyEn")
               : t("testimonialsCompanyFr")}

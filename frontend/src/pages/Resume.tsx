@@ -20,7 +20,8 @@ const Resume = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = lang === "fr" ? "CV_Mattys_Leduc_FR.pdf" : "CV_Mattys_Leduc_EN.pdf";
+      link.download =
+        lang === "fr" ? "CV_Mattys_Leduc_FR.pdf" : "CV_Mattys_Leduc_EN.pdf";
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -45,9 +46,7 @@ const Resume = () => {
               {t("resume")}
             </span>
             <h1 className="mt-4 font-display text-4xl md:text-6xl font-bold">
-              <span className="text-gradient neon-text">
-                {t("resume")}
-              </span>
+              <span className="text-gradient neon-text">{t("resume")}</span>
             </h1>
           </motion.div>
 
