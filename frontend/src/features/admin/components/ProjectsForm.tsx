@@ -65,6 +65,7 @@ const ProjectsForm = () => {
       descriptionEn: "",
       descriptionFr: "",
       imageUrl: "",
+      technologies: "",
       repoUrl: "",
       demoUrl: "",
       featured: false,
@@ -114,6 +115,7 @@ const ProjectsForm = () => {
           descriptionEn: project.descriptionEn,
           descriptionFr: project.descriptionFr,
           imageUrl: project.imageUrl,
+          technologies: project.technologies,
           repoUrl: project.repoUrl,
           demoUrl: project.demoUrl,
           featured: project.featured,
@@ -282,6 +284,21 @@ const ProjectsForm = () => {
                       />
                     </div>
                     <div className="space-y-2">
+                      <Label>Technologies (comma-separated)</Label>
+                      <Input
+                        value={project.technologies || ""}
+                        onChange={(e) =>
+                          updateField(
+                            project.projectId,
+                            "technologies",
+                            e.target.value,
+                          )
+                        }
+                        placeholder="React, TypeScript, Spring Boot"
+                        className="bg-background/50 border-primary/30"
+                      />
+                    </div>
+                    <div className="space-y-2">
                       <Label>Repository URL</Label>
                       <Input
                         value={project.repoUrl || ""}
@@ -296,6 +313,9 @@ const ProjectsForm = () => {
                         className="bg-background/50 border-primary/30"
                       />
                     </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-1 gap-4">
                     <div className="space-y-2">
                       <Label>Demo URL</Label>
                       <Input

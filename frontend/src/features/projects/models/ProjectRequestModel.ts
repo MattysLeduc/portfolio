@@ -4,6 +4,7 @@ export interface ProjectRequestModel {
   descriptionEn: string;
   descriptionFr: string;
   imageUrl?: string;
+  technologies?: string;
   repoUrl?: string;
   demoUrl?: string;
   featured: boolean;
