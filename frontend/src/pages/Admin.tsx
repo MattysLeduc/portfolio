@@ -12,6 +12,7 @@ import EducationForm from "@/features/admin/components/EducationForm";
 import HobbiesForm from "@/features/admin/components/HobbiesForm";
 import TestimonialsForm from "@/features/admin/components/TestimonialsForm";
 import MessagesForm from "@/features/admin/components/MessagesForm";
+import ResumeForm from "@/features/admin/components/ResumeForm";
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState("skills");
@@ -53,7 +54,7 @@ const Admin = () => {
             className="glass rounded-sm p-6"
           >
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid grid-cols-4 lg:grid-cols-7 gap-2 bg-transparent h-auto p-0 mb-8">
+              <TabsList className="grid grid-cols-4 lg:grid-cols-8 gap-2 bg-transparent h-auto p-0 mb-8">
                 {[
                   { value: "skills", label: t("skills") },
                   { value: "projects", label: t("projects") },
@@ -62,6 +63,7 @@ const Admin = () => {
                   { value: "hobbies", label: t("hobbies") },
                   { value: "testimonials", label: t("testimonials") },
                   { value: "messages", label: t("messages") },
+                  { value: "resume", label: t("resume") },
                 ].map((tab) => (
                   <TabsTrigger
                     key={tab.value}
@@ -99,6 +101,10 @@ const Admin = () => {
 
               <TabsContent value="messages">
                 <MessagesForm />
+              </TabsContent>
+
+              <TabsContent value="resume">
+                <ResumeForm />
               </TabsContent>
             </Tabs>
           </motion.div>

@@ -85,6 +85,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/**").authenticated()
                         .requestMatchers("/api/admin/**").authenticated() // Temporary for testing; change to authenticated() in production
                         .anyRequest().authenticated()
                 )

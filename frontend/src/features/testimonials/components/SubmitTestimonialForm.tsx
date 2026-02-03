@@ -12,6 +12,8 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
     authorName: "",
     authorTitleEn: "",
     authorTitleFr: "",
+    companyEn: "",
+    companyFr: "",
     contentEn: "",
     contentFr: "",
     rating: 5,
@@ -44,6 +46,8 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
         authorName: "",
         authorTitleEn: "",
         authorTitleFr: "",
+        companyEn: "",
+        companyFr: "",
         contentEn: "",
         contentFr: "",
         rating: 5,
@@ -105,6 +109,33 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
               language === "en"
                 ? t("testimonialsTitlePlaceholder")
                 : t("testimonialsTitlePlaceholderFr")
+            }
+            className="form-input"
+          />
+        </div>
+
+        <div className="form-group">
+          <label
+            htmlFor={language === "en" ? "companyEn" : "companyFr"}
+          >
+            {language === "en"
+              ? t("testimonialsCompanyEn")
+              : t("testimonialsCompanyFr")}
+          </label>
+          <input
+            type="text"
+            id={language === "en" ? "companyEn" : "companyFr"}
+            name={language === "en" ? "companyEn" : "companyFr"}
+            value={
+              language === "en"
+                ? formData.companyEn || ""
+                : formData.companyFr || ""
+            }
+            onChange={handleChange}
+            placeholder={
+              language === "en"
+                ? t("testimonialsCompanyPlaceholder")
+                : t("testimonialsCompanyPlaceholderFr")
             }
             className="form-input"
           />

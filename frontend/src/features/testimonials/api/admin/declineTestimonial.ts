@@ -4,7 +4,7 @@ export async function declineTestimonial(
   testimonialId: string,
   reason?: string,
 ): Promise<void> {
-  await axiosInstance.patch(`/admin/testimonials/${testimonialId}/decline`, {
+  await axiosInstance.post(`/admin/testimonials/${testimonialId}/reject`, {
     reason,
   });
 }

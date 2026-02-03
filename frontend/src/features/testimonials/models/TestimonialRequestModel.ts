@@ -9,4 +9,6 @@ export interface TestimonialRequestModel {
   contentFr: string;
   rating: number;
   company?: string;
+  companyEn?: string;
+  companyFr?: string;
 }

@@ -16,6 +16,7 @@ import Testimonials from "@/pages/Testimonials";
 import Contact from "@/pages/Contact";
 import Login from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
+import Resume from "@/pages/Resume";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Admin from "@/pages/Admin";
 
@@ -40,6 +41,7 @@ const App = () => (
                   <Route path="/hobbies" element={<Hobbies />} />
                   <Route path="/testimonials" element={<Testimonials />} />
                   <Route path="/contact" element={<Contact />} />
+                  <Route path="/resume" element={<Resume />} />
                   <Route path="/login" element={<Login />} />
 
                   {/* Admin Panel */}

@@ -11,6 +11,7 @@ const navItems = [
   { key: "education", href: "/education" },
   { key: "hobbies", href: "/hobbies" },
   { key: "testimonials", href: "/testimonials" },
+  { key: "resume", href: "/resume" },
   { key: "contact", href: "/contact" },
 ];
 
@@ -76,7 +77,7 @@ const Navigation = () => {
             className="px-3 py-2 border border-primary/40 text-primary hover:bg-primary hover:text-background transition-all font-mono text-xs rounded-md"
             aria-label={t("language")}
           >
-            {language.toUpperCase()}
+            {language === "en" ? "FR" : "EN"}
           </button>
 
           {/* Sign In Button */}
@@ -143,7 +144,7 @@ const Navigation = () => {
             }}
             className="px-3 py-2 border border-primary/40 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
           >
-            {t("language")}: {language.toUpperCase()}
+            {language === "en" ? "FR" : "EN"}
           </button>
         </div>
       </motion.div>
