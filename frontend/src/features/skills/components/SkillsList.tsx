@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { getAllSkills } from '../api/getAllSkills';
-import type { SkillResponseModel } from '../models/SkillResponseModel';
+import { useEffect, useState } from "react";
+import { getAllSkills } from "../api/getAllSkills";
+import type { SkillResponseModel } from "../models/SkillResponseModel";
 
 export const SkillsList: React.FC = () => {
   const [skills, setSkills] = useState<SkillResponseModel[]>([]);
@@ -28,8 +28,7 @@ export const SkillsList: React.FC = () => {
       {skills.map((skill) => (
         <div key={skill.skillId} className="skill-card">
           <h3>{skill.name}</h3>
-          <div className="skill-proficiency">
-          </div>
+          <div className="skill-proficiency"></div>
           <span className="proficiency-text">{skill.description}</span>
         </div>
       ))}

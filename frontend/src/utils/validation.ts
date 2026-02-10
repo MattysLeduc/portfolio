@@ -10,19 +10,22 @@ export const contactFormSchema = z.object({
     .string()
     .min(2, "Name must be at least 2 characters")
     .max(100, "Name must not exceed 100 characters")
-    .regex(/^[a-zA-Z\s\-'.]+$/, "Name can only contain letters, spaces, hyphens, apostrophes, and periods"),
-  
+    .regex(
+      /^[a-zA-Z\s\-'.]+$/,
+      "Name can only contain letters, spaces, hyphens, apostrophes, and periods",
+    ),
+
   email: z
     .string()
     .email("Please enter a valid email address")
     .max(255, "Email must not exceed 255 characters")
     .toLowerCase(),
-  
+
   subject: z
     .string()
     .min(3, "Subject must be at least 3 characters")
     .max(200, "Subject must not exceed 200 characters"),
-  
+
   message: z
     .string()
     .min(10, "Message must be at least 10 characters")
@@ -37,38 +40,41 @@ export const testimonialFormSchema = z.object({
     .string()
     .min(2, "Name must be at least 2 characters")
     .max(100, "Name must not exceed 100 characters")
-    .regex(/^[a-zA-Z\s\-'.]+$/, "Name can only contain letters, spaces, hyphens, apostrophes, and periods"),
-  
+    .regex(
+      /^[a-zA-Z\s\-'.]+$/,
+      "Name can only contain letters, spaces, hyphens, apostrophes, and periods",
+    ),
+
   authorTitleEn: z
     .string()
     .min(2, "Title must be at least 2 characters")
     .max(150, "Title must not exceed 150 characters"),
-  
+
   authorTitleFr: z
     .string()
     .min(2, "Title must be at least 2 characters")
     .max(150, "Title must not exceed 150 characters"),
-  
+
   companyEn: z
     .string()
     .min(2, "Company name must be at least 2 characters")
     .max(150, "Company name must not exceed 150 characters"),
-  
+
   companyFr: z
     .string()
     .min(2, "Company name must be at least 2 characters")
     .max(150, "Company name must not exceed 150 characters"),
-  
+
   contentEn: z
     .string()
     .min(10, "Testimonial must be at least 10 characters")
     .max(1000, "Testimonial must not exceed 1000 characters"),
-  
+
   contentFr: z
     .string()
     .min(10, "Testimonial must be at least 10 characters")
     .max(1000, "Testimonial must not exceed 1000 characters"),
-  
+
   rating: z
     .number()
     .int()

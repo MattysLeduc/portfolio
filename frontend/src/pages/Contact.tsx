@@ -18,7 +18,9 @@ const Contact = () => {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
   const { t } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,12 +30,15 @@ const Contact = () => {
 
     try {
       // Sanitize input data
-      const sanitizedData = sanitizeFormData(formData as unknown as Record<string, unknown>, {
-        name: "text",
-        email: "email",
-        subject: "text",
-        message: "text",
-      });
+      const sanitizedData = sanitizeFormData(
+        formData as unknown as Record<string, unknown>,
+        {
+          name: "text",
+          email: "email",
+          subject: "text",
+          message: "text",
+        },
+      );
 
       // Validate the sanitized data
       const validatedData = contactFormSchema.parse(sanitizedData);
@@ -58,9 +63,14 @@ const Contact = () => {
         setError("Please fix the validation errors below.");
       } else {
         // Check if it's a rate limit error
-        const axiosError = err as { response?: { status?: number; data?: { message?: string } } };
+        const axiosError = err as {
+          response?: { status?: number; data?: { message?: string } };
+        };
         if (axiosError.response?.status === 429) {
-          setError(axiosError.response.data?.message || "Too many requests. Please try again later.");
+          setError(
+            axiosError.response.data?.message ||
+              "Too many requests. Please try again later.",
+          );
         } else {
           // Log error silently without exposing details
           setError(t("contactSendError"));
@@ -123,89 +133,129 @@ const Contact = () => {
               >
                 <div>
                   <label className="font-mono text-sm text-muted-foreground block mb-2">
-                    {t("name")} <span className="text-xs text-muted-foreground/60">(max 100 chars)</span>
+                    {t("name")}{" "}
+                    <span className="text-xs text-muted-foreground/60">
+                      (max 100 chars)
+                    </span>
                   </label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value.slice(0, 100) })
+                      setFormData({
+                        ...formData,
+                        name: e.target.value.slice(0, 100),
+                      })
                     }
                     className={`w-full bg-secondary/30 border rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all ${
-                      validationErrors.name ? "border-red-500" : "border-primary/20"
+                      validationErrors.name
+                        ? "border-red-500"
+                        : "border-primary/20"
                     }`}
                     placeholder={t("contactNamePlaceholder")}
                     required
                     maxLength={100}
                   />
                   {validationErrors.name && (
-                    <p className="text-red-500 text-xs font-mono mt-1">{validationErrors.name}</p>
+                    <p className="text-red-500 text-xs font-mono mt-1">
+                      {validationErrors.name}
+                    </p>
                   )}
                 </div>
 
                 <div>
                   <label className="font-mono text-sm text-muted-foreground block mb-2">
-                    {t("email")} <span className="text-xs text-muted-foreground/60">(max 255 chars)</span>
+                    {t("email")}{" "}
+                    <span className="text-xs text-muted-foreground/60">
+                      (max 255 chars)
+                    </span>
                   </label>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value.slice(0, 255) })
+                      setFormData({
+                        ...formData,
+                        email: e.target.value.slice(0, 255),
+                      })
                     }
                     className={`w-full bg-secondary/30 border rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all ${
-                      validationErrors.email ? "border-red-500" : "border-primary/20"
+                      validationErrors.email
+                        ? "border-red-500"
+                        : "border-primary/20"
                     }`}
                     placeholder={t("contactEmailPlaceholder")}
                     required
                     maxLength={255}
                   />
                   {validationErrors.email && (
-                    <p className="text-red-500 text-xs font-mono mt-1">{validationErrors.email}</p>
+                    <p className="text-red-500 text-xs font-mono mt-1">
+                      {validationErrors.email}
+                    </p>
                   )}
                 </div>
 
                 <div>
                   <label className="font-mono text-sm text-muted-foreground block mb-2">
-                    {t("subject")} <span className="text-xs text-muted-foreground/60">(max 200 chars)</span>
+                    {t("subject")}{" "}
+                    <span className="text-xs text-muted-foreground/60">
+                      (max 200 chars)
+                    </span>
                   </label>
                   <input
                     type="text"
                     value={formData.subject}
                     onChange={(e) =>
-                      setFormData({ ...formData, subject: e.target.value.slice(0, 200) })
+                      setFormData({
+                        ...formData,
+                        subject: e.target.value.slice(0, 200),
+                      })
                     }
                     className={`w-full bg-secondary/30 border rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all ${
-                      validationErrors.subject ? "border-red-500" : "border-primary/20"
+                      validationErrors.subject
+                        ? "border-red-500"
+                        : "border-primary/20"
                     }`}
                     placeholder={t("contactSubjectPlaceholder")}
                     required
                     maxLength={200}
                   />
                   {validationErrors.subject && (
-                    <p className="text-red-500 text-xs font-mono mt-1">{validationErrors.subject}</p>
+                    <p className="text-red-500 text-xs font-mono mt-1">
+                      {validationErrors.subject}
+                    </p>
                   )}
                 </div>
 
                 <div>
                   <label className="font-mono text-sm text-muted-foreground block mb-2">
-                    {t("message")} <span className="text-xs text-muted-foreground/60">({formData.message.length}/2000 chars)</span>
+                    {t("message")}{" "}
+                    <span className="text-xs text-muted-foreground/60">
+                      ({formData.message.length}/2000 chars)
+                    </span>
                   </label>
                   <textarea
                     value={formData.message}
                     onChange={(e) =>
-                      setFormData({ ...formData, message: e.target.value.slice(0, 2000) })
+                      setFormData({
+                        ...formData,
+                        message: e.target.value.slice(0, 2000),
+                      })
                     }
                     rows={5}
                     className={`w-full bg-secondary/30 border rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all resize-none ${
-                      validationErrors.message ? "border-red-500" : "border-primary/20"
+                      validationErrors.message
+                        ? "border-red-500"
+                        : "border-primary/20"
                     }`}
                     placeholder={t("contactMessagePlaceholder")}
                     required
                     maxLength={2000}
                   />
                   {validationErrors.message && (
-                    <p className="text-red-500 text-xs font-mono mt-1">{validationErrors.message}</p>
+                    <p className="text-red-500 text-xs font-mono mt-1">
+                      {validationErrors.message}
+                    </p>
                   )}
                 </div>
 

@@ -8,22 +8,25 @@
  */
 export const sanitizeText = (input: string): string => {
   if (!input) return "";
-  
+
   // Remove any HTML tags
   let sanitized = input.replace(/<[^>]*>/g, "");
-  
+
   // Remove script content
-  sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
-  
+  sanitized = sanitized.replace(
+    /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+    "",
+  );
+
   // Remove dangerous event handlers
   sanitized = sanitized.replace(/on\w+\s*=\s*["'][^"']*["']/gi, "");
-  
+
   // Remove javascript: protocol
   sanitized = sanitized.replace(/javascript:/gi, "");
-  
+
   // Trim whitespace
   sanitized = sanitized.trim();
-  
+
   return sanitized;
 };
 
@@ -32,13 +35,16 @@ export const sanitizeText = (input: string): string => {
  */
 export const sanitizeEmail = (email: string): string => {
   if (!email) return "";
-  
+
   // Remove any HTML tags and convert to lowercase
-  let sanitized = email.replace(/<[^>]*>/g, "").toLowerCase().trim();
-  
+  let sanitized = email
+    .replace(/<[^>]*>/g, "")
+    .toLowerCase()
+    .trim();
+
   // Remove any whitespace
   sanitized = sanitized.replace(/\s/g, "");
-  
+
   return sanitized;
 };
 
@@ -47,18 +53,18 @@ export const sanitizeEmail = (email: string): string => {
  */
 export const sanitizeUrl = (url: string): string => {
   if (!url) return "";
-  
+
   // Remove HTML tags
   let sanitized = url.replace(/<[^>]*>/g, "").trim();
-  
+
   // Ensure URL uses safe protocols (http, https)
   if (sanitized && !sanitized.match(/^https?:\/\//i)) {
     sanitized = `https://${sanitized}`;
   }
-  
+
   // Remove javascript: protocol
   sanitized = sanitized.replace(/javascript:/gi, "");
-  
+
   return sanitized;
 };
 
@@ -75,14 +81,14 @@ export const truncateText = (text: string, maxLength: number): string => {
  */
 export const sanitizeFormData = <T extends Record<string, unknown>>(
   data: T,
-  fieldTypes?: Partial<Record<keyof T, "text" | "email" | "url">>
+  fieldTypes?: Partial<Record<keyof T, "text" | "email" | "url">>,
 ): T => {
   const sanitized: Record<string, unknown> = {};
-  
+
   for (const [key, value] of Object.entries(data)) {
     if (typeof value === "string") {
       const fieldType = fieldTypes?.[key as keyof T] || "text";
-      
+
       switch (fieldType) {
         case "email":
           sanitized[key] = sanitizeEmail(value);
@@ -97,6 +103,6 @@ export const sanitizeFormData = <T extends Record<string, unknown>>(
       sanitized[key] = value;
     }
   }
-  
+
   return sanitized as T;
 };

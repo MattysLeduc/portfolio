@@ -1,20 +1,22 @@
-import { useState } from 'react';
-import { sendContactMessage } from '../api/sendContactMessage';
-import type { ContactMessageRequestModel } from '../models/ContactMessageRequestModel';
+import { useState } from "react";
+import { sendContactMessage } from "../api/sendContactMessage";
+import type { ContactMessageRequestModel } from "../models/ContactMessageRequestModel";
 
 export const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState<ContactMessageRequestModel>({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,7 +25,7 @@ export const ContactForm: React.FC = () => {
     try {
       await sendContactMessage(formData);
       setSuccess(true);
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      setFormData({ name: "", email: "", subject: "", message: "" });
       setTimeout(() => setSuccess(false), 3000);
     } catch (error) {
       // Handle error silently
@@ -82,7 +84,7 @@ export const ContactForm: React.FC = () => {
       </div>
 
       <button type="submit" disabled={loading}>
-        {loading ? 'Sending...' : 'Send Message'}
+        {loading ? "Sending..." : "Send Message"}
       </button>
 
       {success && <p className="success-message">Message sent successfully!</p>}

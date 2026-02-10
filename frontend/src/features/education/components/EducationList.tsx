@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { getAllEducation } from '../api/getAllEducation';
-import type { EducationResponseModel } from '../models/EducationResponseModel';
+import { useEffect, useState } from "react";
+import { getAllEducation } from "../api/getAllEducation";
+import type { EducationResponseModel } from "../models/EducationResponseModel";
 
 export const EducationList: React.FC = () => {
   const [education, setEducation] = useState<EducationResponseModel[]>([]);
@@ -29,8 +29,12 @@ export const EducationList: React.FC = () => {
         <div key={edu.educationId} className="education-card">
           <h3>{edu.institutionEn}</h3>
           <p className="degree">{edu.degreeEn}</p>
-          <p className="date">{edu.startDate} - {edu.endDate || 'Present'}</p>
-          {edu.descriptionEn && <p className="description">{edu.descriptionEn}</p>}
+          <p className="date">
+            {edu.startDate} - {edu.endDate || "Present"}
+          </p>
+          {edu.descriptionEn && (
+            <p className="description">{edu.descriptionEn}</p>
+          )}
         </div>
       ))}
     </div>
