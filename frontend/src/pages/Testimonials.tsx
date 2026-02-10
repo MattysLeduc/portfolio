@@ -36,7 +36,7 @@ const Testimonials = () => {
         const data = await portfolioService.getTestimonials();
         setTestimonials(data);
       } catch (err) {
-        console.error("Failed to fetch testimonials:", err);
+        // Handle error silently
         setError(t("loadError"));
       } finally {
         setLoading(false);

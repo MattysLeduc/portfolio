@@ -14,7 +14,7 @@ export const HomePage: React.FC = () => {
         const data = await portfolioService.getPortfolioSummary();
         setPortfolioData(data);
       } catch (error) {
-        console.error('Error fetching portfolio:', error);
+        // Handle error silently
       } finally {
         setLoading(false);
       }

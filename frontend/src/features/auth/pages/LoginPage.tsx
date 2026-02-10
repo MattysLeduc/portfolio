@@ -36,7 +36,7 @@ export const LoginPage: React.FC = () => {
       await login(username, password);
       navigate('/admin');
     } catch (err: any) {
-      console.error('Login error:', err);
+      // Handle error without exposing details in console
       const message = err.response?.data?.message || err.message || 'Login failed. Please check your credentials.';
       setError(message);
     } finally {

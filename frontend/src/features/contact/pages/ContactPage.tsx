@@ -13,7 +13,7 @@ export const ContactPage: React.FC = () => {
         const data = await getContactInfo();
         setContactInfo(data);
       } catch (error) {
-        console.error('Error fetching contact info:', error);
+        // Handle error silently
       }
     };
 

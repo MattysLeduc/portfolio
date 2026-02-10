@@ -12,7 +12,7 @@ export const HobbiesList: React.FC = () => {
         const data = await getAllHobbies();
         setHobbies(data);
       } catch (error) {
-        console.error('Error fetching hobbies:', error);
+        // Handle error silently
       } finally {
         setLoading(false);
       }

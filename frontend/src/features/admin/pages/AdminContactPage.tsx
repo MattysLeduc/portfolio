@@ -38,7 +38,7 @@ export const AdminContactPage: React.FC = () => {
         website: data.website || "",
       });
     } catch (error) {
-      console.error("Error fetching contact info:", error);
+      // Handle error silently
       showMessage("error", "Failed to load contact info");
     } finally {
       setLoading(false);
@@ -57,7 +57,7 @@ export const AdminContactPage: React.FC = () => {
       await updateContactInfo(formData);
       showMessage("success", "Contact information updated successfully");
     } catch (error) {
-      console.error("Error updating contact info:", error);
+      // Handle error silently
       showMessage("error", "Failed to update contact info");
     } finally {
       setSaving(false);

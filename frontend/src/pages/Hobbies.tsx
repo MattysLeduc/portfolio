@@ -65,7 +65,7 @@ const Hobbies = () => {
         const data = await portfolioService.getHobbies();
         setHobbies(data);
       } catch (err) {
-        console.error("Failed to fetch hobbies:", err);
+        // Handle error silently
         setError(t("loadError"));
       } finally {
         setLoading(false);

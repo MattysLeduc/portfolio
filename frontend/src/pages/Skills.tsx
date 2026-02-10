@@ -31,7 +31,7 @@ const Skills = () => {
         const data = await portfolioService.getSkills();
         setSkills(data);
       } catch (err) {
-        console.error("Failed to fetch skills:", err);
+        // Handle error silently
         setError(t("loadError"));
       } finally {
         setLoading(false);

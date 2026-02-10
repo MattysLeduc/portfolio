@@ -15,6 +15,7 @@ public class ProjectRequestModel {
     private String descriptionEn;
     private String descriptionFr;
     private String imageUrl;
+    private String technologies;
     private String repoUrl;
     private String demoUrl;
     private boolean featured;

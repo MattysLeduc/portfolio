@@ -26,8 +26,8 @@ const Resume = () => {
       link.click();
       link.remove();
       URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Failed to download resume", error);
+    } catch {
+      // Handle error silently
     }
   };
 

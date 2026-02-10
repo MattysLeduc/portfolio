@@ -29,7 +29,7 @@ apiClient.interceptors.response.use(
     const status = error.response?.status;
 
     if (status === 401) {
-      console.warn('Session expired - redirecting to login');
+      // Session expired - redirect to login
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login?reason=session_expired';
@@ -37,10 +37,10 @@ apiClient.interceptors.response.use(
     }
 
     if (status === 403) {
-      console.warn('Permission denied', error.response?.data);
+      // Permission denied - handle silently
     }
 
-    console.error('API Error:', error);
+    // Handle error silently without exposing details
     return Promise.reject(error);
   }
 );

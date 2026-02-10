@@ -12,7 +12,7 @@ export const ProjectsList: React.FC = () => {
         const data = await getAllProjects();
         setProjects(data);
       } catch (error) {
-        console.error('Error fetching projects:', error);
+        // Handle error silently
       } finally {
         setLoading(false);
       }

@@ -12,7 +12,7 @@ export const EducationList: React.FC = () => {
         const data = await getAllEducation();
         setEducation(data);
       } catch (error) {
-        console.error('Error fetching education:', error);
+        // Handle error silently
       } finally {
         setLoading(false);
       }

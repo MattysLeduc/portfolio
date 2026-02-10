@@ -38,7 +38,7 @@ const Education = () => {
         const data = await portfolioService.getEducation();
         setEducationData(data);
       } catch (err) {
-        console.error("Failed to fetch education:", err);
+        // Handle error silently
         setError(t("loadError"));
       } finally {
         setLoading(false);

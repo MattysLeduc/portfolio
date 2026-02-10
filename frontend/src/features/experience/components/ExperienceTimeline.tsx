@@ -12,7 +12,7 @@ export const ExperienceTimeline: React.FC = () => {
         const data = await portfolioService.getExperiences();
         setExperiences(data);
       } catch (error) {
-        console.error('Error fetching experiences:', error);
+        // Handle error silently
       } finally {
         setLoading(false);
       }

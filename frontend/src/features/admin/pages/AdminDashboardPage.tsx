@@ -65,7 +65,7 @@ export const AdminDashboardPage: React.FC = () => {
         loading: false,
       });
     } catch (error) {
-      console.error("Error fetching stats:", error);
+      // Handle error silently
       setStats((prev) => ({ ...prev, loading: false }));
     }
   };

@@ -12,7 +12,7 @@ export const SkillsList: React.FC = () => {
         const data = await getAllSkills();
         setSkills(data);
       } catch (error) {
-        console.error('Error fetching skills:', error);
+        // Handle error silently
       } finally {
         setLoading(false);
       }

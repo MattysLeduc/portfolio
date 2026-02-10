@@ -43,7 +43,7 @@ const Experience = () => {
         const data = await portfolioService.getExperiences();
         setExperiences(data);
       } catch (err) {
-        console.error("Failed to fetch experiences:", err);
+        // Handle error silently
         setError(t("loadError"));
       } finally {
         setLoading(false);

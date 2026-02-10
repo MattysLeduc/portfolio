@@ -3,6 +3,9 @@ import { submitTestimonial } from "../api/submitTestimonial";
 import type { TestimonialRequestModel } from "../models/TestimonialRequestModel";
 import "../styles/SubmitTestimonialForm.css";
 import { useLanguage } from "@/context/LanguageContext";
+import { testimonialFormSchema } from "@/utils/validation";
+import { sanitizeFormData } from "@/utils/sanitization";
+import { z } from "zod";
 
 export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
   onSuccess,
@@ -21,6 +24,7 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -28,19 +32,45 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
     >,
   ) => {
     const { name, value } = e.target;
+    
+    // Apply character limits
+    let processedValue = value;
+    if (name === "authorName" && value.length > 100) {
+      processedValue = value.slice(0, 100);
+    } else if ((name === "authorTitleEn" || name === "authorTitleFr" || name === "companyEn" || name === "companyFr") && value.length > 150) {
+      processedValue = value.slice(0, 150);
+    } else if ((name === "contentEn" || name === "contentFr") && value.length > 1000) {
+      processedValue = value.slice(0, 1000);
+    }
+    
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "rating" ? parseInt(value) : value,
+      [name]: name === "rating" ? parseInt(processedValue) : processedValue,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setValidationErrors({});
     setLoading(true);
 
     try {
-      await submitTestimonial(formData);
+      // Sanitize input data
+      const sanitizedData = sanitizeFormData(formData as unknown as Record<string, unknown>, {
+        authorName: "text",
+        authorTitleEn: "text",
+        authorTitleFr: "text",
+        companyEn: "text",
+        companyFr: "text",
+        contentEn: "text",
+        contentFr: "text",
+      });
+
+      // Validate the sanitized data
+      const validatedData = testimonialFormSchema.parse(sanitizedData);
+
+      await submitTestimonial(validatedData);
       setSuccess(true);
       setFormData({
         authorName: "",
@@ -57,8 +87,20 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
         onSuccess?.();
       }, 3000);
     } catch (err) {
-      console.error("Error submitting testimonial:", err);
-      setError(t("testimonialsSubmitError"));
+      if (err instanceof z.ZodError) {
+        // Handle validation errors
+        const errors: Record<string, string> = {};
+        err.errors.forEach((error) => {
+          if (error.path[0]) {
+            errors[error.path[0] as string] = error.message;
+          }
+        });
+        setValidationErrors(errors);
+        setError("Please fix the validation errors below.");
+      } else {
+        // Log error silently without exposing details
+        setError(t("testimonialsSubmitError"));
+      }
     } finally {
       setLoading(false);
     }
@@ -73,7 +115,7 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
 
       <form onSubmit={handleSubmit} className="submit-testimonial-form">
         <div className="form-group">
-          <label htmlFor="authorName">{t("testimonialsYourName")} *</label>
+          <label htmlFor="authorName">{t("testimonialsYourName")} * <span style={{fontSize: '0.75rem', opacity: 0.6}}>(max 100 chars)</span></label>
           <input
             type="text"
             id="authorName"
@@ -82,8 +124,12 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
             onChange={handleChange}
             placeholder={t("testimonialsNamePlaceholder")}
             required
-            className="form-input"
+            maxLength={100}
+            className={`form-input ${validationErrors.authorName ? 'error' : ''}`}
           />
+          {validationErrors.authorName && (
+            <div className="error-message" style={{fontSize: '0.75rem', marginTop: '0.25rem'}}>{validationErrors.authorName}</div>
+          )}
         </div>
 
         <div className="form-group">
@@ -93,7 +139,7 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
             {language === "en"
               ? t("testimonialsTitleEn")
               : t("testimonialsTitleFr")}{" "}
-            *
+            * <span style={{fontSize: '0.75rem', opacity: 0.6}}>(max 150 chars)</span>
           </label>
           <input
             type="text"
@@ -110,15 +156,22 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
                 ? t("testimonialsTitlePlaceholder")
                 : t("testimonialsTitlePlaceholderFr")
             }
-            className="form-input"
+            maxLength={150}
+            className={`form-input ${validationErrors[language === "en" ? "authorTitleEn" : "authorTitleFr"] ? 'error' : ''}`}
           />
+          {validationErrors[language === "en" ? "authorTitleEn" : "authorTitleFr"] && (
+            <div className="error-message" style={{fontSize: '0.75rem', marginTop: '0.25rem'}}>
+              {validationErrors[language === "en" ? "authorTitleEn" : "authorTitleFr"]}
+            </div>
+          )}
         </div>
 
         <div className="form-group">
           <label htmlFor={language === "en" ? "companyEn" : "companyFr"}>
             {language === "en"
               ? t("testimonialsCompanyEn")
-              : t("testimonialsCompanyFr")}
+              : t("testimonialsCompanyFr")}{" "}
+            <span style={{fontSize: '0.75rem', opacity: 0.6}}>(max 150 chars)</span>
           </label>
           <input
             type="text"
@@ -135,8 +188,14 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
                 ? t("testimonialsCompanyPlaceholder")
                 : t("testimonialsCompanyPlaceholderFr")
             }
-            className="form-input"
+            maxLength={150}
+            className={`form-input ${validationErrors[language === "en" ? "companyEn" : "companyFr"] ? 'error' : ''}`}
           />
+          {validationErrors[language === "en" ? "companyEn" : "companyFr"] && (
+            <div className="error-message" style={{fontSize: '0.75rem', marginTop: '0.25rem'}}>
+              {validationErrors[language === "en" ? "companyEn" : "companyFr"]}
+            </div>
+          )}
         </div>
 
         <div className="form-group">
@@ -161,7 +220,7 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
             {language === "en"
               ? t("testimonialsContentEn")
               : t("testimonialsContentFr")}{" "}
-            *
+            * <span style={{fontSize: '0.75rem', opacity: 0.6}}>({(language === "en" ? formData.contentEn : formData.contentFr).length}/1000 chars)</span>
           </label>
           <textarea
             id={language === "en" ? "contentEn" : "contentFr"}
@@ -175,8 +234,14 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
             }
             rows={6}
             required
-            className="form-input textarea"
+            maxLength={1000}
+            className={`form-input textarea ${validationErrors[language === "en" ? "contentEn" : "contentFr"] ? 'error' : ''}`}
           ></textarea>
+          {validationErrors[language === "en" ? "contentEn" : "contentFr"] && (
+            <div className="error-message" style={{fontSize: '0.75rem', marginTop: '0.25rem'}}>
+              {validationErrors[language === "en" ? "contentEn" : "contentFr"]}
+            </div>
+          )}
         </div>
 
         {error && <div className="error-message">{error}</div>}

@@ -22,7 +22,7 @@ export const AdminMessagesPage: React.FC = () => {
       const data = await getAllMessages();
       setMessages(data);
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      // Handle error silently
     } finally {
       setLoading(false);
     }
@@ -40,7 +40,7 @@ export const AdminMessagesPage: React.FC = () => {
         setSelectedMessage({ ...selectedMessage, read: true });
       }
     } catch (error) {
-      console.error("Error marking message as read:", error);
+      // Handle error silently
     }
   };
 
@@ -54,7 +54,7 @@ export const AdminMessagesPage: React.FC = () => {
         setSelectedMessage(null);
       }
     } catch (error) {
-      console.error("Error deleting message:", error);
+      // Handle error silently
     }
   };
 

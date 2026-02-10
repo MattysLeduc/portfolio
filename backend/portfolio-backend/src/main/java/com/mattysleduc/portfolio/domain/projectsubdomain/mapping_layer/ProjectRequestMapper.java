@@ -16,6 +16,7 @@ public interface ProjectRequestMapper {
     @Mapping(source = "model.descriptionEn", target = "descriptionEn")
     @Mapping(source = "model.descriptionFr", target = "descriptionFr")
     @Mapping(source = "model.imageUrl", target = "imageUrl")
+    @Mapping(source = "model.technologies", target = "technologies")
     @Mapping(source = "model.repoUrl", target = "repoUrl")
     @Mapping(source = "model.demoUrl", target = "demoUrl")
     @Mapping(source = "model.featured", target = "featured")

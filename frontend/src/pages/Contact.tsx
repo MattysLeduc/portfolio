@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Navigation from "@/components/portfolio/Navigation";
-import { Mail, Github, Linkedin, MapPin, Phone, Send } from "lucide-react";
+import { Mail, Github, Linkedin, MapPin, Send } from "lucide-react";
 import { portfolioService } from "@/shared/api/portfolioService";
 import { useLanguage } from "@/context/LanguageContext";
+import { contactFormSchema } from "@/utils/validation";
+import { sanitizeFormData } from "@/utils/sanitization";
+import { z } from "zod";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,23 +18,54 @@ const Contact = () => {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const { t } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationErrors({});
+    setError(null);
 
     try {
+      // Sanitize input data
+      const sanitizedData = sanitizeFormData(formData as unknown as Record<string, unknown>, {
+        name: "text",
+        email: "email",
+        subject: "text",
+        message: "text",
+      });
+
+      // Validate the sanitized data
+      const validatedData = contactFormSchema.parse(sanitizedData);
+
       setSubmitting(true);
-      setError(null);
-      await portfolioService.submitContact(formData);
+      await portfolioService.submitContact(validatedData);
       setSuccess(true);
       setFormData({ name: "", email: "", subject: "", message: "" });
 
       // Reset success message after 5 seconds
       setTimeout(() => setSuccess(false), 5000);
     } catch (err) {
-      console.error("Failed to submit contact form:", err);
-      setError(t("contactSendError"));
+      if (err instanceof z.ZodError) {
+        // Handle validation errors
+        const errors: Record<string, string> = {};
+        err.errors.forEach((error) => {
+          if (error.path[0]) {
+            errors[error.path[0] as string] = error.message;
+          }
+        });
+        setValidationErrors(errors);
+        setError("Please fix the validation errors below.");
+      } else {
+        // Check if it's a rate limit error
+        const axiosError = err as { response?: { status?: number; data?: { message?: string } } };
+        if (axiosError.response?.status === 429) {
+          setError(axiosError.response.data?.message || "Too many requests. Please try again later.");
+        } else {
+          // Log error silently without exposing details
+          setError(t("contactSendError"));
+        }
+      }
     } finally {
       setSubmitting(false);
     }
@@ -49,7 +83,6 @@ const Contact = () => {
 
   const contactInfo = [
     { icon: Mail, label: t("email"), value: "mattys.leduc@gmail.com" },
-    { icon: Phone, label: t("phone"), value: "+1 (514) 506-1001" },
     { icon: MapPin, label: t("location"), value: "Montreal, QC" },
   ];
 
@@ -90,66 +123,90 @@ const Contact = () => {
               >
                 <div>
                   <label className="font-mono text-sm text-muted-foreground block mb-2">
-                    {t("name")}
+                    {t("name")} <span className="text-xs text-muted-foreground/60">(max 100 chars)</span>
                   </label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
+                      setFormData({ ...formData, name: e.target.value.slice(0, 100) })
                     }
-                    className="w-full bg-secondary/30 border border-primary/20 rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all"
+                    className={`w-full bg-secondary/30 border rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all ${
+                      validationErrors.name ? "border-red-500" : "border-primary/20"
+                    }`}
                     placeholder={t("contactNamePlaceholder")}
                     required
+                    maxLength={100}
                   />
+                  {validationErrors.name && (
+                    <p className="text-red-500 text-xs font-mono mt-1">{validationErrors.name}</p>
+                  )}
                 </div>
 
                 <div>
                   <label className="font-mono text-sm text-muted-foreground block mb-2">
-                    {t("email")}
+                    {t("email")} <span className="text-xs text-muted-foreground/60">(max 255 chars)</span>
                   </label>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
+                      setFormData({ ...formData, email: e.target.value.slice(0, 255) })
                     }
-                    className="w-full bg-secondary/30 border border-primary/20 rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all"
+                    className={`w-full bg-secondary/30 border rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all ${
+                      validationErrors.email ? "border-red-500" : "border-primary/20"
+                    }`}
                     placeholder={t("contactEmailPlaceholder")}
                     required
+                    maxLength={255}
                   />
+                  {validationErrors.email && (
+                    <p className="text-red-500 text-xs font-mono mt-1">{validationErrors.email}</p>
+                  )}
                 </div>
 
                 <div>
                   <label className="font-mono text-sm text-muted-foreground block mb-2">
-                    {t("subject")}
+                    {t("subject")} <span className="text-xs text-muted-foreground/60">(max 200 chars)</span>
                   </label>
                   <input
                     type="text"
                     value={formData.subject}
                     onChange={(e) =>
-                      setFormData({ ...formData, subject: e.target.value })
+                      setFormData({ ...formData, subject: e.target.value.slice(0, 200) })
                     }
-                    className="w-full bg-secondary/30 border border-primary/20 rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all"
+                    className={`w-full bg-secondary/30 border rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all ${
+                      validationErrors.subject ? "border-red-500" : "border-primary/20"
+                    }`}
                     placeholder={t("contactSubjectPlaceholder")}
                     required
+                    maxLength={200}
                   />
+                  {validationErrors.subject && (
+                    <p className="text-red-500 text-xs font-mono mt-1">{validationErrors.subject}</p>
+                  )}
                 </div>
 
                 <div>
                   <label className="font-mono text-sm text-muted-foreground block mb-2">
-                    {t("message")}
+                    {t("message")} <span className="text-xs text-muted-foreground/60">({formData.message.length}/2000 chars)</span>
                   </label>
                   <textarea
                     value={formData.message}
                     onChange={(e) =>
-                      setFormData({ ...formData, message: e.target.value })
+                      setFormData({ ...formData, message: e.target.value.slice(0, 2000) })
                     }
                     rows={5}
-                    className="w-full bg-secondary/30 border border-primary/20 rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all resize-none"
+                    className={`w-full bg-secondary/30 border rounded-sm px-4 py-3 font-mono text-sm focus:outline-none focus:border-primary focus:neon-border transition-all resize-none ${
+                      validationErrors.message ? "border-red-500" : "border-primary/20"
+                    }`}
                     placeholder={t("contactMessagePlaceholder")}
                     required
+                    maxLength={2000}
                   />
+                  {validationErrors.message && (
+                    <p className="text-red-500 text-xs font-mono mt-1">{validationErrors.message}</p>
+                  )}
                 </div>
 
                 {success && (

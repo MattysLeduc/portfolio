@@ -36,7 +36,7 @@ const Projects = () => {
         const data = await portfolioService.getProjects();
         setProjects(data);
       } catch (err) {
-        console.error("Failed to fetch projects:", err);
+        // Handle error silently
         setError(t("loadError"));
       } finally {
         setLoading(false);

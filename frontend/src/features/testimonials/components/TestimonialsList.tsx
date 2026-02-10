@@ -12,7 +12,7 @@ export const TestimonialsList: React.FC = () => {
         const data = await getTestimonials();
         setTestimonials(data);
       } catch (error) {
-        console.error('Error fetching testimonials:', error);
+        // Handle error silently
       } finally {
         setLoading(false);
       }

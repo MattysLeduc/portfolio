@@ -26,7 +26,7 @@ export const ContactForm: React.FC = () => {
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTimeout(() => setSuccess(false), 3000);
     } catch (error) {
-      console.error('Error sending message:', error);
+      // Handle error silently
     } finally {
       setLoading(false);
     }
