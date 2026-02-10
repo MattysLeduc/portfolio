@@ -276,7 +276,7 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
             <span style={{ fontSize: "0.75rem", opacity: 0.6 }}>
               (
               {
-                (language === "en" ? formData.contentEn : formData.contentFr)
+                (language === "en" ? formData.contentEn || "" : formData.contentFr || "")
                   .length
               }
               /1000 chars)
@@ -285,7 +285,7 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
           <textarea
             id={language === "en" ? "contentEn" : "contentFr"}
             name={language === "en" ? "contentEn" : "contentFr"}
-            value={language === "en" ? formData.contentEn : formData.contentFr}
+            value={language === "en" ? formData.contentEn || "" : formData.contentFr || ""}
             onChange={handleChange}
             placeholder={
               language === "en"
