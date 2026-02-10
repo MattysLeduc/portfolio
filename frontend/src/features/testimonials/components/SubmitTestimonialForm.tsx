@@ -3,7 +3,7 @@ import { submitTestimonial } from "../api/submitTestimonial";
 import type { TestimonialRequestModel } from "../models/TestimonialRequestModel";
 import "../styles/SubmitTestimonialForm.css";
 import { useLanguage } from "@/context/LanguageContext";
-import { testimonialFormSchema } from "@/utils/validation";
+import { testimonialFormSchema, validateTestimonialForLanguage } from "@/utils/validation";
 import { sanitizeFormData } from "@/utils/sanitization";
 import { z } from "zod";
 
@@ -81,8 +81,19 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
         },
       );
 
-      // Validate the sanitized data
+      // Validate the sanitized data with base schema
       const validatedData = testimonialFormSchema.parse(sanitizedData);
+
+      // Validate language-specific fields
+      const languageValidation = validateTestimonialForLanguage(
+        validatedData,
+        language as "en" | "fr",
+      );
+      if (!languageValidation.valid) {
+        setValidationErrors(languageValidation.errors);
+        setError("Please fill in all required fields.");
+        return;
+      }
 
       await submitTestimonial(validatedData);
       setSuccess(true);

@@ -82,10 +82,15 @@ const Contact = () => {
   };
 
   const socialLinks = [
-    { icon: Github, href: "#", label: "GitHub", username: "@mattsleduc" },
+    {
+      icon: Github,
+      href: "https://github.com/MattysLeduc",
+      label: "GitHub",
+      username: "@mattsleduc",
+    },
     {
       icon: Linkedin,
-      href: "#",
+      href: "https://www.linkedin.com/in/mattys-leduc-405435307",
       label: "LinkedIn",
       username: "in/mattysleduc",
     },

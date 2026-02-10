@@ -34,7 +34,7 @@ export const contactFormSchema = z.object({
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 
-// Testimonial form validation schema
+// Testimonial form validation schema (base - language fields are optional)
 export const testimonialFormSchema = z.object({
   authorName: z
     .string()
@@ -47,33 +47,39 @@ export const testimonialFormSchema = z.object({
 
   authorTitleEn: z
     .string()
-    .min(2, "Title must be at least 2 characters")
-    .max(150, "Title must not exceed 150 characters"),
+    .max(150, "Title must not exceed 150 characters")
+    .optional()
+    .or(z.literal("")),
 
   authorTitleFr: z
     .string()
-    .min(2, "Title must be at least 2 characters")
-    .max(150, "Title must not exceed 150 characters"),
+    .max(150, "Title must not exceed 150 characters")
+    .optional()
+    .or(z.literal("")),
 
   companyEn: z
     .string()
-    .min(2, "Company name must be at least 2 characters")
-    .max(150, "Company name must not exceed 150 characters"),
+    .max(150, "Company name must not exceed 150 characters")
+    .optional()
+    .or(z.literal("")),
 
   companyFr: z
     .string()
-    .min(2, "Company name must be at least 2 characters")
-    .max(150, "Company name must not exceed 150 characters"),
+    .max(150, "Company name must not exceed 150 characters")
+    .optional()
+    .or(z.literal("")),
 
   contentEn: z
     .string()
-    .min(10, "Testimonial must be at least 10 characters")
-    .max(1000, "Testimonial must not exceed 1000 characters"),
+    .max(1000, "Testimonial must not exceed 1000 characters")
+    .optional()
+    .or(z.literal("")),
 
   contentFr: z
     .string()
-    .min(10, "Testimonial must be at least 10 characters")
-    .max(1000, "Testimonial must not exceed 1000 characters"),
+    .max(1000, "Testimonial must not exceed 1000 characters")
+    .optional()
+    .or(z.literal("")),
 
   rating: z
     .number()
@@ -81,6 +87,38 @@ export const testimonialFormSchema = z.object({
     .min(1, "Rating must be at least 1")
     .max(5, "Rating must not exceed 5"),
 });
+
+// Language-specific validation
+export const validateTestimonialForLanguage = (
+  data: z.infer<typeof testimonialFormSchema>,
+  language: "en" | "fr",
+): { valid: boolean; errors: Record<string, string> } => {
+  const errors: Record<string, string> = {};
+
+  if (language === "en") {
+    if (!data.authorTitleEn || data.authorTitleEn.length < 2) {
+      errors.authorTitleEn = "Title must be at least 2 characters";
+    }
+    if (!data.companyEn || data.companyEn.length < 2) {
+      errors.companyEn = "Company name must be at least 2 characters";
+    }
+    if (!data.contentEn || data.contentEn.length < 10) {
+      errors.contentEn = "Testimonial must be at least 10 characters";
+    }
+  } else {
+    if (!data.authorTitleFr || data.authorTitleFr.length < 2) {
+      errors.authorTitleFr = "Title must be at least 2 characters";
+    }
+    if (!data.companyFr || data.companyFr.length < 2) {
+      errors.companyFr = "Company name must be at least 2 characters";
+    }
+    if (!data.contentFr || data.contentFr.length < 10) {
+      errors.contentFr = "Testimonial must be at least 10 characters";
+    }
+  }
+
+  return { valid: Object.keys(errors).length === 0, errors };
+};
 
 export type TestimonialFormData = z.infer<typeof testimonialFormSchema>;
 
