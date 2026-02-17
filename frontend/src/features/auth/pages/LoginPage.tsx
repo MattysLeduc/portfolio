@@ -67,7 +67,6 @@ export const LoginPage: React.FC = () => {
               </svg>
             </div>
             <h1>Welcome Back</h1>
-            <p>Sign in to access the admin portal</p>
           </div>
 
           {error && (
