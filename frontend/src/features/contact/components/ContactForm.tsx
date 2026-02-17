@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { sendContactMessage } from "../api/sendContactMessage";
 import type { ContactMessageRequestModel } from "../models/ContactMessageRequestModel";
+import { useCallback } from "react";
 
 export const ContactForm: React.FC = () => {
   const [formData, setFormData] = useState<ContactMessageRequestModel>({
@@ -19,20 +20,23 @@ export const ContactForm: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await sendContactMessage(formData);
-      setSuccess(true);
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setTimeout(() => setSuccess(false), 3000);
-    } catch (error) {
-      // Handle error silently
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      setLoading(true);
+      try {
+        await sendContactMessage(formData);
+        setSuccess(true);
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setTimeout(() => setSuccess(false), 3000);
+      } catch (error) {
+        console.error("Form submission error:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [formData],
+  );
 
   return (
     <form onSubmit={handleSubmit} className="contact-form">

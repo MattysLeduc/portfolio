@@ -51,6 +51,14 @@ services:
 
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
 
+      # Email Configuration
+      MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_FROM: ${MAIL_FROM:-noreply@mattysleduc.dev}
+      MAIL_TO: ${MAIL_TO:-mattys.leduc@gmail.com}
+
     ports:
       - "8080:8080"
     networks:
@@ -80,11 +88,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      args:
-        VITE_API_URL: ${VITE_API_URL:-/api}
-        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
-        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
-        VITE_SUPABASE_BUCKET_NAME: ${VITE_SUPABASE_BUCKET_NAME:-project-images}
     container_name: portfolio-frontend
     restart: unless-stopped
     environment:

@@ -3,6 +3,7 @@ package com.mattysleduc.portfolio.domain.contactsubdomain.business_layer;
 import com.mattysleduc.portfolio.domain.contactsubdomain.data_access_layer.*;
 import com.mattysleduc.portfolio.domain.contactsubdomain.mapping_layer.*;
 import com.mattysleduc.portfolio.domain.contactsubdomain.presentation_layer.*;
+import com.mattysleduc.portfolio.utils.email.EmailService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,19 +17,22 @@ public class ContactServiceImpl implements ContactService {
     private final ContactInfoResponseMapper infoResponseMapper;
     private final ContactMessageRequestMapper messageRequestMapper;
     private final ContactMessageResponseMapper messageResponseMapper;
+    private final EmailService emailService;
 
     public ContactServiceImpl(ContactInfoRepository infoRepository,
                               ContactMessageRepository messageRepository,
                               ContactInfoRequestMapper infoRequestMapper,
                               ContactInfoResponseMapper infoResponseMapper,
                               ContactMessageRequestMapper messageRequestMapper,
-                              ContactMessageResponseMapper messageResponseMapper) {
+                              ContactMessageResponseMapper messageResponseMapper,
+                              EmailService emailService) {
         this.infoRepository = infoRepository;
         this.messageRepository = messageRepository;
         this.infoRequestMapper = infoRequestMapper;
         this.infoResponseMapper = infoResponseMapper;
         this.messageRequestMapper = messageRequestMapper;
         this.messageResponseMapper = messageResponseMapper;
+        this.emailService = emailService;
     }
 
     @Override
@@ -57,7 +61,17 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public ContactMessageResponseModel submitMessage(ContactMessageRequestModel model) {
         ContactMessage entity = messageRequestMapper.toEntity(model);
-        return messageResponseMapper.toResponseModel(messageRepository.save(entity));
+        ContactMessageResponseModel response = messageResponseMapper.toResponseModel(messageRepository.save(entity));
+        
+        // Send email notification
+        emailService.sendContactNotification(
+            model.getName(),
+            model.getEmail(),
+            model.getSubject(),
+            model.getMessage()
+        );
+        
+        return response;
     }
 
     @Override
