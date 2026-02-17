@@ -11,6 +11,9 @@ import {
   ChevronDown,
   ChevronUp,
   Loader2,
+  Upload,
+  X,
+  ImageIcon,
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import {
@@ -22,6 +25,7 @@ import { getAllProjects } from "@/features/projects/api/getAllProjects";
 import { createProject } from "@/features/projects/api/createProject";
 import { updateProject } from "@/features/projects/api/updateProject";
 import { deleteProject } from "@/features/projects/api/deleteProject";
+import { imageService } from "@/shared/api/imageService";
 import type { ProjectResponseModel } from "@/features/projects/models/ProjectResponseModel";
 import type { ProjectRequestModel } from "@/features/projects/models/ProjectRequestModel";
 
@@ -30,6 +34,7 @@ const ProjectsForm = () => {
   const [openItems, setOpenItems] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingImages, setUploadingImages] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     fetchProjects();
@@ -101,6 +106,51 @@ const ProjectsForm = () => {
     setProjects(
       projects.map((p) => (p.projectId === id ? { ...p, [field]: value } : p)),
     );
+  };
+
+  const handleImageUpload = async (projectId: string, file: File) => {
+    setUploadingImages((prev) => ({ ...prev, [projectId]: true }));
+    try {
+      const response = await imageService.uploadImage(file);
+      updateField(projectId, "imageUrl", response.imageUrl);
+      toast({
+        title: "Success",
+        description: "Image uploaded successfully",
+      });
+    } catch {
+      toast({
+        title: "Error",
+        description: "Failed to upload image",
+        variant: "destructive",
+      });
+    } finally {
+      setUploadingImages((prev) => ({ ...prev, [projectId]: false }));
+    }
+  };
+
+  const handleFileSelect = (projectId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        toast({
+          title: "Error",
+          description: "Please select an image file",
+          variant: "destructive",
+        });
+        return;
+      }
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "Error",
+          description: "Image size must be less than 5MB",
+          variant: "destructive",
+        });
+        return;
+      }
+      handleImageUpload(projectId, file);
+    }
   };
 
   const handleSave = async () => {
@@ -266,23 +316,82 @@ const ProjectsForm = () => {
                     </div>
                   </div>
 
+                  {/* Image Upload Section */}
+                  <div className="space-y-2">
+                    <Label>Project Image</Label>
+                    
+                    {/* Image Preview */}
+                    {project.imageUrl && (
+                      <div className="relative w-full aspect-video bg-background/50 border border-primary/30 rounded overflow-hidden mb-2">
+                        <img
+                          src={project.imageUrl}
+                          alt={project.nameEn || "Project preview"}
+                          className="w-full h-full object-cover"
+                        />
+                        <Button
+                          variant="destructive"
+                          size="icon"
+                          className="absolute top-2 right-2 h-8 w-8"
+                          onClick={() => updateField(project.projectId, "imageUrl", "")}
+                        >
+                          <X size={16} />
+                        </Button>
+                      </div>
+                    )}
+
+                    {/* File Upload Button */}
+                    <div className="flex gap-2">
+                      <div className="flex-1">
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleFileSelect(project.projectId, e)}
+                          className="hidden"
+                          id={`file-upload-${project.projectId}`}
+                          disabled={uploadingImages[project.projectId]}
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-full border-primary/50"
+                          onClick={() => {
+                            document.getElementById(`file-upload-${project.projectId}`)?.click();
+                          }}
+                          disabled={uploadingImages[project.projectId]}
+                        >
+                          {uploadingImages[project.projectId] ? (
+                            <Loader2 size={16} className="mr-2 animate-spin" />
+                          ) : (
+                            <Upload size={16} className="mr-2" />
+                          )}
+                          {uploadingImages[project.projectId] ? "Uploading..." : "Upload Image"}
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Or use URL input */}
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <div className="flex-1 h-px bg-primary/20" />
+                      <span>or enter URL</span>
+                      <div className="flex-1 h-px bg-primary/20" />
+                    </div>
+                    
+                    <Input
+                      value={project.imageUrl || ""}
+                      onChange={(e) =>
+                        updateField(
+                          project.projectId,
+                          "imageUrl",
+                          e.target.value,
+                        )
+                      }
+                      placeholder="https://..."
+                      className="bg-background/50 border-primary/30"
+                    />
+                  </div>
+
                   {/* URLs */}
                   <div className="grid md:grid-cols-3 gap-4">
-                    <div className="space-y-2">
-                      <Label>Image URL</Label>
-                      <Input
-                        value={project.imageUrl || ""}
-                        onChange={(e) =>
-                          updateField(
-                            project.projectId,
-                            "imageUrl",
-                            e.target.value,
-                          )
-                        }
-                        placeholder="https://..."
-                        className="bg-background/50 border-primary/30"
-                      />
-                    </div>
                     <div className="space-y-2">
                       <Label>Technologies (comma-separated)</Label>
                       <Input

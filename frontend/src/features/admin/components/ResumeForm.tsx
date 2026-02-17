@@ -1,47 +1,28 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, Upload, FileText, RefreshCw } from "lucide-react";
+import { Loader2, Upload, FileText } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import { getResumeInfo } from "@/features/resume/api/admin/getResumeInfo";
 import { uploadResume } from "@/features/resume/api/admin/uploadResume";
-import type { ResumeInfoResponseModel } from "@/features/resume/models/ResumeInfoResponseModel";
+import { personalInfoAdminService } from "@/shared/api/adminService";
 
 const ResumeForm = () => {
   const [enFile, setEnFile] = useState<File | null>(null);
   const [frFile, setFrFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState<"en" | "fr" | null>(null);
-  const [resumeInfo, setResumeInfo] = useState<{
-    en: ResumeInfoResponseModel | null;
-    fr: ResumeInfoResponseModel | null;
-  }>({
-    en: null,
-    fr: null,
-  });
-
-  const fetchInfo = async () => {
-    try {
-      setLoading(true);
-      const [enInfo, frInfo] = await Promise.all([
-        getResumeInfo("en").catch(() => null),
-        getResumeInfo("fr").catch(() => null),
-      ]);
-      setResumeInfo({ en: enInfo, fr: frInfo });
-    } catch {
-      toast({
-        title: "Error",
-        description: "Failed to load resume info",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [personalInfo, setPersonalInfo] = useState<any>(null);
 
   useEffect(() => {
-    fetchInfo();
+    const fetchPersonalInfo = async () => {
+      try {
+        const data = await personalInfoAdminService.getPersonalInfo();
+        setPersonalInfo(data);
+      } catch (error) {
+        console.error("Failed to fetch personal info:", error);
+      }
+    };
+    fetchPersonalInfo();
   }, []);
 
   const handleUpload = async (language: "en" | "fr") => {
@@ -57,16 +38,34 @@ const ResumeForm = () => {
 
     try {
       setUploading(language);
-      const info = await uploadResume(language, file);
-      setResumeInfo((prev) => ({ ...prev, [language]: info }));
+      const result = await uploadResume(language, file);
+      
+      // Update PersonalInfo with the new resume URL
+      const updatedInfo = {
+        ...personalInfo,
+        [language === "en" ? "resumeEnUrl" : "resumeFrUrl"]: result.fileUrl,
+      };
+      
+      console.log("Updating personal info with:", updatedInfo);
+      await personalInfoAdminService.updatePersonalInfo(updatedInfo);
+      
+      // Refetch to verify the update was saved
+      const refreshedInfo = await personalInfoAdminService.getPersonalInfo();
+      console.log("Refreshed personal info:", refreshedInfo);
+      setPersonalInfo(refreshedInfo);
+      
       toast({
         title: "Success",
-        description: `Resume (${language.toUpperCase()}) uploaded`,
+        description: `Resume (${language.toUpperCase()}) uploaded to Supabase and saved to database`,
       });
-    } catch {
+      // Clear file after successful upload
+      if (language === "en") setEnFile(null);
+      else setFrFile(null);
+    } catch (error) {
+      console.error("Upload error:", error);
       toast({
         title: "Error",
-        description: "Failed to upload resume",
+        description: error instanceof Error ? error.message : "Failed to upload resume",
         variant: "destructive",
       });
     } finally {
@@ -74,43 +73,15 @@ const ResumeForm = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 size={32} className="animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  const renderInfo = (info: ResumeInfoResponseModel | null) => {
-    if (!info)
-      return (
-        <span className="text-xs text-muted-foreground">No file uploaded</span>
-      );
-    return (
-      <div className="text-xs text-muted-foreground space-y-1">
-        <div>File: {info.fileName}</div>
-        <div>Size: {(info.sizeBytes / 1024).toFixed(1)} KB</div>
-        <div>Updated: {new Date(info.updatedAt).toLocaleString()}</div>
-      </div>
-    );
-  };
-
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4">
         <h3 className="font-mono text-sm text-primary uppercase tracking-wider">
-          Resume / CV
+          Resume / CV Upload
         </h3>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={fetchInfo}
-          className="border-primary/50"
-        >
-          <RefreshCw size={16} className="mr-2" />
-          Refresh
-        </Button>
+        <p className="text-xs text-muted-foreground mt-2">
+          Upload your resume PDFs to Supabase Storage. View uploaded files in your Supabase dashboard under Storage → project-images → resumes/
+        </p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -120,8 +91,6 @@ const ResumeForm = () => {
             <FileText size={16} className="text-primary" />
             <span className="font-mono text-sm">English CV (PDF)</span>
           </div>
-
-          {renderInfo(resumeInfo.en)}
 
           <div className="space-y-3">
             <Label>Upload English PDF</Label>
@@ -164,8 +133,6 @@ const ResumeForm = () => {
             <FileText size={16} className="text-primary" />
             <span className="font-mono text-sm">French CV (PDF)</span>
           </div>
-
-          {renderInfo(resumeInfo.fr)}
 
           <div className="space-y-3">
             <Label>Upload French PDF</Label>

@@ -98,25 +98,13 @@ export const testimonialsAdminService = {
   },
 };
 
-export const resumeAdminService = {
-  getActiveResume: async () => {
-    const response = await apiClient.get('/admin/resume');
-    return response.data.data;
+export const personalInfoAdminService = {
+  getPersonalInfo: async () => {
+    const response = await apiClient.get('/admin/personal-info');
+    return response.data;
   },
-  uploadResume: async (file: File, title: string) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('title', title);
-    const response = await apiClient.post('/admin/resume/upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-    return response.data.data;
-  },
-  activateResume: async (id: number) => {
-    const response = await apiClient.post(`/admin/resume/${id}/activate`);
-    return response.data.data;
-  },
-  deleteResume: async (id: number) => {
-    await apiClient.delete(`/admin/resume/${id}`);
+  updatePersonalInfo: async (personalInfo: any) => {
+    const response = await apiClient.put('/admin/personal-info', personalInfo);
+    return response.data;
   },
 };

@@ -7,6 +7,12 @@ export const portfolioService = {
     return response.data.data;
   },
 
+  // Personal Info
+  getPersonalInfo: async () => {
+    const response = await apiClient.get("/public/personal-info");
+    return response.data;
+  },
+
   // Skills
   getSkills: async () => {
     const response = await apiClient.get("/v1/skills");
@@ -63,13 +69,5 @@ export const portfolioService = {
   }) => {
     const response = await apiClient.post("/public/contact/messages", data);
     return response.data;
-  },
-
-  // Resume
-  downloadResume: async (language: string) => {
-    return apiClient.get("/public/resume", {
-      params: { lang: language },
-      responseType: "blob",
-    });
   },
 };

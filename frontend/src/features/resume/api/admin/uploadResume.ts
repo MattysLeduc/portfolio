@@ -1,20 +1,19 @@
-import axiosInstance from "../../../../shared/api/axiosInstance";
+import { resumeService } from "@/shared/api/resumeService";
 import type { ResumeInfoResponseModel } from "../../models/ResumeInfoResponseModel";
 
 export async function uploadResume(
   language: "en" | "fr",
   file: File,
-): Promise<ResumeInfoResponseModel> {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("lang", language);
-
-  const response = await axiosInstance.post<ResumeInfoResponseModel>(
-    "/admin/resume/upload",
-    formData,
-    {
-      headers: { "Content-Type": "multipart/form-data" },
-    },
-  );
-  return response.data;
+): Promise<ResumeInfoResponseModel & { fileUrl: string }> {
+  // Upload to Supabase Storage
+  const result = await resumeService.uploadResume(file, language);
+  
+  // Return in the expected format with the URL
+  return {
+    language,
+    fileName: result.fileName,
+    sizeBytes: file.size,
+    updatedAt: new Date().toISOString(),
+    fileUrl: result.fileUrl,
+  };
 }

@@ -1,41 +1,28 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ExternalLink, Github } from "lucide-react";
-
-const projects = [
-  {
-    title: "Neural Network Visualizer",
-    description:
-      "An interactive web application that visualizes neural network architectures and training processes in real-time. Built with React and D3.js for stunning data visualization.",
-    tech: ["React", "D3.js", "Python", "TensorFlow"],
-    github: "#",
-    live: "#",
-    featured: true,
-  },
-  {
-    title: "Crypto Dashboard",
-    description:
-      "A real-time cryptocurrency tracking dashboard with portfolio management, price alerts, and market analysis powered by multiple exchange APIs.",
-    tech: ["Next.js", "TypeScript", "WebSocket", "PostgreSQL"],
-    github: "#",
-    live: "#",
-    featured: true,
-  },
-  {
-    title: "AI Code Assistant",
-    description:
-      "A VS Code extension that leverages GPT models to provide intelligent code suggestions, documentation generation, and bug detection.",
-    tech: ["TypeScript", "OpenAI API", "VS Code API"],
-    github: "#",
-    live: "#",
-    featured: true,
-  },
-];
+import { portfolioService } from "@/shared/api/portfolioService";
+import { useLanguage } from "@/context/LanguageContext";
+import { getLocalizedField } from "@/utils/localization";
 
 const ProjectsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { language } = useLanguage();
+  const [projects, setProjects] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const data = await portfolioService.getFeaturedProjects();
+        setProjects(data.slice(0, 3)); // Get first 3 featured projects
+      } catch (error) {
+        console.error("Failed to load projects:", error);
+      }
+    };
+    fetchProjects();
+  }, []);
 
   return (
     <section id="projects" className="py-32 px-6 relative">
@@ -69,16 +56,24 @@ const ProjectsSection = () => {
                 <div className="relative group">
                   <div className="absolute inset-0 bg-primary/20 group-hover:bg-transparent transition-all duration-300 z-10" />
                   <div className="aspect-video glass overflow-hidden">
-                    <div className="w-full h-full bg-gradient-to-br from-primary/10 to-accent/5 flex items-center justify-center">
-                      <div className="text-center p-6">
-                        <div className="w-16 h-16 mx-auto rounded-full border border-primary/50 flex items-center justify-center mb-4 animate-glow-pulse">
-                          <span className="font-display text-2xl text-primary">
-                            {String(index + 1).padStart(2, "0")}
-                          </span>
+                    {project.imageUrl ? (
+                      <img
+                        src={project.imageUrl}
+                        alt={getLocalizedField(project, "name", language) || project.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-primary/10 to-accent/5 flex items-center justify-center">
+                        <div className="text-center p-6">
+                          <div className="w-16 h-16 mx-auto rounded-full border border-primary/50 flex items-center justify-center mb-4 animate-glow-pulse">
+                            <span className="font-display text-2xl text-primary">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+                          </div>
+                          <p className="font-mono text-sm text-primary/70">Project Preview</p>
                         </div>
-                        <p className="font-mono text-sm text-primary/70">Project Preview</p>
                       </div>
-                    </div>
+                    )}
                   </div>
                   <div className="absolute inset-0 border border-primary/0 group-hover:border-primary/50 transition-all duration-300 neon-border opacity-0 group-hover:opacity-100" />
                 </div>
@@ -92,14 +87,18 @@ const ProjectsSection = () => {
               >
                 <div className="space-y-4">
                   <p className="font-mono text-primary text-sm">Featured Project</p>
-                  <h3 className="font-display text-2xl font-bold">{project.title}</h3>
+                  <h3 className="font-display text-2xl font-bold">
+                    {getLocalizedField(project, "name", language) || project.title}
+                  </h3>
                   
                   <div className="glass p-6 rounded-sm">
-                    <p className="text-muted-foreground">{project.description}</p>
+                    <p className="text-muted-foreground">
+                      {getLocalizedField(project, "description", language) || project.description}
+                    </p>
                   </div>
 
                   <div className={`flex flex-wrap gap-3 ${index % 2 === 1 ? "md:justify-end" : ""}`}>
-                    {project.tech.map((tech) => (
+                    {(project.tech || (project.technologies ? project.technologies.split(",").map((t: string) => t.trim()) : [])).map((tech: string) => (
                       <span
                         key={tech}
                         className="font-mono text-xs text-primary/80 px-2 py-1 bg-primary/10 rounded"
@@ -110,20 +109,28 @@ const ProjectsSection = () => {
                   </div>
 
                   <div className={`flex gap-4 ${index % 2 === 1 ? "md:justify-end" : ""}`}>
-                    <a
-                      href={project.github}
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                      aria-label="GitHub"
-                    >
-                      <Github size={20} />
-                    </a>
-                    <a
-                      href={project.live}
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                      aria-label="Live Demo"
-                    >
-                      <ExternalLink size={20} />
-                    </a>
+                    {(project.github || project.repoUrl) && (
+                      <a
+                        href={project.github || project.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                        aria-label="GitHub"
+                      >
+                        <Github size={20} />
+                      </a>
+                    )}
+                    {(project.live || project.demoUrl) && (
+                      <a
+                        href={project.live || project.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                        aria-label="Live Demo"
+                      >
+                        <ExternalLink size={20} />
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>

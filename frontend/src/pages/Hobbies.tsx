@@ -11,6 +11,15 @@ import {
   Heart,
   Code,
   Palette,
+  Plane,
+  Dumbbell,
+  Film,
+  Utensils,
+  Bike,
+  Guitar,
+  Users,
+  Globe,
+  Sparkles,
 } from "lucide-react";
 import { portfolioService } from "@/shared/api/portfolioService";
 import { useLanguage } from "@/context/LanguageContext";
@@ -38,6 +47,15 @@ const iconMap: Record<string, any> = {
   Heart,
   Code,
   Palette,
+  Plane,
+  Dumbbell,
+  Film,
+  Utensils,
+  Bike,
+  Guitar,
+  Users,
+  Globe,
+  Sparkles,
 };
 
 const colorGradients = [
@@ -50,6 +68,12 @@ const colorGradients = [
   "from-pink-500 to-rose-500",
   "from-cyan-500 to-blue-500",
   "from-teal-500 to-green-500",
+  "from-violet-500 to-purple-500",
+  "from-emerald-500 to-teal-500",
+  "from-sky-500 to-blue-500",
+  "from-fuchsia-500 to-pink-500",
+  "from-lime-500 to-green-500",
+  "from-red-500 to-pink-500",
 ];
 
 const Hobbies = () => {

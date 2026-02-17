@@ -1,4 +1,21 @@
 
+-- Create personal_info table
+CREATE TABLE IF NOT EXISTS personal_info (
+    id SERIAL PRIMARY KEY,
+    name_en VARCHAR(255),
+    name_fr VARCHAR(255),
+    tagline_en VARCHAR(500),
+    tagline_fr VARCHAR(500),
+    hero_welcome_en TEXT,
+    hero_welcome_fr TEXT,
+    github_url VARCHAR(255),
+    linkedin_url VARCHAR(255),
+    twitter_url VARCHAR(255),
+    email VARCHAR(255),
+    contact_message_en TEXT,
+    contact_message_fr TEXT
+);
+
 -- Create skills table
 CREATE TABLE IF NOT EXISTS skills (
     id SERIAL PRIMARY KEY,

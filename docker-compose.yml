@@ -44,17 +44,15 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO:-validate}
       SPRING_FLYWAY_ENABLED: ${SPRING_FLYWAY_ENABLED:-true}
       SPRING_SQL_INIT_MODE: ${SPRING_SQL_INIT_MODE:-always}
+      SPRING_SQL_INIT_PLATFORM: ${SPRING_SQL_INIT_PLATFORM:-postgres}
 
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
 
-      APP_RESUME_UPLOAD_DIR: /app/uploads/resumes
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
 
     ports:
       - "8080:8080"
-    volumes:
-      - backend_uploads:/app/uploads
     networks:
       - portfolio-network
     depends_on:
@@ -107,10 +105,32 @@ services:
       timeout: 10s
       retries: 3
 
+  # =========================
+  # pgAdmin
+  # =========================
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: portfolio-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@local.dev}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin123}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+    networks:
+      - portfolio-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 networks:
   portfolio-network:
     driver: bridge
 
 volumes:
-  backend_uploads:
   postgres_data:
+  pgadmin_data:

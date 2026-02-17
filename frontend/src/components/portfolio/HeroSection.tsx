@@ -1,8 +1,24 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
+import { portfolioService } from "@/shared/api/portfolioService";
+import { getLocalizedField } from "@/utils/localization";
 
 const HeroSection = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [personalInfo, setPersonalInfo] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchPersonalInfo = async () => {
+      try {
+        const data = await portfolioService.getPersonalInfo();
+        setPersonalInfo(data);
+      } catch (error) {
+        console.error("Failed to load personal info:", error);
+      }
+    };
+    fetchPersonalInfo();
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -40,7 +56,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
         >
           <span className="font-mono text-primary/80 text-sm tracking-[0.3em] uppercase">
-            {t("heroWelcome")}
+            {personalInfo ? getLocalizedField(personalInfo, "heroWelcome", language) : t("heroWelcome")}
           </span>
         </motion.div>
 
@@ -50,7 +66,9 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          <span className="text-gradient neon-text">MATTYS LEDUC</span>
+          <span className="text-gradient neon-text">
+            {personalInfo ? (getLocalizedField(personalInfo, "name", language) || "MATTYS LEDUC") : "MATTYS LEDUC"}
+          </span>
         </motion.h1>
 
         <motion.p
@@ -59,7 +77,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
         >
-          {t("heroSubtitle")}
+          {personalInfo ? getLocalizedField(personalInfo, "tagline", language) : t("heroSubtitle")}
         </motion.p>
 
         <motion.div

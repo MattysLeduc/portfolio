@@ -3,7 +3,10 @@ import { submitTestimonial } from "../api/submitTestimonial";
 import type { TestimonialRequestModel } from "../models/TestimonialRequestModel";
 import "../styles/SubmitTestimonialForm.css";
 import { useLanguage } from "@/context/LanguageContext";
-import { testimonialFormSchema, validateTestimonialForLanguage } from "@/utils/validation";
+import {
+  testimonialFormSchema,
+  validateTestimonialForLanguage,
+} from "@/utils/validation";
 import { sanitizeFormData } from "@/utils/sanitization";
 import { z } from "zod";
 
@@ -276,8 +279,10 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
             <span style={{ fontSize: "0.75rem", opacity: 0.6 }}>
               (
               {
-                (language === "en" ? formData.contentEn || "" : formData.contentFr || "")
-                  .length
+                (language === "en"
+                  ? formData.contentEn || ""
+                  : formData.contentFr || ""
+                ).length
               }
               /1000 chars)
             </span>
@@ -285,7 +290,11 @@ export const SubmitTestimonialForm: React.FC<{ onSuccess?: () => void }> = ({
           <textarea
             id={language === "en" ? "contentEn" : "contentFr"}
             name={language === "en" ? "contentEn" : "contentFr"}
-            value={language === "en" ? formData.contentEn || "" : formData.contentFr || ""}
+            value={
+              language === "en"
+                ? formData.contentEn || ""
+                : formData.contentFr || ""
+            }
             onChange={handleChange}
             placeholder={
               language === "en"

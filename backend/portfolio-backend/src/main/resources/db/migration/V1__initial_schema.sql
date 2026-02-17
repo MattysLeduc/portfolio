@@ -1,0 +1,3 @@
+-- Baseline migration V1
+-- This migration represents the initial schema that was created via schema.sql
+-- The actual schema was already applied to the database before Flyway migrations were tracked

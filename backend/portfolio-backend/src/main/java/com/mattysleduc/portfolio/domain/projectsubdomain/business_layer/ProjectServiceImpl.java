@@ -64,6 +64,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setDescriptionEn(model.getDescriptionEn());
         project.setDescriptionFr(model.getDescriptionFr());
         project.setImageUrl(model.getImageUrl());
+        project.setTechnologies(model.getTechnologies());
         project.setRepoUrl(model.getRepoUrl());
         project.setDemoUrl(model.getDemoUrl());
         project.setFeatured(model.isFeatured());

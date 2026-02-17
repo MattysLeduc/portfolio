@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Menu, X, LogIn } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Menu, X, LogIn, LogOut, LayoutDashboard } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
+import { useAuth } from "@/context/AuthContext";
 
 const navItems = [
   { key: "skills", href: "/skills" },
@@ -18,10 +19,18 @@ const navItems = [
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { language, setLanguage, t } = useLanguage();
+  const { isAuthenticated, logout } = useAuth();
 
   const toggleLanguage = () => {
     setLanguage(language === "en" ? "fr" : "en");
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+    setIsOpen(false);
   };
 
   return (
@@ -80,20 +89,51 @@ const Navigation = () => {
             {language === "en" ? "FR" : "EN"}
           </button>
 
-          {/* Sign In Button */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.95 }}
-          >
-            <Link
-              to="/login"
-              className="flex items-center gap-2 px-4 py-2 border border-primary/50 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
+          {/* Auth Buttons */}
+          {isAuthenticated ? (
+            <>
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.95 }}
+              >
+                <Link
+                  to="/admin"
+                  className="flex items-center gap-2 px-4 py-2 border border-primary/50 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
+                >
+                  <LayoutDashboard size={16} />
+                  <span>Admin Panel</span>
+                </Link>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1.0 }}
+              >
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-4 py-2 border border-primary/50 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
+                >
+                  <LogOut size={16} />
+                  <span>{t("logout")}</span>
+                </button>
+              </motion.div>
+            </>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.95 }}
             >
-              <LogIn size={16} />
-              <span>{t("signIn")}</span>
-            </Link>
-          </motion.div>
+              <Link
+                to="/login"
+                className="flex items-center gap-2 px-4 py-2 border border-primary/50 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
+              >
+                <LogIn size={16} />
+                <span>{t("signIn")}</span>
+              </Link>
+            </motion.div>
+          )}
         </div>
 
         {/* Mobile menu button */}
@@ -112,16 +152,36 @@ const Navigation = () => {
         initial={{ opacity: 0, height: 0 }}
         animate={{ opacity: isOpen ? 1 : 0, height: isOpen ? "auto" : 0 }}
       >
-        {/* Sign In Button - Mobile */}
-        <Link
-          to="/login"
-          className="flex items-center justify-center gap-2 px-4 py-3 mt-4 border border-primary/50 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
-          onClick={() => setIsOpen(false)}
-        >
-          <LogIn size={16} />
-          <span>{t("signIn")}</span>
-        </Link>
         <div className="px-6 py-8 flex flex-col gap-4">
+          {/* Auth Buttons - Mobile */}
+          {isAuthenticated ? (
+            <>
+              <Link
+                to="/admin"
+                className="flex items-center justify-center gap-2 px-4 py-3 border border-primary/50 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
+                onClick={() => setIsOpen(false)}
+              >
+                <LayoutDashboard size={16} />
+                <span>Admin Panel</span>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="flex items-center justify-center gap-2 px-4 py-3 border border-primary/50 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
+              >
+                <LogOut size={16} />
+                <span>{t("logout")}</span>
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="flex items-center justify-center gap-2 px-4 py-3 border border-primary/50 text-primary hover:bg-primary hover:text-background transition-all font-mono text-sm rounded-md"
+              onClick={() => setIsOpen(false)}
+            >
+              <LogIn size={16} />
+              <span>{t("signIn")}</span>
+            </Link>
+          )}
           {navItems.map((item) => (
             <Link
               key={item.key}

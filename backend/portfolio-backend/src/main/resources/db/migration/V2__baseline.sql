@@ -1,0 +1,3 @@
+-- Baseline migration V2
+-- This migration represents schema changes that were applied before Flyway migrations were tracked
+-- The actual changes were already applied to the database

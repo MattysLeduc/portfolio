@@ -1,10 +1,27 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import { useLanguage } from "@/context/LanguageContext";
+import { portfolioService } from "@/shared/api/portfolioService";
+import { getLocalizedField } from "@/utils/localization";
 
 const AboutSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { language } = useLanguage();
+  const [personalInfo, setPersonalInfo] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchPersonalInfo = async () => {
+      try {
+        const data = await portfolioService.getPersonalInfo();
+        setPersonalInfo(data);
+      } catch (error) {
+        console.error("Failed to load personal info:", error);
+      }
+    };
+    fetchPersonalInfo();
+  }, []);
 
   return (
     <section id="about" className="py-32 px-6 relative">
@@ -27,17 +44,36 @@ const AboutSection = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="space-y-6"
           >
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              I'm a passionate developer who loves building digital experiences that live on the internet. 
-              My interest in web development started back in 2012 when I decided to try editing custom Tumblr themes — turns out hacking together a custom reblog button taught me a lot about HTML & CSS!
-            </p>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              Fast-forward to today, and I've had the privilege of working at a start-up, a huge corporation, and a student-led design studio. 
-              My main focus these days is building accessible, inclusive products and digital experiences.
-            </p>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              When I'm not at the computer, I'm usually rock climbing, reading sci-fi novels, or exploring new coffee shops.
-            </p>
+            {personalInfo && getLocalizedField(personalInfo, "aboutParagraph1", language) && (
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                {getLocalizedField(personalInfo, "aboutParagraph1", language)}
+              </p>
+            )}
+            {personalInfo && getLocalizedField(personalInfo, "aboutParagraph2", language) && (
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                {getLocalizedField(personalInfo, "aboutParagraph2", language)}
+              </p>
+            )}
+            {personalInfo && getLocalizedField(personalInfo, "aboutParagraph3", language) && (
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                {getLocalizedField(personalInfo, "aboutParagraph3", language)}
+              </p>
+            )}
+            {!personalInfo && (
+              <>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  I'm a passionate developer who loves building digital experiences that live on the internet. 
+                  My interest in web development started back in 2012 when I decided to try editing custom Tumblr themes — turns out hacking together a custom reblog button taught me a lot about HTML & CSS!
+                </p>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  Fast-forward to today, and I've had the privilege of working at a start-up, a huge corporation, and a student-led design studio. 
+                  My main focus these days is building accessible, inclusive products and digital experiences.
+                </p>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  When I'm not at the computer, I'm usually rock climbing, reading sci-fi novels, or exploring new coffee shops.
+                </p>
+              </>
+            )}
           </motion.div>
 
           <motion.div
@@ -53,14 +89,24 @@ const AboutSection = () => {
               {/* Image container */}
               <div className="relative overflow-hidden glass">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/10" />
-                <div className="w-full h-full flex items-center justify-center p-8">
-                  <div className="text-center">
-                    <div className="w-32 h-32 mx-auto rounded-full border-2 border-primary/50 flex items-center justify-center mb-4 neon-border">
-                      <span className="font-display text-4xl text-primary">JD</span>
+                {personalInfo && personalInfo.profileImageUrl ? (
+                  <img
+                    src={personalInfo.profileImageUrl}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center p-8">
+                    <div className="text-center">
+                      <div className="w-32 h-32 mx-auto rounded-full border-2 border-primary/50 flex items-center justify-center mb-4 neon-border">
+                        <span className="font-display text-4xl text-primary">
+                          {personalInfo ? (getLocalizedField(personalInfo, "name", language) || "ML").substring(0, 2).toUpperCase() : "ML"}
+                        </span>
+                      </div>
+                      <p className="font-mono text-sm text-primary/70">Developer & Designer</p>
                     </div>
-                    <p className="font-mono text-sm text-primary/70">Developer & Designer</p>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </motion.div>

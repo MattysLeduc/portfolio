@@ -21,6 +21,7 @@ interface Project {
   githubUrl?: string;
   live?: string;
   liveUrl?: string;
+  imageUrl?: string;
 }
 
 const Projects = () => {
@@ -123,12 +124,25 @@ const Projects = () => {
                   className="group glass rounded-sm overflow-hidden hover:neon-border transition-all duration-300"
                 >
                   <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/10 flex items-center justify-center relative overflow-hidden">
-                    <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-all" />
-                    <div className="w-16 h-16 rounded-full border border-primary/50 flex items-center justify-center animate-glow-pulse">
-                      <span className="font-display text-2xl text-primary">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                    </div>
+                    {project.imageUrl ? (
+                      <>
+                        <img
+                          src={project.imageUrl}
+                          alt={localizedTitle}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/5 transition-all" />
+                      </>
+                    ) : (
+                      <>
+                        <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-all" />
+                        <div className="w-16 h-16 rounded-full border border-primary/50 flex items-center justify-center animate-glow-pulse">
+                          <span className="font-display text-2xl text-primary">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <div className="p-6 space-y-4">

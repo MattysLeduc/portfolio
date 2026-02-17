@@ -61,6 +61,9 @@ spring:
 
   flyway:
     enabled: true
+    ignore-missing-migrations: true
+    baseline-on-migrate: true
+    validate-on-migrate: false
 
   sql:
     init:

@@ -1,3 +1,23 @@
+-- Personal Info data
+INSERT INTO personal_info (
+    name_en, name_fr,
+    tagline_en, tagline_fr,
+    hero_welcome_en, hero_welcome_fr,
+    github_url, linkedin_url, twitter_url, email,
+    contact_message_en, contact_message_fr
+) VALUES (
+    'Mattys Leduc', 'Mattys Leduc',
+    'Full Stack Developer', 'Développeur Full Stack',
+    'Welcome to my portfolio! I''m a passionate developer who loves creating elegant solutions to complex problems.',
+    'Bienvenue sur mon portfolio! Je suis un développeur passionné qui aime créer des solutions élégantes à des problèmes complexes.',
+    'https://github.com/mattysleduc',
+    'https://linkedin.com/in/mattys-leduc-405435307',
+    'https://twitter.com/mattysleduc',
+    'mattys.leduc@gmail.com',
+    'I''m currently looking for new opportunities. Whether you have a question or just want to say hi, my inbox is always open. I''ll try my best to get back to you!',
+    'Je recherche actuellement de nouvelles opportunités. Que vous ayez une question ou que vous vouliez simplement dire bonjour, ma boîte de réception est toujours ouverte. Je ferai de mon mieux pour vous répondre!'
+) ON CONFLICT (id) DO NOTHING;
+
 -- Skills data
 INSERT INTO skills (skill_id, name_en, name_fr, description_en, description_fr, category, level) VALUES
 ('11111111-1111-1111-1111-111111111111', 'React', 'React', 'Frontend UI development with components and hooks.', 'Développement d''interfaces frontend avec composants et hooks.', 'Frontend', 95),

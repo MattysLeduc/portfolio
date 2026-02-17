@@ -4,6 +4,23 @@ import Navigation from "@/components/portfolio/Navigation";
 import { portfolioService } from "@/shared/api/portfolioService";
 import { useLanguage } from "@/context/LanguageContext";
 import { getLocalizedField } from "@/utils/localization";
+import {
+  Code2,
+  Server,
+  Database,
+  Layout,
+  Braces,
+  FileJson,
+  GitBranch,
+  Cloud,
+  Container,
+  Settings,
+  Terminal,
+  Package,
+  Lightbulb,
+  Sparkles,
+  Cpu,
+} from "lucide-react";
 
 interface Skill {
   [key: string]: any;
@@ -17,6 +34,35 @@ interface Skill {
   level: number;
   category: string;
 }
+
+// Icon mapping for common skills
+const getSkillIcon = (skillName: string) => {
+  const name = skillName.toLowerCase();
+  
+  // Frontend technologies
+  if (name.includes("react") || name.includes("vue") || name.includes("angular")) return Layout;
+  if (name.includes("html") || name.includes("css") || name.includes("tailwind")) return Code2;
+  if (name.includes("javascript") || name.includes("typescript")) return FileJson;
+  if (name.includes("next") || name.includes("vite") || name.includes("webpack")) return Package;
+  
+  // Backend technologies
+  if (name.includes("java") || name.includes("spring")) return Server;
+  if (name.includes("python") || name.includes("django") || name.includes("flask")) return Braces;
+  if (name.includes("node") || name.includes("express")) return Terminal;
+  if (name.includes("api") || name.includes("rest") || name.includes("graphql")) return Settings;
+  
+  // Database
+  if (name.includes("sql") || name.includes("postgres") || name.includes("mongo")) return Database;
+  if (name.includes("redis") || name.includes("cache")) return Cpu;
+  
+  // DevOps
+  if (name.includes("docker") || name.includes("kubernetes")) return Container;
+  if (name.includes("aws") || name.includes("azure") || name.includes("cloud")) return Cloud;
+  if (name.includes("git") || name.includes("ci/cd") || name.includes("jenkins")) return GitBranch;
+  
+  // Default icons
+  return Sparkles;
+};
 
 const Skills = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -116,39 +162,50 @@ const Skills = () => {
                 <div className="grid md:grid-cols-2 gap-6">
                   {skills
                     .filter((skill) => skill.category === category.value)
-                    .map((skill, index) => (
-                      <motion.div
-                        key={skill.id || skill.name}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 + 0.1 * index }}
-                        className="glass p-6 rounded-sm group hover:neon-border transition-all duration-300"
-                      >
-                        <div className="flex justify-between items-center mb-3">
-                          <span className="font-mono text-lg">
-                            {getLocalizedField(skill, "name", language) ||
-                              skill.name}
-                          </span>
-                          <span className="font-mono text-sm text-primary">
-                            {skill.level}%
-                          </span>
-                        </div>
-                        <div className="h-2 bg-secondary/50 rounded-full overflow-hidden">
-                          <motion.div
-                            className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
-                            initial={{ width: 0 }}
-                            animate={{ width: `${skill.level}%` }}
-                            transition={{
-                              duration: 1,
-                              delay: 0.5 + 0.1 * index,
-                            }}
-                            style={{
-                              boxShadow: "0 0 20px hsl(190 100% 50% / 0.5)",
-                            }}
-                          />
-                        </div>
-                      </motion.div>
-                    ))}
+                    .map((skill, index) => {
+                      const SkillIcon = getSkillIcon(skill.name || skill.nameEn || "");
+                      
+                      return (
+                        <motion.div
+                          key={skill.id || skill.name}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 + 0.1 * index }}
+                          className="glass p-6 rounded-sm group hover:neon-border transition-all duration-300"
+                        >
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-accent/10 flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/20 transition-all">
+                              <SkillIcon className="text-primary" size={20} />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex justify-between items-center">
+                                <span className="font-mono text-lg">
+                                  {getLocalizedField(skill, "name", language) ||
+                                    skill.name}
+                                </span>
+                                <span className="font-mono text-sm text-primary">
+                                  {skill.level}%
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="h-2 bg-secondary/50 rounded-full overflow-hidden">
+                            <motion.div
+                              className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
+                              initial={{ width: 0 }}
+                              animate={{ width: `${skill.level}%` }}
+                              transition={{
+                                duration: 1,
+                                delay: 0.5 + 0.1 * index,
+                              }}
+                              style={{
+                                boxShadow: "0 0 20px hsl(190 100% 50% / 0.5)",
+                              }}
+                            />
+                          </div>
+                        </motion.div>
+                      );
+                    })}
                 </div>
               </motion.div>
             ))}

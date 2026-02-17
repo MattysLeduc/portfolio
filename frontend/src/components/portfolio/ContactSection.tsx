@@ -1,18 +1,35 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Mail, Github, Linkedin, Twitter } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { portfolioService } from "@/shared/api/portfolioService";
+import { getLocalizedField } from "@/utils/localization";
 
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { language } = useLanguage();
+  const [personalInfo, setPersonalInfo] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchPersonalInfo = async () => {
+      try {
+        const data = await portfolioService.getPersonalInfo();
+        setPersonalInfo(data);
+      } catch (error) {
+        console.error("Failed to load personal info:", error);
+      }
+    };
+    fetchPersonalInfo();
+  }, []);
 
   const socialLinks = [
-    { icon: Github, href: "#", label: "GitHub" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Mail, href: "mailto:hello@johndoe.dev", label: "Email" },
-  ];
+    { icon: Github, href: personalInfo?.githubUrl || "#", label: "GitHub", show: !!personalInfo?.githubUrl },
+    { icon: Linkedin, href: personalInfo?.linkedinUrl || "#", label: "LinkedIn", show: !!personalInfo?.linkedinUrl },
+    { icon: Twitter, href: personalInfo?.twitterUrl || "#", label: "Twitter", show: !!personalInfo?.twitterUrl },
+    { icon: Mail, href: `mailto:${personalInfo?.email || "hello@example.com"}`, label: "Email", show: !!personalInfo?.email },
+  ].filter(link => link.show);
 
   return (
     <section id="contact" className="py-32 px-6 relative">
@@ -42,8 +59,7 @@ const ContactSection = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          I'm currently looking for new opportunities. Whether you have a question
-          or just want to say hi, my inbox is always open. I'll try my best to get back to you!
+          {personalInfo ? (getLocalizedField(personalInfo, "contactMessage", language) || "I'm currently looking for new opportunities. Whether you have a question or just want to say hi, my inbox is always open. I'll try my best to get back to you!") : "I'm currently looking for new opportunities. Whether you have a question or just want to say hi, my inbox is always open. I'll try my best to get back to you!"}
         </motion.p>
 
         <motion.div
@@ -53,8 +69,8 @@ const ContactSection = () => {
           className="mt-10"
         >
           <a
-            href="mailto:hello@johndoe.dev"
-            className="group relative inline-flex items-center gap-3 px-10 py-4 font-mono text-sm uppercase tracking-wider overflow-hidden"
+            href={`mailto:${personalInfo?.email || "hello@example.com"}`}
+            className="relative group inline-flex items-center gap-3 px-10 py-4 font-mono text-sm uppercase tracking-wider overflow-hidden"
           >
             <span className="absolute inset-0 border border-primary neon-border transition-all duration-300 group-hover:neon-border-strong" />
             <span className="relative z-10 text-primary group-hover:text-background transition-colors">

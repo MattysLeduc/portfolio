@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, LayoutDashboard } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import PersonalInfoForm from "@/features/admin/components/PersonalInfoForm";
 import SkillsForm from "@/features/admin/components/SkillsForm";
 import ProjectsForm from "@/features/admin/components/ProjectsForm";
 import ExperienceForm from "@/features/admin/components/ExperienceForm";
@@ -15,7 +16,7 @@ import MessagesForm from "@/features/admin/components/MessagesForm";
 import ResumeForm from "@/features/admin/components/ResumeForm";
 
 const Admin = () => {
-  const [activeTab, setActiveTab] = useState("skills");
+  const [activeTab, setActiveTab] = useState("personalInfo");
   const { t } = useLanguage();
 
   return (
@@ -54,8 +55,9 @@ const Admin = () => {
             className="glass rounded-sm p-6"
           >
             <Tabs value={activeTab} onValueChange={setActiveTab}>
-              <TabsList className="grid grid-cols-4 lg:grid-cols-8 gap-2 bg-transparent h-auto p-0 mb-8">
+              <TabsList className="grid grid-cols-3 lg:grid-cols-9 gap-2 bg-transparent h-auto p-0 mb-8">
                 {[
+                  { value: "personalInfo", label: "Personal Info" },
                   { value: "skills", label: t("skills") },
                   { value: "projects", label: t("projects") },
                   { value: "experience", label: t("experience") },
@@ -74,6 +76,10 @@ const Admin = () => {
                   </TabsTrigger>
                 ))}
               </TabsList>
+
+              <TabsContent value="personalInfo">
+                <PersonalInfoForm />
+              </TabsContent>
 
               <TabsContent value="skills">
                 <SkillsForm />

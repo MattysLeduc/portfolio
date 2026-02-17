@@ -1,12 +1,19 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navigation from "@/components/portfolio/Navigation";
-import { Mail, Github, Linkedin, MapPin, Send } from "lucide-react";
+import { Mail, Github, Linkedin, MapPin, Send, Twitter } from "lucide-react";
 import { portfolioService } from "@/shared/api/portfolioService";
 import { useLanguage } from "@/context/LanguageContext";
 import { contactFormSchema } from "@/utils/validation";
 import { sanitizeFormData } from "@/utils/sanitization";
 import { z } from "zod";
+
+interface PersonalInfo {
+  email?: string;
+  githubUrl?: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+}
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +28,28 @@ const Contact = () => {
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string>
   >({});
+  const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
   const { t } = useLanguage();
+
+  useEffect(() => {
+    let isMounted = true;
+    portfolioService
+      .getPersonalInfo()
+      .then((data) => {
+        if (isMounted) {
+          setPersonalInfo(data);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setPersonalInfo(null);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,22 +112,34 @@ const Contact = () => {
   const socialLinks = [
     {
       icon: Github,
-      href: "https://github.com/MattysLeduc",
+      href: personalInfo?.githubUrl,
       label: "GitHub",
-      username: "@mattsleduc",
+      username: personalInfo?.githubUrl ?? "",
     },
     {
       icon: Linkedin,
-      href: "https://www.linkedin.com/in/mattys-leduc-405435307",
+      href: personalInfo?.linkedinUrl,
       label: "LinkedIn",
-      username: "in/mattysleduc",
+      username: personalInfo?.linkedinUrl ?? "",
     },
-  ];
+    {
+      icon: Mail,
+      href: personalInfo?.email ? `mailto:${personalInfo.email}` : "",
+      label: t("email"),
+      username: personalInfo?.email ?? "",
+    },
+    {
+      icon: Twitter,
+      href: personalInfo?.twitterUrl,
+      label: "Twitter",
+      username: personalInfo?.twitterUrl ?? "",
+    },
+  ].filter((social) => Boolean(social.href));
 
   const contactInfo = [
-    { icon: Mail, label: t("email"), value: "mattys.leduc@gmail.com" },
+    { icon: Mail, label: t("email"), value: personalInfo?.email ?? "" },
     { icon: MapPin, label: t("location"), value: "Montreal, QC" },
-  ];
+  ].filter((info) => Boolean(info.value));
 
   return (
     <div className="min-h-screen bg-background">
