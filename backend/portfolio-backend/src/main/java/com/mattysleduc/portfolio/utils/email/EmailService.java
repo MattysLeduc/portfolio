@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class EmailService {
@@ -24,12 +25,26 @@ public class EmailService {
     @Value("${app.mail.to}")
     private String toEmail;
 
+    @Value("${spring.mail.username:}")
+    private String mailUsername;
+
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
+    @PostConstruct
+    public void init() {
+        logger.info("EmailService initialized - From: {}, To: {}, Username configured: {}", 
+            fromEmail, toEmail, !mailUsername.isEmpty());
+    }
+
     public void sendContactNotification(String name, String email, String subject, String message) {
         try {
+            if (mailUsername.isEmpty()) {
+                logger.warn("Email service not configured - mail username is empty. Skipping email send.");
+                return;
+            }
+
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             
@@ -44,10 +59,11 @@ public class EmailService {
             mailSender.send(mimeMessage);
             logger.info("Contact notification email sent successfully to {}", toEmail);
         } catch (MessagingException e) {
-            logger.error("Failed to send contact notification email", e);
-            // Don't throw exception - we don't want to fail the contact form submission if email fails
+            logger.error("Failed to send contact notification email - Messaging Error", e);
         } catch (MailException e) {
-            logger.error("Failed to send contact notification email", e);
+            logger.error("Failed to send contact notification email - Mail Exception", e);
+        } catch (Exception e) {
+            logger.error("Failed to send contact notification email - Unexpected Error", e);
         }
     }
 
