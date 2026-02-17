@@ -23,6 +23,10 @@ export const supabaseStorageService = {
     folder: string = "projects",
   ): Promise<ImageUploadResponse> => {
     try {
+      if (!supabase) {
+        throw new Error("Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.");
+      }
+
       // Generate a unique filename
       const fileExt = file.name.split(".").pop();
       const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
@@ -62,6 +66,11 @@ export const supabaseStorageService = {
    */
   deleteImage: async (imageUrl: string): Promise<void> => {
     try {
+      if (!supabase) {
+        console.warn("Supabase is not configured. Skipping image deletion.");
+        return;
+      }
+
       // Extract the file path from the URL
       const url = new URL(imageUrl);
       const pathParts = url.pathname.split(
