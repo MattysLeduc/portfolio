@@ -51,13 +51,9 @@ public class ContactPublicController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.submitMessage(model));
     }
     
-    /**
-     * Extracts the client's IP address from the request, considering proxies
-     */
     private String getClientIpAddress(HttpServletRequest request) {
         String xForwardedFor = request.getHeader("X-Forwarded-For");
         if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
-            // X-Forwarded-For can contain multiple IPs, take the first one
             return xForwardedFor.split(",")[0].trim();
         }
         
