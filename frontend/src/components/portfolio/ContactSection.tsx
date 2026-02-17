@@ -25,23 +25,45 @@ const ContactSection = () => {
   }, []);
 
   const socialLinks = [
-    { icon: Github, href: personalInfo?.githubUrl || "#", label: "GitHub", show: !!personalInfo?.githubUrl },
-    { icon: Linkedin, href: personalInfo?.linkedinUrl || "#", label: "LinkedIn", show: !!personalInfo?.linkedinUrl },
-    { icon: Twitter, href: personalInfo?.twitterUrl || "#", label: "Twitter", show: !!personalInfo?.twitterUrl },
-    { icon: Mail, href: `mailto:${personalInfo?.email || "hello@example.com"}`, label: "Email", show: !!personalInfo?.email },
-  ].filter(link => link.show);
+    {
+      icon: Github,
+      href: personalInfo?.githubUrl || "#",
+      label: "GitHub",
+      show: !!personalInfo?.githubUrl,
+    },
+    {
+      icon: Linkedin,
+      href: personalInfo?.linkedinUrl || "#",
+      label: "LinkedIn",
+      show: !!personalInfo?.linkedinUrl,
+    },
+    {
+      icon: Twitter,
+      href: personalInfo?.twitterUrl || "#",
+      label: "Twitter",
+      show: !!personalInfo?.twitterUrl,
+    },
+    {
+      icon: Mail,
+      href: `mailto:${personalInfo?.email || "hello@example.com"}`,
+      label: "Email",
+      show: !!personalInfo?.email,
+    },
+  ].filter((link) => link.show);
 
   return (
     <section id="contact" className="py-32 px-6 relative">
       <div className="absolute inset-0 grid-pattern opacity-30" />
-      
+
       <div className="max-w-4xl mx-auto text-center relative z-10" ref={ref}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <span className="font-mono text-primary text-sm">04. What's Next?</span>
+          <span className="font-mono text-primary text-sm">
+            04. What's Next?
+          </span>
         </motion.div>
 
         <motion.h2
@@ -59,7 +81,10 @@ const ContactSection = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          {personalInfo ? (getLocalizedField(personalInfo, "contactMessage", language) || "I'm currently looking for new opportunities. Whether you have a question or just want to say hi, my inbox is always open. I'll try my best to get back to you!") : "I'm currently looking for new opportunities. Whether you have a question or just want to say hi, my inbox is always open. I'll try my best to get back to you!"}
+          {personalInfo
+            ? getLocalizedField(personalInfo, "contactMessage", language) ||
+              "I'm currently looking for new opportunities. Whether you have a question or just want to say hi, my inbox is always open. I'll try my best to get back to you!"
+            : "I'm currently looking for new opportunities. Whether you have a question or just want to say hi, my inbox is always open. I'll try my best to get back to you!"}
         </motion.p>
 
         <motion.div

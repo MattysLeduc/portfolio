@@ -1,12 +1,12 @@
-import apiClient from './axiosInstance';
+import apiClient from "./axiosInstance";
 
 export const projectsAdminService = {
   getAllProjects: async () => {
-    const response = await apiClient.get('/admin/projects');
+    const response = await apiClient.get("/admin/projects");
     return response.data.data;
   },
   createProject: async (project: any) => {
-    const response = await apiClient.post('/admin/projects', project);
+    const response = await apiClient.post("/admin/projects", project);
     return response.data.data;
   },
   updateProject: async (id: number, project: any) => {
@@ -20,15 +20,18 @@ export const projectsAdminService = {
 
 export const workExperienceAdminService = {
   getAllExperiences: async () => {
-    const response = await apiClient.get('/admin/experiences');
+    const response = await apiClient.get("/admin/experiences");
     return response.data;
   },
   createExperience: async (experience: any) => {
-    const response = await apiClient.post('/admin/experiences', experience);
+    const response = await apiClient.post("/admin/experiences", experience);
     return response.data;
   },
   updateExperience: async (id: string, experience: any) => {
-    const response = await apiClient.put(`/admin/experiences/${id}`, experience);
+    const response = await apiClient.put(
+      `/admin/experiences/${id}`,
+      experience,
+    );
     return response.data;
   },
   deleteExperience: async (id: string) => {
@@ -38,11 +41,11 @@ export const workExperienceAdminService = {
 
 export const educationAdminService = {
   getAllEducation: async () => {
-    const response = await apiClient.get('/admin/education');
+    const response = await apiClient.get("/admin/education");
     return response.data.data;
   },
   createEducation: async (education: any) => {
-    const response = await apiClient.post('/admin/education', education);
+    const response = await apiClient.post("/admin/education", education);
     return response.data.data;
   },
   updateEducation: async (id: number, education: any) => {
@@ -56,15 +59,15 @@ export const educationAdminService = {
 
 export const contactAdminService = {
   getContactInfo: async () => {
-    const response = await apiClient.get('/admin/contact/info');
+    const response = await apiClient.get("/admin/contact/info");
     return response.data.data;
   },
   updateContactInfo: async (contactInfo: any) => {
-    const response = await apiClient.put('/admin/contact/info', contactInfo);
+    const response = await apiClient.put("/admin/contact/info", contactInfo);
     return response.data.data;
   },
   getAllMessages: async () => {
-    const response = await apiClient.get('/admin/contact/messages');
+    const response = await apiClient.get("/admin/contact/messages");
     return response.data.data;
   },
   markMessageAsRead: async (id: number) => {
@@ -78,11 +81,11 @@ export const contactAdminService = {
 
 export const testimonialsAdminService = {
   getAllTestimonials: async () => {
-    const response = await apiClient.get('/admin/testimonials');
+    const response = await apiClient.get("/admin/testimonials");
     return response.data.data;
   },
   getPendingTestimonials: async () => {
-    const response = await apiClient.get('/admin/testimonials/pending');
+    const response = await apiClient.get("/admin/testimonials/pending");
     return response.data.data;
   },
   approveTestimonial: async (id: number) => {
@@ -90,7 +93,9 @@ export const testimonialsAdminService = {
     return response.data.data;
   },
   rejectTestimonial: async (id: number, reason: string) => {
-    const response = await apiClient.post(`/admin/testimonials/${id}/reject`, { reason });
+    const response = await apiClient.post(`/admin/testimonials/${id}/reject`, {
+      reason,
+    });
     return response.data.data;
   },
   deleteTestimonial: async (id: number) => {
@@ -100,11 +105,11 @@ export const testimonialsAdminService = {
 
 export const personalInfoAdminService = {
   getPersonalInfo: async () => {
-    const response = await apiClient.get('/admin/personal-info');
+    const response = await apiClient.get("/admin/personal-info");
     return response.data;
   },
   updatePersonalInfo: async (personalInfo: any) => {
-    const response = await apiClient.put('/admin/personal-info', personalInfo);
+    const response = await apiClient.put("/admin/personal-info", personalInfo);
     return response.data;
   },
 };

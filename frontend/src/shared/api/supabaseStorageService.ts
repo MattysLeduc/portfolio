@@ -1,6 +1,7 @@
-import { supabase } from '@/lib/supabase';
+import { supabase } from "@/lib/supabase";
 
-const BUCKET_NAME = import.meta.env.VITE_SUPABASE_BUCKET_NAME || 'project-images';
+const BUCKET_NAME =
+  import.meta.env.VITE_SUPABASE_BUCKET_NAME || "project-images";
 
 export interface ImageUploadResponse {
   imageUrl: string;
@@ -19,23 +20,23 @@ export const supabaseStorageService = {
    */
   uploadImage: async (
     file: File,
-    folder: string = 'projects'
+    folder: string = "projects",
   ): Promise<ImageUploadResponse> => {
     try {
       // Generate a unique filename
-      const fileExt = file.name.split('.').pop();
+      const fileExt = file.name.split(".").pop();
       const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
 
       // Upload file to Supabase Storage
       const { data, error } = await supabase.storage
         .from(BUCKET_NAME)
         .upload(fileName, file, {
-          cacheControl: '3600',
+          cacheControl: "3600",
           upsert: false,
         });
 
       if (error) {
-        console.error('Supabase upload error:', error);
+        console.error("Supabase upload error:", error);
         throw new Error(error.message);
       }
 
@@ -46,10 +47,10 @@ export const supabaseStorageService = {
 
       return {
         imageUrl: urlData.publicUrl,
-        message: 'Image uploaded successfully',
+        message: "Image uploaded successfully",
       };
     } catch (error) {
-      console.error('Error uploading image to Supabase:', error);
+      console.error("Error uploading image to Supabase:", error);
       throw error;
     }
   },
@@ -63,10 +64,12 @@ export const supabaseStorageService = {
     try {
       // Extract the file path from the URL
       const url = new URL(imageUrl);
-      const pathParts = url.pathname.split(`/storage/v1/object/public/${BUCKET_NAME}/`);
-      
+      const pathParts = url.pathname.split(
+        `/storage/v1/object/public/${BUCKET_NAME}/`,
+      );
+
       if (pathParts.length < 2) {
-        console.warn('Could not parse image URL for deletion:', imageUrl);
+        console.warn("Could not parse image URL for deletion:", imageUrl);
         return;
       }
 
@@ -77,11 +80,11 @@ export const supabaseStorageService = {
         .remove([filePath]);
 
       if (error) {
-        console.error('Error deleting image from Supabase:', error);
+        console.error("Error deleting image from Supabase:", error);
         throw new Error(error.message);
       }
     } catch (error) {
-      console.error('Error deleting image:', error);
+      console.error("Error deleting image:", error);
       // Don't throw - deletion failures shouldn't block the operation
     }
   },
@@ -96,17 +99,23 @@ export const supabaseStorageService = {
   replaceImage: async (
     oldImageUrl: string | null,
     newFile: File,
-    folder: string = 'projects'
+    folder: string = "projects",
   ): Promise<ImageUploadResponse> => {
     // Upload the new image first
-    const uploadResult = await supabaseStorageService.uploadImage(newFile, folder);
+    const uploadResult = await supabaseStorageService.uploadImage(
+      newFile,
+      folder,
+    );
 
     // If there was an old image, delete it (but don't fail if deletion fails)
     if (oldImageUrl) {
       try {
         await supabaseStorageService.deleteImage(oldImageUrl);
       } catch (error) {
-        console.warn('Failed to delete old image, but new image uploaded successfully:', error);
+        console.warn(
+          "Failed to delete old image, but new image uploaded successfully:",
+          error,
+        );
       }
     }
 

@@ -1,4 +1,4 @@
-import { supabaseStorageService } from './supabaseStorageService';
+import { supabaseStorageService } from "./supabaseStorageService";
 
 export interface ResumeUploadResponse {
   fileUrl: string;
@@ -8,7 +8,7 @@ export interface ResumeUploadResponse {
 
 /**
  * Resume Service - Uses Supabase Storage for resume PDF uploads
- * 
+ *
  * Stores resumes in the 'resumes' folder of the same bucket as images
  */
 export const resumeService = {
@@ -20,30 +20,33 @@ export const resumeService = {
    */
   uploadResume: async (
     file: File,
-    language: 'en' | 'fr'
+    language: "en" | "fr",
   ): Promise<ResumeUploadResponse> => {
     // Validate file type
-    if (file.type !== 'application/pdf') {
-      throw new Error('Only PDF files are allowed for resumes');
+    if (file.type !== "application/pdf") {
+      throw new Error("Only PDF files are allowed for resumes");
     }
 
     // Validate file size (10MB max for resumes)
     const maxSize = 10 * 1024 * 1024; // 10MB
     if (file.size > maxSize) {
-      throw new Error('Resume file size must be less than 10MB');
+      throw new Error("Resume file size must be less than 10MB");
     }
 
     try {
       // Upload to Supabase in 'resumes' folder with language-specific naming
-      const result = await supabaseStorageService.uploadImage(file, `resumes/${language}`);
-      
+      const result = await supabaseStorageService.uploadImage(
+        file,
+        `resumes/${language}`,
+      );
+
       return {
         fileUrl: result.imageUrl,
         fileName: file.name,
-        message: 'Resume uploaded successfully',
+        message: "Resume uploaded successfully",
       };
     } catch (error) {
-      console.error('Error uploading resume:', error);
+      console.error("Error uploading resume:", error);
       throw error;
     }
   },
@@ -65,32 +68,32 @@ export const resumeService = {
   replaceResume: async (
     oldFileUrl: string | null,
     newFile: File,
-    language: 'en' | 'fr'
+    language: "en" | "fr",
   ): Promise<ResumeUploadResponse> => {
     // Validate file
-    if (newFile.type !== 'application/pdf') {
-      throw new Error('Only PDF files are allowed for resumes');
+    if (newFile.type !== "application/pdf") {
+      throw new Error("Only PDF files are allowed for resumes");
     }
 
     const maxSize = 10 * 1024 * 1024;
     if (newFile.size > maxSize) {
-      throw new Error('Resume file size must be less than 10MB');
+      throw new Error("Resume file size must be less than 10MB");
     }
 
     try {
       const result = await supabaseStorageService.replaceImage(
         oldFileUrl,
         newFile,
-        `resumes/${language}`
+        `resumes/${language}`,
       );
 
       return {
         fileUrl: result.imageUrl,
         fileName: newFile.name,
-        message: 'Resume replaced successfully',
+        message: "Resume replaced successfully",
       };
     } catch (error) {
-      console.error('Error replacing resume:', error);
+      console.error("Error replacing resume:", error);
       throw error;
     }
   },

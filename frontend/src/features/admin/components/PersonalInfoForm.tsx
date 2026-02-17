@@ -101,9 +101,10 @@ const PersonalInfoForm = () => {
           Hero Section
         </h3>
         <p className="text-sm text-muted-foreground mb-4">
-          Displayed on the <strong>Home Page</strong> - Hero section with your name and introduction
+          Displayed on the <strong>Home Page</strong> - Hero section with your
+          name and introduction
         </p>
-        
+
         <div className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -115,7 +116,9 @@ const PersonalInfoForm = () => {
                 className="bg-background/50 border-primary/30 focus:border-primary"
                 placeholder="e.g., John Doe"
               />
-              <p className="text-xs text-muted-foreground">Displayed prominently in the hero section</p>
+              <p className="text-xs text-muted-foreground">
+                Displayed prominently in the hero section
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="nameFr">Name (French)</Label>
@@ -126,7 +129,9 @@ const PersonalInfoForm = () => {
                 className="bg-background/50 border-primary/30 focus:border-primary"
                 placeholder="e.g., Jean Dupont"
               />
-              <p className="text-xs text-muted-foreground">Version française du nom</p>
+              <p className="text-xs text-muted-foreground">
+                Version française du nom
+              </p>
             </div>
           </div>
 
@@ -140,7 +145,9 @@ const PersonalInfoForm = () => {
                 className="bg-background/50 border-primary/30 focus:border-primary"
                 placeholder="e.g., Full Stack Developer | AI Enthusiast"
               />
-              <p className="text-xs text-muted-foreground">Short professional title/subtitle</p>
+              <p className="text-xs text-muted-foreground">
+                Short professional title/subtitle
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="taglineFr">Tagline (French)</Label>
@@ -151,7 +158,9 @@ const PersonalInfoForm = () => {
                 className="bg-background/50 border-primary/30 focus:border-primary"
                 placeholder="e.g., Développeur Full Stack | Passionné d'IA"
               />
-              <p className="text-xs text-muted-foreground">Titre professionnel en français</p>
+              <p className="text-xs text-muted-foreground">
+                Titre professionnel en français
+              </p>
             </div>
           </div>
 
@@ -166,7 +175,9 @@ const PersonalInfoForm = () => {
                 rows={3}
                 placeholder="Brief introduction message..."
               />
-              <p className="text-xs text-muted-foreground">Welcome message shown in the hero section</p>
+              <p className="text-xs text-muted-foreground">
+                Welcome message shown in the hero section
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="heroWelcomeFr">Welcome Text (French)</Label>
@@ -178,7 +189,9 @@ const PersonalInfoForm = () => {
                 rows={3}
                 placeholder="Message d'introduction bref..."
               />
-              <p className="text-xs text-muted-foreground">Message de bienvenue en français</p>
+              <p className="text-xs text-muted-foreground">
+                Message de bienvenue en français
+              </p>
             </div>
           </div>
         </div>
@@ -190,7 +203,8 @@ const PersonalInfoForm = () => {
           Contact Section
         </h3>
         <p className="text-sm text-muted-foreground mb-4">
-          Displayed on the <strong>Contact Page</strong> - Contact section with email and call-to-action message
+          Displayed on the <strong>Contact Page</strong> - Contact section with
+          email and call-to-action message
         </p>
 
         <div className="space-y-4">
@@ -204,33 +218,45 @@ const PersonalInfoForm = () => {
               className="bg-background/50 border-primary/30 focus:border-primary"
               placeholder="your.email@example.com"
             />
-            <p className="text-xs text-muted-foreground">Used for the contact button mailto link</p>
+            <p className="text-xs text-muted-foreground">
+              Used for the contact button mailto link
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="contactMessageEn">Contact Message (English)</Label>
+              <Label htmlFor="contactMessageEn">
+                Contact Message (English)
+              </Label>
               <Textarea
                 id="contactMessageEn"
                 value={formData.contactMessageEn}
-                onChange={(e) => handleChange("contactMessageEn", e.target.value)}
+                onChange={(e) =>
+                  handleChange("contactMessageEn", e.target.value)
+                }
                 className="bg-background/50 border-primary/30 focus:border-primary"
                 rows={3}
                 placeholder="Brief message inviting visitors to contact you..."
               />
-              <p className="text-xs text-muted-foreground">Call-to-action text in the contact section</p>
+              <p className="text-xs text-muted-foreground">
+                Call-to-action text in the contact section
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="contactMessageFr">Contact Message (French)</Label>
               <Textarea
                 id="contactMessageFr"
                 value={formData.contactMessageFr}
-                onChange={(e) => handleChange("contactMessageFr", e.target.value)}
+                onChange={(e) =>
+                  handleChange("contactMessageFr", e.target.value)
+                }
                 className="bg-background/50 border-primary/30 focus:border-primary"
                 rows={3}
                 placeholder="Message invitant les visiteurs à vous contacter..."
               />
-              <p className="text-xs text-muted-foreground">Texte d'appel à l'action en français</p>
+              <p className="text-xs text-muted-foreground">
+                Texte d'appel à l'action en français
+              </p>
             </div>
           </div>
         </div>
@@ -255,7 +281,9 @@ const PersonalInfoForm = () => {
               className="bg-background/50 border-primary/30 focus:border-primary"
               placeholder="https://github.com/username"
             />
-            <p className="text-xs text-muted-foreground">Leave empty to hide the icon</p>
+            <p className="text-xs text-muted-foreground">
+              Leave empty to hide the icon
+            </p>
           </div>
           <div className="space-y-2">
             <Label htmlFor="linkedinUrl">LinkedIn URL</Label>
@@ -266,7 +294,9 @@ const PersonalInfoForm = () => {
               className="bg-background/50 border-primary/30 focus:border-primary"
               placeholder="https://linkedin.com/in/username"
             />
-            <p className="text-xs text-muted-foreground">Leave empty to hide the icon</p>
+            <p className="text-xs text-muted-foreground">
+              Leave empty to hide the icon
+            </p>
           </div>
           <div className="space-y-2">
             <Label htmlFor="twitterUrl">Twitter URL</Label>
@@ -277,15 +307,17 @@ const PersonalInfoForm = () => {
               className="bg-background/50 border-primary/30 focus:border-primary"
               placeholder="https://twitter.com/username"
             />
-            <p className="text-xs text-muted-foreground">Leave empty to hide the icon</p>
+            <p className="text-xs text-muted-foreground">
+              Leave empty to hide the icon
+            </p>
           </div>
         </div>
       </div>
 
       {/* Save Button */}
       <div className="flex justify-end pt-4">
-        <Button 
-          onClick={handleSave} 
+        <Button
+          onClick={handleSave}
           disabled={loading}
           className="bg-primary hover:bg-primary/90"
         >

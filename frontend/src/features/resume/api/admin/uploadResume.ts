@@ -7,7 +7,7 @@ export async function uploadResume(
 ): Promise<ResumeInfoResponseModel & { fileUrl: string }> {
   // Upload to Supabase Storage
   const result = await resumeService.uploadResume(file, language);
-  
+
   // Return in the expected format with the URL
   return {
     language,

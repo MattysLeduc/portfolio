@@ -39,21 +39,21 @@ const ResumeForm = () => {
     try {
       setUploading(language);
       const result = await uploadResume(language, file);
-      
+
       // Update PersonalInfo with the new resume URL
       const updatedInfo = {
         ...personalInfo,
         [language === "en" ? "resumeEnUrl" : "resumeFrUrl"]: result.fileUrl,
       };
-      
+
       console.log("Updating personal info with:", updatedInfo);
       await personalInfoAdminService.updatePersonalInfo(updatedInfo);
-      
+
       // Refetch to verify the update was saved
       const refreshedInfo = await personalInfoAdminService.getPersonalInfo();
       console.log("Refreshed personal info:", refreshedInfo);
       setPersonalInfo(refreshedInfo);
-      
+
       toast({
         title: "Success",
         description: `Resume (${language.toUpperCase()}) uploaded to Supabase and saved to database`,
@@ -65,7 +65,8 @@ const ResumeForm = () => {
       console.error("Upload error:", error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to upload resume",
+        description:
+          error instanceof Error ? error.message : "Failed to upload resume",
         variant: "destructive",
       });
     } finally {
@@ -80,7 +81,8 @@ const ResumeForm = () => {
           Resume / CV Upload
         </h3>
         <p className="text-xs text-muted-foreground mt-2">
-          Upload your resume PDFs to Supabase Storage. View uploaded files in your Supabase dashboard under Storage → project-images → resumes/
+          Upload your resume PDFs to Supabase Storage. View uploaded files in
+          your Supabase dashboard under Storage → project-images → resumes/
         </p>
       </div>
 

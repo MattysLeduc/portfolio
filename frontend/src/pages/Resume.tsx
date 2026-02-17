@@ -30,18 +30,21 @@ const Resume = () => {
   }, []);
 
   const handleViewResume = (lang: "en" | "fr") => {
-    const resumeUrl = lang === "en" ? personalInfo?.resumeEnUrl : personalInfo?.resumeFrUrl;
+    const resumeUrl =
+      lang === "en" ? personalInfo?.resumeEnUrl : personalInfo?.resumeFrUrl;
     if (resumeUrl) {
       window.open(resumeUrl, "_blank", "noopener,noreferrer");
     }
   };
 
   const handleDownloadResume = (lang: "en" | "fr") => {
-    const resumeUrl = lang === "en" ? personalInfo?.resumeEnUrl : personalInfo?.resumeFrUrl;
+    const resumeUrl =
+      lang === "en" ? personalInfo?.resumeEnUrl : personalInfo?.resumeFrUrl;
     if (resumeUrl) {
       const link = document.createElement("a");
       link.href = resumeUrl;
-      link.download = lang === "fr" ? "CV_Mattys_Leduc_FR.pdf" : "CV_Mattys_Leduc_EN.pdf";
+      link.download =
+        lang === "fr" ? "CV_Mattys_Leduc_FR.pdf" : "CV_Mattys_Leduc_EN.pdf";
       link.target = "_blank";
       document.body.appendChild(link);
       link.click();

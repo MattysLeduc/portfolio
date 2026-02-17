@@ -34,7 +34,9 @@ const ProjectsSection = () => {
           className="flex items-center gap-4 mb-16"
         >
           <span className="font-mono text-primary text-sm">03.</span>
-          <h2 className="font-display text-3xl md:text-4xl font-bold">Featured Projects</h2>
+          <h2 className="font-display text-3xl md:text-4xl font-bold">
+            Featured Projects
+          </h2>
           <div className="flex-1 h-px bg-gradient-to-r from-primary/50 to-transparent" />
         </motion.div>
 
@@ -59,7 +61,10 @@ const ProjectsSection = () => {
                     {project.imageUrl ? (
                       <img
                         src={project.imageUrl}
-                        alt={getLocalizedField(project, "name", language) || project.title}
+                        alt={
+                          getLocalizedField(project, "name", language) ||
+                          project.title
+                        }
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -70,7 +75,9 @@ const ProjectsSection = () => {
                               {String(index + 1).padStart(2, "0")}
                             </span>
                           </div>
-                          <p className="font-mono text-sm text-primary/70">Project Preview</p>
+                          <p className="font-mono text-sm text-primary/70">
+                            Project Preview
+                          </p>
                         </div>
                       </div>
                     )}
@@ -86,19 +93,32 @@ const ProjectsSection = () => {
                 }`}
               >
                 <div className="space-y-4">
-                  <p className="font-mono text-primary text-sm">Featured Project</p>
+                  <p className="font-mono text-primary text-sm">
+                    Featured Project
+                  </p>
                   <h3 className="font-display text-2xl font-bold">
-                    {getLocalizedField(project, "name", language) || project.title}
+                    {getLocalizedField(project, "name", language) ||
+                      project.title}
                   </h3>
-                  
+
                   <div className="glass p-6 rounded-sm">
                     <p className="text-muted-foreground">
-                      {getLocalizedField(project, "description", language) || project.description}
+                      {getLocalizedField(project, "description", language) ||
+                        project.description}
                     </p>
                   </div>
 
-                  <div className={`flex flex-wrap gap-3 ${index % 2 === 1 ? "md:justify-end" : ""}`}>
-                    {(project.tech || (project.technologies ? project.technologies.split(",").map((t: string) => t.trim()) : [])).map((tech: string) => (
+                  <div
+                    className={`flex flex-wrap gap-3 ${index % 2 === 1 ? "md:justify-end" : ""}`}
+                  >
+                    {(
+                      project.tech ||
+                      (project.technologies
+                        ? project.technologies
+                            .split(",")
+                            .map((t: string) => t.trim())
+                        : [])
+                    ).map((tech: string) => (
                       <span
                         key={tech}
                         className="font-mono text-xs text-primary/80 px-2 py-1 bg-primary/10 rounded"
@@ -108,7 +128,9 @@ const ProjectsSection = () => {
                     ))}
                   </div>
 
-                  <div className={`flex gap-4 ${index % 2 === 1 ? "md:justify-end" : ""}`}>
+                  <div
+                    className={`flex gap-4 ${index % 2 === 1 ? "md:justify-end" : ""}`}
+                  >
                     {(project.github || project.repoUrl) && (
                       <a
                         href={project.github || project.repoUrl}

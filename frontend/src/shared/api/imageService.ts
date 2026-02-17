@@ -7,7 +7,7 @@ export interface ImageUploadResponse {
 
 /**
  * Image Service - Uses Supabase Storage for image uploads
- * 
+ *
  * This service provides a unified interface for image uploads,
  * currently using Supabase Storage as the backend.
  */
@@ -20,7 +20,7 @@ export const imageService = {
    */
   uploadImage: async (
     file: File,
-    folder: string = 'projects'
+    folder: string = "projects",
   ): Promise<ImageUploadResponse> => {
     return await supabaseStorageService.uploadImage(file, folder);
   },
@@ -42,8 +42,12 @@ export const imageService = {
   replaceImage: async (
     oldImageUrl: string | null,
     newFile: File,
-    folder: string = 'projects'
+    folder: string = "projects",
   ): Promise<ImageUploadResponse> => {
-    return await supabaseStorageService.replaceImage(oldImageUrl, newFile, folder);
+    return await supabaseStorageService.replaceImage(
+      oldImageUrl,
+      newFile,
+      folder,
+    );
   },
 };

@@ -38,28 +38,61 @@ interface Skill {
 // Icon mapping for common skills
 const getSkillIcon = (skillName: string) => {
   const name = skillName.toLowerCase();
-  
+
   // Frontend technologies
-  if (name.includes("react") || name.includes("vue") || name.includes("angular")) return Layout;
-  if (name.includes("html") || name.includes("css") || name.includes("tailwind")) return Code2;
-  if (name.includes("javascript") || name.includes("typescript")) return FileJson;
-  if (name.includes("next") || name.includes("vite") || name.includes("webpack")) return Package;
-  
+  if (
+    name.includes("react") ||
+    name.includes("vue") ||
+    name.includes("angular")
+  )
+    return Layout;
+  if (
+    name.includes("html") ||
+    name.includes("css") ||
+    name.includes("tailwind")
+  )
+    return Code2;
+  if (name.includes("javascript") || name.includes("typescript"))
+    return FileJson;
+  if (
+    name.includes("next") ||
+    name.includes("vite") ||
+    name.includes("webpack")
+  )
+    return Package;
+
   // Backend technologies
   if (name.includes("java") || name.includes("spring")) return Server;
-  if (name.includes("python") || name.includes("django") || name.includes("flask")) return Braces;
+  if (
+    name.includes("python") ||
+    name.includes("django") ||
+    name.includes("flask")
+  )
+    return Braces;
   if (name.includes("node") || name.includes("express")) return Terminal;
-  if (name.includes("api") || name.includes("rest") || name.includes("graphql")) return Settings;
-  
+  if (name.includes("api") || name.includes("rest") || name.includes("graphql"))
+    return Settings;
+
   // Database
-  if (name.includes("sql") || name.includes("postgres") || name.includes("mongo")) return Database;
+  if (
+    name.includes("sql") ||
+    name.includes("postgres") ||
+    name.includes("mongo")
+  )
+    return Database;
   if (name.includes("redis") || name.includes("cache")) return Cpu;
-  
+
   // DevOps
   if (name.includes("docker") || name.includes("kubernetes")) return Container;
-  if (name.includes("aws") || name.includes("azure") || name.includes("cloud")) return Cloud;
-  if (name.includes("git") || name.includes("ci/cd") || name.includes("jenkins")) return GitBranch;
-  
+  if (name.includes("aws") || name.includes("azure") || name.includes("cloud"))
+    return Cloud;
+  if (
+    name.includes("git") ||
+    name.includes("ci/cd") ||
+    name.includes("jenkins")
+  )
+    return GitBranch;
+
   // Default icons
   return Sparkles;
 };
@@ -163,8 +196,10 @@ const Skills = () => {
                   {skills
                     .filter((skill) => skill.category === category.value)
                     .map((skill, index) => {
-                      const SkillIcon = getSkillIcon(skill.name || skill.nameEn || "");
-                      
+                      const SkillIcon = getSkillIcon(
+                        skill.name || skill.nameEn || "",
+                      );
+
                       return (
                         <motion.div
                           key={skill.id || skill.name}

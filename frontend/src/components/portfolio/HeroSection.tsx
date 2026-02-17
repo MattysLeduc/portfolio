@@ -56,7 +56,9 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
         >
           <span className="font-mono text-primary/80 text-sm tracking-[0.3em] uppercase">
-            {personalInfo ? getLocalizedField(personalInfo, "heroWelcome", language) : t("heroWelcome")}
+            {personalInfo
+              ? getLocalizedField(personalInfo, "heroWelcome", language)
+              : t("heroWelcome")}
           </span>
         </motion.div>
 
@@ -67,7 +69,10 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.8 }}
         >
           <span className="text-gradient neon-text">
-            {personalInfo ? (getLocalizedField(personalInfo, "name", language) || "MATTYS LEDUC") : "MATTYS LEDUC"}
+            {personalInfo
+              ? getLocalizedField(personalInfo, "name", language) ||
+                "MATTYS LEDUC"
+              : "MATTYS LEDUC"}
           </span>
         </motion.h1>
 
@@ -77,7 +82,9 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
         >
-          {personalInfo ? getLocalizedField(personalInfo, "tagline", language) : t("heroSubtitle")}
+          {personalInfo
+            ? getLocalizedField(personalInfo, "tagline", language)
+            : t("heroSubtitle")}
         </motion.p>
 
         <motion.div

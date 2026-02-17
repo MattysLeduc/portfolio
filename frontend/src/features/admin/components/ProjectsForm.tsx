@@ -34,7 +34,9 @@ const ProjectsForm = () => {
   const [openItems, setOpenItems] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploadingImages, setUploadingImages] = useState<Record<string, boolean>>({});
+  const [uploadingImages, setUploadingImages] = useState<
+    Record<string, boolean>
+  >({});
 
   useEffect(() => {
     fetchProjects();
@@ -128,7 +130,10 @@ const ProjectsForm = () => {
     }
   };
 
-  const handleFileSelect = (projectId: string, event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (
+    projectId: string,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       // Validate file type
@@ -319,7 +324,7 @@ const ProjectsForm = () => {
                   {/* Image Upload Section */}
                   <div className="space-y-2">
                     <Label>Project Image</Label>
-                    
+
                     {/* Image Preview */}
                     {project.imageUrl && (
                       <div className="relative w-full aspect-video bg-background/50 border border-primary/30 rounded overflow-hidden mb-2">
@@ -332,7 +337,9 @@ const ProjectsForm = () => {
                           variant="destructive"
                           size="icon"
                           className="absolute top-2 right-2 h-8 w-8"
-                          onClick={() => updateField(project.projectId, "imageUrl", "")}
+                          onClick={() =>
+                            updateField(project.projectId, "imageUrl", "")
+                          }
                         >
                           <X size={16} />
                         </Button>
@@ -345,7 +352,9 @@ const ProjectsForm = () => {
                         <Input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => handleFileSelect(project.projectId, e)}
+                          onChange={(e) =>
+                            handleFileSelect(project.projectId, e)
+                          }
                           className="hidden"
                           id={`file-upload-${project.projectId}`}
                           disabled={uploadingImages[project.projectId]}
@@ -355,7 +364,11 @@ const ProjectsForm = () => {
                           variant="outline"
                           className="w-full border-primary/50"
                           onClick={() => {
-                            document.getElementById(`file-upload-${project.projectId}`)?.click();
+                            document
+                              .getElementById(
+                                `file-upload-${project.projectId}`,
+                              )
+                              ?.click();
                           }}
                           disabled={uploadingImages[project.projectId]}
                         >
@@ -364,7 +377,9 @@ const ProjectsForm = () => {
                           ) : (
                             <Upload size={16} className="mr-2" />
                           )}
-                          {uploadingImages[project.projectId] ? "Uploading..." : "Upload Image"}
+                          {uploadingImages[project.projectId]
+                            ? "Uploading..."
+                            : "Upload Image"}
                         </Button>
                       </div>
                     </div>
@@ -375,7 +390,7 @@ const ProjectsForm = () => {
                       <span>or enter URL</span>
                       <div className="flex-1 h-px bg-primary/20" />
                     </div>
-                    
+
                     <Input
                       value={project.imageUrl || ""}
                       onChange={(e) =>
