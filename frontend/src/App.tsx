@@ -2,10 +2,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { Footer } from "@/components/Footer";
+import { trackPageView } from "@/lib/gtm";
 import Index from "@/pages/Index";
 import Skills from "@/pages/Skills";
 import Projects from "@/pages/Projects";
@@ -22,6 +24,16 @@ import Admin from "@/pages/Admin";
 
 const queryClient = new QueryClient();
 
+const RouteAnalyticsTracker = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackPageView(`${location.pathname}${location.search}${location.hash}`);
+  }, [location.pathname, location.search, location.hash]);
+
+  return null;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -30,6 +42,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <RouteAnalyticsTracker />
             <div className="min-h-screen bg-background text-foreground flex flex-col">
               <main className="flex-1">
                 <Routes>
